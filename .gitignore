@@ -1,0 +1,4 @@
+*.o
+./miniRT
+*.ppm
+*.rt
