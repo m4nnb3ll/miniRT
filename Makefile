@@ -6,7 +6,7 @@ RESET_COLOR	:=	\033[0m
 
 NAME				:=	miniRT
 CC					:=	cc
-CFLAGS			:=	-Wextra -Wall -Werror -O3 -g
+CFLAGS			:=	-Wextra -Wall -Werror #-O3 -g
 HEADERS			:=	-Ilibft/include -Iinclude -I~/MLX42/include
 
 # Libraries
@@ -14,7 +14,15 @@ LIBFT				:=	libft.a
 LIBMLX			:=	~/MLX42/build/libmlx42.a
 LIBS				:=	$(LIBMLX) -lglfw3 -ldl -lX11 -pthread $(LIBFT) -lm
 
-SRCS				:=	main.c
+# SRCS
+TUPLES			:=	${addprefix tuples/, tuples.c}
+CANVAS			:=	${addprefix canvas/, canvas.c color.c}
+MATRICES		:=	${addprefix matrices/, matrices.c}
+
+SRCS				:=	main.c \
+								$(TUPLES) \
+								$(CANVAS) \
+								$(MATRICES) \
 
 OBJS				:=	${SRCS:.c=.o}
 
@@ -34,7 +42,7 @@ $(LIBFT)		:
 									@echo "$(GREEN)libft ✓$(RESET_COLOR)"
 
 $(NAME)			:		$(OBJS) $(LIBFT)
-									@$(CC) $(OBJS) $(LIBS) -o $(NAME)
+									@$(CC) $(OBJS) $(LIBS) -fsanitize=address -o $(NAME)
 									@echo "$(GREEN)All Done ✓$(RESET_COLOR)"
 
 clean				:
