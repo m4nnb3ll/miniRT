@@ -24,11 +24,11 @@ typedef struct s_color
 	double	b;
 }	t_color;
 
-extern t_color	BLACK;
-extern t_color	WHITE;
-extern t_color	RED;
-extern t_color	GREEN;
-extern t_color	BLUE;
+extern t_color	g_black;
+extern t_color	g_white;
+extern t_color	g_red;
+extern t_color	g_green;
+extern t_color	g_blue;
 
 typedef struct s_canvas {
 	t_color	pixel_grid[CANVAS_WIDTH][CANVAS_HEIGHT];
@@ -39,5 +39,7 @@ typedef struct s_matrix
 	int			size;
 	double	val[4][4];
 }	t_matrix;
+
+extern t_matrix	g_identity_matrix;
 
 #endif

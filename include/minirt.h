@@ -11,5 +11,6 @@
 #	include "minirt_types.h"
 #	include "tuples.h"
 #	include "canvas.h"
+#	include "matrices.h"
 
 #endif

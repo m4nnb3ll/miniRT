@@ -6,7 +6,7 @@ RESET_COLOR	:=	\033[0m
 
 NAME				:=	miniRT
 CC					:=	cc
-CFLAGS			:=	-Wextra -Wall -Werror #-O3 -g
+CFLAGS			:=	-Wextra -Wall -Werror -O3 -g
 HEADERS			:=	-Ilibft/include -Iinclude -I~/MLX42/include
 
 # Libraries
