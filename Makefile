@@ -17,7 +17,7 @@ LIBS				:=	$(LIBMLX) -lglfw3 -ldl -lX11 -pthread $(LIBFT) -lm
 # SRCS
 TUPLES			:=	${addprefix tuples/, tuples.c}
 CANVAS			:=	${addprefix canvas/, canvas.c color.c}
-MATRICES		:=	${addprefix matrices/, matrices.c}
+MATRICES		:=	${addprefix matrices/, matrices.c matrix_transformations.c}
 
 SRCS				:=	main.c \
 								$(TUPLES) \

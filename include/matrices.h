@@ -10,5 +10,11 @@ t_matrix	ft_transpose(t_matrix m);
 t_matrix	ft_cofactor_matrix(t_matrix m);
 t_matrix	ft_inverse(t_matrix original);
 t_matrix	ft_multi_matrices(t_matrix a, t_matrix b);
+t_matrix	ft_translate(double x, double y, double z);
+t_matrix	ft_scale(double x, double y, double z);
+t_matrix	ft_rotate_x(double rad);
+t_matrix	ft_rotate_y(double rad);
+t_matrix	ft_rotate_z(double rad);
+t_tuple		ft_trans_tuple(t_matrix m, t_tuple t);
 
 #endif

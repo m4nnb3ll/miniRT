@@ -2,24 +2,12 @@
 
 int main()
 {
-	t_matrix	A, B, C;
+	t_tuple		p;
+	t_matrix	hq, fq;
 
-	A = (t_matrix){4, {
-		{1, 2, 3, 4},
-		{5, 6, 7, 8},
-		{9, 8, 7, 6},
-		{5, 4, 3, 2}
-	}};
-
-	B = (t_matrix){4, {
-		{-2, 1, 2, 3},
-		{3, 2, 1, -1},
-		{4, 3, 6, 5},
-		{1, 2, 7, 8}
-	}};
-	
-
-	C = ft_multi_matrices(A, B);
-	printf("The A x B matrix is:\n");
-	ft_print_matrix(C);
+	p = ft_point(0, 1, 0);
+	hq = ft_rotate_z(PI/4);
+	fq = ft_rotate_z(PI/2);
+	ft_print_tuple(ft_trans_tuple(hq, p));
+	ft_print_tuple(ft_trans_tuple(fq, p));
 }
