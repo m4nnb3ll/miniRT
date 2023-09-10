@@ -1,1 +1,1 @@
-This is a mini-RayTracer. :D
+mini Ray Tracer written from scratch in C.
