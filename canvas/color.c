@@ -1,5 +1,11 @@
 #include "minirt.h"
 
+t_color	g_black = (t_color){ 0, 0, 0 };
+t_color	g_white = (t_color){ 1, 1, 1 };
+t_color	g_red = (t_color){ 1, 0, 0 };
+t_color	g_green = (t_color){ 0, 1, 0 };
+t_color	g_blue = (t_color){ 0, 0, 1 };
+
 void	ft_print_color(t_color c)
 {
 	printf("%f %f %f\n", c.r, c.g, c.b);
@@ -28,7 +34,7 @@ t_color	ft_sub_colors(t_color a, t_color b)
 	});
 }
 
-t_color	ft_scl_color(t_color c, double scaler)
+t_color	ft_color_scl(t_color c, double scaler)
 {
 	return ((t_color){
 		c.r * scaler,

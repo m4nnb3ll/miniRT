@@ -60,7 +60,7 @@ t_matrix	ft_rotate_z(double rad)
 	});
 }
 
-t_tuple	ft_trans_tuple(t_matrix m, t_tuple t)
+t_tuple	ft_transform_tuple(t_matrix m, t_tuple t)
 {
 	return ((t_tuple){
 		m.val[0][0] * t.x + m.val[0][1] * t.y +

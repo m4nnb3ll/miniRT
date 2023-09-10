@@ -15,14 +15,22 @@ LIBMLX			:=	~/MLX42/build/libmlx42.a
 LIBS				:=	$(LIBMLX) -lglfw3 -ldl -lX11 -pthread $(LIBFT) -lm
 
 # SRCS
-TUPLES			:=	${addprefix tuples/, tuples.c}
-CANVAS			:=	${addprefix canvas/, canvas.c color.c}
-MATRICES		:=	${addprefix matrices/, matrices.c matrix_transformations.c}
+TUPLES				:=	${addprefix tuples/, tuples.c}
+CANVAS				:=	${addprefix canvas/, canvas.c color.c}
+MATRICES			:=	${addprefix matrices/, matrices.c matrix_transformations.c}
+RAY_INTERSECT	:=	${addprefix ray_intersect/, ray.c intersect.c}
+LSTS					:=	${addprefix lsts/, objs.c xs.c}
+SCENE					:=	${addprefix scene/, scene.c camera.c}
+LIGHT_SHADING	:=	${addprefix light_shading/, lighting.c}
 
 SRCS				:=	main.c \
 								$(TUPLES) \
 								$(CANVAS) \
 								$(MATRICES) \
+								$(RAY_INTERSECT) \
+								$(LSTS) \
+								$(SCENE) \
+								$(LIGHT_SHADING) \
 
 OBJS				:=	${SRCS:.c=.o}
 
@@ -42,7 +50,8 @@ $(LIBFT)		:
 									@echo "$(GREEN)libft ✓$(RESET_COLOR)"
 
 $(NAME)			:		$(OBJS) $(LIBFT)
-									@$(CC) $(OBJS) $(LIBS) -fsanitize=address -o $(NAME)
+# @$(CC) $(OBJS) $(LIBS) -fsanitize=address -o $(NAME)
+									@$(CC) $(OBJS) $(LIBS) -o $(NAME)
 									@echo "$(GREEN)All Done ✓$(RESET_COLOR)"
 
 clean				:

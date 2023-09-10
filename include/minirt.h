@@ -12,5 +12,9 @@
 #	include "tuples.h"
 #	include "canvas.h"
 #	include "matrices.h"
+# include "ray_intersect.h"
+# include "lsts.h"
+# include "scene.h"
+# include "light_shading.h"
 
 #endif
