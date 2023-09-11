@@ -33,7 +33,6 @@ t_comps	ft_prepare_comps(t_ray r, t_xnode *hit)
 	comps.o = hit -> o;
 	comps.x = hit -> x;
 	comps.pt	= ft_pos_on_ray(r, hit -> x);
-	comps.before_x = ft_pos_on_ray(r, hit -> x - EPSILON / 2);
 	comps.ev = ft_negv(r.direction);
 	comps.nv = ft_normal_at(hit -> o, comps.pt);
 	comps.inside = false;
@@ -42,19 +41,20 @@ t_comps	ft_prepare_comps(t_ray r, t_xnode *hit)
 		comps.inside = true;
 		comps.nv = ft_negv(comps.nv);
 	}
+	comps.over_pt = ft_add_tuples(comps.pt, ft_sclv(comps.nv, EPSILON));
 	return (comps);
 }
 
-bool	ft_is_shadowed(t_world w, t_tuple before_x)
+bool	ft_is_shadowed(t_world w, t_tuple over_pt)
 {
 	t_tuple	lv;
 	double	distance;
 	t_xnode	*hit;
 
-	lv = ft_sub_tuples(w.light.position, before_x);
+	lv = ft_sub_tuples(w.light.position, over_pt);
 	distance = ft_mag(lv);
 	lv = ft_normalize(lv);
-	hit = ft_hit(ft_intersect_world(w, ft_ray(before_x, lv)));
+	hit = ft_hit(ft_intersect_world(w, ft_ray(over_pt, lv)));
 	if (hit && hit->x < distance)
 		return (true);
 	return (false);
@@ -74,7 +74,7 @@ t_color	ft_lighting(t_world w, t_comps comps)
 	m = comps.o -> material;
 	ph.e_color = ft_multi_colors(m.color, w.light.intensity);
 	ph.a_color = ft_color_scl(ph.e_color, m.ambient);
-	if (ft_is_shadowed(w, comps.before_x))
+	if (ft_is_shadowed(w, comps.over_pt))
 		return (ph.a_color);
 	ph.lv = ft_normalize(ft_sub_tuples(w.light.position, comps.pt));
 	ph.ldn = ft_dot(ph.lv, comps.nv);

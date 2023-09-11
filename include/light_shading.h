@@ -9,5 +9,6 @@ t_color				ft_lighting(t_world w, t_comps comps);
 t_comps				ft_prepare_comps(t_ray r, t_xnode *hit);
 t_color				ft_shade_hit(t_world w, t_comps comps);
 t_color				ft_color_at(t_world w, t_ray r);
+bool				ft_is_shadowed(t_world w, t_tuple over_pt);
 
 #endif

@@ -18,7 +18,7 @@ void	ft_print_canvas(t_canvas canvas)
 	}
 }
 
-void	ft_canvas_to_ppm(t_canvas canvas)
+void	ft_canvas_to_ppm(t_canvas *canvas)
 {
 	uint32_t	x;
 	uint32_t	y;
@@ -53,7 +53,7 @@ void	ft_canvas_to_ppm(t_canvas canvas)
 			{
 				row_length += printf(" ");
 			}
-			color = canvas.pixel_grid[y][x];
+			color = canvas->pixel_grid[y][x];
 			row_length += printf("%d",
 				ft_255channel(color.r));
 			

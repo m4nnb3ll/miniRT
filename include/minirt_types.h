@@ -1,12 +1,18 @@
 #ifndef MINIRT_TYPES_H
 # define MINIRT_TYPES_H
 
-# define EPSILON				0.00001
-# define CANVAS_WIDTH		400
+# define EPSILON		0.00001
+# define CANVAS_WIDTH	400
 # define CANVAS_HEIGHT	400
 # define PPM_MAGIC_NUM	"P3"
 # define PPM_MAX_COLOR	255
-# define PI							3.14159265358979
+# define PI				3.14159265358979
+# define RED			"\033[0;31m"
+# define GREEN			"\033[0;32m"
+# define YELLOW			"\033[0;33m"
+# define RESET_COLOR	"\033[0m"
+# define TRUE_S			GREEN"TRUE"RESET_COLOR
+# define FALSE_S		RED"FALSE"RESET_COLOR
 
 typedef struct s_tuple
 {
@@ -110,7 +116,7 @@ typedef struct s_comps
 	t_objnode	*o;
 	double		x;
 	t_tuple		pt;
-	t_tuple		before_x;
+	t_tuple		over_pt;
 	t_tuple		ev;
 	t_tuple		nv;
 	bool			inside;

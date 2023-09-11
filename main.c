@@ -1,5 +1,24 @@
 #include "minirt.h"
 
+// int main()
+// {
+// 	t_ray		r;
+// 	t_objnode 	*sph;
+// 	t_xnode		*i;
+// 	t_comps		comps;
+// 	char		*bools[2] = { FALSE_S, TRUE_S };
+
+// 	r = ft_ray(ft_point(0, 0, -5), ft_vector(0, 0, 1));
+// 	sph = ft_objnew(OT_SPHERE);
+// 	sph -> transform_inverse = ft_inverse(ft_translate(0, 0, 1));
+// 	i = ft_xnew(sph, 5);
+// 	comps = ft_prepare_comps(r, i);
+// 	printf("comps.over_pt.z is: %f\n", comps.over_pt.z);
+// 	printf("-EPSILON/2 is: %f\n", -EPSILON/2);
+// 	printf("comps.over_pt.z < -EPSILON/2: %s\n", bools[comps.over_pt.z < -EPSILON/2]);
+// 	printf("comps.pt.z > comps.over_pt.z: %s\n", bools[comps.pt.z > comps.over_pt.z]);
+// }
+
 // FINAL MAIN BELOW
 int main()
 {
@@ -70,11 +89,11 @@ int main()
 	ft_objadd_back(&w.objlst, right);
 
 
-	camera = ft_camera(400, 400, PI/3);
+	camera = ft_camera(CANVAS_WIDTH, CANVAS_HEIGHT, PI/3);
 	camera.view_transform_inverse = ft_view_transform_inverse(
 		ft_point(0, 1.5, -5), ft_point(0, 1, 0));
+	(void)canvas;
 	canvas = ft_render(w, camera);
-		// printf("Pass\n");
-	ft_canvas_to_ppm(canvas);
+	ft_canvas_to_ppm(&canvas);
 }
 
