@@ -1,18 +1,17 @@
 #include "minirt.h"
 
-t_matrix	ft_view_transform_inverse(t_tuple from, t_tuple to)
+t_matrix	ft_view_transform_inverse(t_tuple from, t_tuple forward)
 {
-	t_tuple		forward;
+	// the forward SHOULD BE NORMALIZED!!!
 	t_tuple		up;
 	t_tuple		left;
 	double		fdu;
 	t_matrix	orientation;
 
-	forward = ft_normalize(ft_sub_tuples(to, from));
 	up = ft_vector(0, 1, 0);
 	fdu = ft_dot(forward, up);
 	if (fdu == 1 || fdu == -1)
-		up = ft_vector(EPSILON * -fdu, 1, EPSILON * -fdu);// change this to just fdu later
+		up = ft_vector(EPSILON * -fdu, 1, EPSILON * -fdu);
 	left = ft_normalize(ft_cross(forward, up));
 	up = ft_normalize(ft_cross(left, forward));
 	orientation = (t_matrix){4,

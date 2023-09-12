@@ -10,7 +10,7 @@ void	ft_print_xs(t_xnode *xnode)
 	}
 }
 
-t_xnode	*ft_xnew(t_objnode *o, double x)
+t_xnode	*ft_xnew(t_obj *o, double x)
 {
 	t_xnode	*new;
 
