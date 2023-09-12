@@ -1,7 +1,7 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 
-#	include "libft.h"
+#	include "../libft/libft.h"
 #	include <stdbool.h>
 #	include <stdio.h>
 // TEMP

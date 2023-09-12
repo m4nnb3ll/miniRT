@@ -139,4 +139,41 @@ typedef struct s_camera
 	t_matrix	view_transform_inverse;
 }	t_camera;
 
+/* created by ogorfti */
+typedef struct s_coords
+{
+	double x;
+	double y;
+	double z;
+}	t_coords;
+
+typedef struct s_vector
+{
+	double x;
+	double y;
+	double z;
+}	t_vector;
+
+typedef struct s_object
+{
+	t_coords	coords;
+	t_vector	vector;
+	t_color		color;
+	double		ambratio;
+	double		brighratio;
+	double		diameter;
+	double		height;
+	int			fov;
+	char		id;
+}	t_object;
+
+typedef struct s_minirt
+{
+	t_object	*object;
+	char		**map;
+	int			rows;
+}	t_minirt;
+
+/* END */
+
 #endif
