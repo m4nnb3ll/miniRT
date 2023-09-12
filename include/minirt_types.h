@@ -157,13 +157,13 @@ typedef struct s_vector
 typedef struct s_object
 {
 	t_coords	coords;
-	t_vector	vector;
+	t_vector	vector; // 3d vectors for identifiers C/pl/cy
 	t_color		color;
-	double		ambratio;
-	double		brighratio;
-	double		diameter;
-	double		height;
-	int			fov;
+	double		ambratio; // ambient lighting ratio  for identifier A
+	double		brighratio; // the light brightness ratio for identifier L
+	double		diameter; // the cylinder diameter/sphere for identifier cy/sp
+	double		height; // the cylinder heigh for identifier cy
+	int			fov; // Horizontal field of view for identifier C
 	char		id;
 }	t_object;
 
