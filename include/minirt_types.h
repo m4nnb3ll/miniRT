@@ -56,7 +56,10 @@ typedef struct s_ray
 
 enum e_obj_type
 {
-	OT_SPHERE
+	OT_SPHERE,
+	OT_PLANE,
+	OT_CYLINDER,
+	OT_CONE
 };
 
 typedef struct s_material
@@ -68,18 +71,24 @@ typedef struct s_material
 	double	shininess;
 }	t_material;
 
+typedef struct s_plane {
+	t_tuple	normal;
+	t_tuple	pt;
+}	t_plane;
+
 typedef struct s_objnode
 {
 	enum e_obj_type		type;
-	t_matrix					transform_inverse;
-	t_material				material;
+	t_matrix			transform_inverse;
+	t_material			material;
+	void				*props;
 	struct s_objnode	*next;
-}	t_objnode;
+}	t_obj;
 
 typedef struct s_xnode
 {
-	t_objnode				*o;
-	double					x;
+	t_obj	*o;
+	double		x;
 	struct s_xnode	*next;
 }	t_xnode;
 
@@ -113,30 +122,46 @@ typedef struct s_phong
 
 typedef struct s_comps
 {
-	t_objnode	*o;
+	t_obj	*o;
 	double		x;
 	t_tuple		pt;
 	t_tuple		over_pt;
 	t_tuple		ev;
 	t_tuple		nv;
-	bool			inside;
-	bool			is_shadowed;
+	bool		inside;
+	bool		is_shadowed;
 }	t_comps;
 
 typedef struct s_world
 {
-	t_objnode			*objlst;
+	t_obj		*objlst;
 	t_point_light	light;
 }	t_world;
 
 typedef struct s_camera
 {
-	int				screen_w;
-	int				screen_h;
+	t_tuple		position;
+	t_tuple		forward_v;// should be normalized
+	int			screen_w;
+	int			screen_h;
 	double		psize;
 	double		half_c_w;
 	double		half_c_h;
 	t_matrix	view_transform_inverse;
 }	t_camera;
+
+typedef struct s_ambient
+{
+	float	ratio;
+	t_color	color;// needs to be converted to range [0-1]
+}	t_ambient;
+
+// typedef struct s_minirt
+// {
+// 	ambient;
+// 	camera;
+// 	light;
+// 	array_of_objs;
+// }	t_minirt;
 
 #endif
