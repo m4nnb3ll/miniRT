@@ -10,12 +10,24 @@ t_material	ft_material(void)
 	return ((t_material){ g_white, .1, .9, .9, 200 });
 }
 
-t_tuple	ft_normal_at(t_objnode *o, t_tuple wp)
+t_tuple	ft_obj_normal(t_obj *o, t_tuple wp)
 {
-	t_tuple		op, on, wn;
+	t_tuple	op;
 
-	op = ft_transform_tuple(o->transform_inverse, wp);
-	on = ft_sub_tuples(op, ft_point(0, 0, 0));
+	if (o -> type == OT_PLANE)
+		return (((t_plane*)o->props)->normal);
+	else
+	{
+		op = ft_transform_tuple(o->transform_inverse, wp);
+		return (ft_sub_tuples(op, ft_point(0, 0, 0)));
+	}
+}
+
+t_tuple	ft_normal_at(t_obj *o, t_tuple wp)
+{
+	t_tuple		on, wn;
+
+	on = ft_obj_normal(o, wp);
 	wn = ft_transform_tuple(ft_transpose(o -> transform_inverse), on);
 	wn.w = 0;
 	return (ft_normalize(wn));

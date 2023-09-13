@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-t_xnode	*ft_intersect_sphere(t_objnode *o, t_ray r)
+t_xnode	*ft_intersect_sphere(t_obj *o, t_ray r)
 {
 	t_quadratics	q;
 	t_tuple				o_c;
@@ -24,6 +24,20 @@ t_xnode	*ft_intersect_sphere(t_objnode *o, t_ray r)
 	return (xs);
 }
 
+t_xnode	*ft_intersect_plane(t_obj *o, t_ray r)
+{
+	double	num;
+	double	denom;
+	t_plane	*props;
+
+	props = o -> props;
+	denom = ft_dot(props->normal, ft_normalize(r.direction));
+	if (fabs(denom) < EPSILON)
+		return (NULL);
+	num = ft_dot(props->normal, ft_sub_tuples(props->pt, r.origin));
+	return (ft_xnew(o, num/denom));
+}
+
 t_xnode	*ft_hit(t_xnode *xlst)
 {
 	t_xnode	*hit;
@@ -40,16 +54,23 @@ t_xnode	*ft_hit(t_xnode *xlst)
 	return (hit);
 }
 
+t_xnode	*ft_intersect_obj(t_obj *o, t_ray r)
+{
+	if (o -> type == OT_PLANE)
+		return (ft_intersect_plane(o, r));
+	return (ft_intersect_sphere(o, r));
+}
+
 t_xnode	*ft_intersect_world(t_world w, t_ray r)
 {
-	t_objnode	*tmp_obj;
+	t_obj	*tmp_obj;
 	t_xnode		*xs;
 
 	tmp_obj = w.objlst;
 	xs = NULL;
 	while (tmp_obj)
 	{
-		ft_xadd_back(&xs, ft_intersect_sphere(tmp_obj, r));
+		ft_xadd_back(&xs, ft_intersect_obj(tmp_obj, r));
 		tmp_obj = tmp_obj -> next;
 	}
 	return (xs);

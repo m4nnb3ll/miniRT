@@ -1,7 +1,7 @@
 #ifndef LIGHT_SHADING_H
 # define LIGHT_SHADING_H
 
-t_tuple				ft_normal_at(t_objnode *o, t_tuple p);
+t_tuple				ft_normal_at(t_obj *o, t_tuple p);
 t_point_light	ft_point_light(t_tuple position, t_color intensity);
 t_material		ft_material(void);
 t_tuple				ft_reflectv(t_tuple in, t_tuple n);
