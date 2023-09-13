@@ -1,6 +1,5 @@
 
-!!! CHANGE THE FILE EXTENSION TO .CPP TO GET COLOR HIGHLIGHT
-
+#include "include/minirt.h"
 // for position, call ft_point(x, y, z);
 /*
 	for vector, call ft_vector(x, y, z);
