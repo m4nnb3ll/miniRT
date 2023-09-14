@@ -13,11 +13,12 @@ void	ft_print_matrix(t_matrix m)
 {
 	int	i, j;
 
+	printf("Matrix size: %d\n", m.size);
 	i = 0;
-	while (i < m.size)
+	while (i < 4)
 	{
 		j = 0;
-		while (j < m.size)
+		while (j < 4)
 		{
 			printf("%f ", m.val[i][j]);
 			j++;
@@ -27,13 +28,31 @@ void	ft_print_matrix(t_matrix m)
 	}
 }
 
+t_matrix	ft_matrix_scl(t_matrix m, double scl)
+{
+	int	i, j;
+
+	i = 0;
+	while (i < m.size && i < 3)
+	{
+		j = 0;
+		while (j < m.size  && j < 3)
+		{
+			m.val[i][j] = m.val[i][j] * scl;
+			j++;
+		}
+		i++;
+	}
+	return (m);
+}
+
 t_matrix	ft_multi_matrices(t_matrix a, t_matrix b)
 {
 	t_matrix	c;
 	int				i;
 	int				j;
 
-	c.size = a.size;
+	c = g_identity_matrix;
 	i = 0;
 	while (i < c.size)
 	{
@@ -41,7 +60,7 @@ t_matrix	ft_multi_matrices(t_matrix a, t_matrix b)
 		while (j < c.size)
 		{
 			c.val[i][j] = a.val[i][0] * b.val[0][j] + a.val[i][1] * b.val[1][j] +
-										a.val[i][2] * b.val[2][j] + a.val[i][3] * b.val[3][j];
+			a.val[i][2] * b.val[2][j] + a.val[i][3] * b.val[3][j];
 			j++;
 		}
 		i++;

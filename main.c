@@ -99,52 +99,102 @@
 
 
 
+// int main()
+// {
+// 	t_obj	*floor;
+
+// 	// FLOOR
+// 	t_plane	*pl = ft_calloc(1, sizeof(t_plane));
+// 	floor = ft_objnew(OT_PLANE, pl);
+// 	((t_plane*)(floor -> props)) -> normal = ft_vector(0, 1, 0);
+// 	((t_plane*)(floor -> props)) -> pt = ft_point(0, 0, 0);
+// 	floor->material.color = ft_color(1, 1, 1);
+// 	// floor->material.specular = 0;
+
+// 	// wall
+// 	pl = ft_calloc(1, sizeof(t_plane));
+// 	t_obj	*wall = ft_objnew(OT_PLANE, pl);
+// 	((t_plane*)(wall -> props)) -> normal = ft_vector(0, 0, 1);
+// 	((t_plane*)(wall -> props)) -> pt = ft_point(0, 0, 3);
+// 	wall->material.color = ft_color(1, 1, 0);
+// 	// wall->material.specular = 0;
+
+// 	// SPHERES
+// 	t_obj	*middle;
+
+// 	middle = ft_objnew(OT_SPHERE, NULL);
+// 	middle->transform_inverse = ft_inverse(ft_translate(-.5, 1, .5));
+// 	middle->material.color = ft_color(.1, 1, .5);
+// 	middle->material.diffuse = .7;
+// 	middle->material.specular = .3;
+
+// 	// WORLD
+// 	t_world		w;
+// 	t_camera	camera;
+// 	t_canvas	canvas;
+
+// 	w.light = ft_point_light(ft_point(-10, 10, -10), ft_color(1, 1, 1));
+	
+// 	// Adding to world
+// 	w.objlst = NULL;
+// 	ft_objadd_back(&w.objlst, wall);
+// 	ft_objadd_back(&w.objlst, floor);
+// 	ft_objadd_back(&w.objlst, middle);
+
+// 	camera = ft_camera(CANVAS_WIDTH, CANVAS_HEIGHT, PI/3);
+// 	camera.view_transform_inverse = ft_view_transform_inverse(
+// 		ft_point(0, 1, -10), ft_vector(0, 0, 1));
+// 	(void)canvas;
+// 	canvas = ft_render(w, camera);
+// 	ft_canvas_to_ppm(&canvas);
+// }
+
+// t_matrix
+
 int main()
 {
-	t_obj	*floor;
+	// t_tuple		a, b, v;
+	// double		s, c;
+	// t_matrix	vx;
+	// t_matrix	vx2;
+	// t_matrix	final;
+ 
+	// a = ft_normalize(ft_vector(-3.4, 6.1, 1.4));
+	// b = ft_normalize(ft_vector(7.1, 2.3, 4.1));
+	// v = ft_normalize(ft_cross(a, b));
+	// s = ft_mag(v);
+	// c = ft_dot(a, b);
+	// vx = (t_matrix){3, {
+	// 	{0, -v.z, v.y, 0},
+	// 	{v.z, 0, -v.x, 0},
+	// 	{-v.y, v.x, 0, 0},
+	// 	{0, 0, 0, 1}
+	// }};
 
-	// FLOOR
-	t_plane	*pl = ft_calloc(1, sizeof(t_plane));
-	floor = ft_objnew(OT_PLANE, pl);
-	((t_plane*)(floor -> props)) -> normal = ft_vector(0, 1, 0);
-	((t_plane*)(floor -> props)) -> pt = ft_point(0, 0, 0);
-	floor->material.color = ft_color(1, 1, 1);
-	// floor->material.specular = 0;
+	// vx2 = ft_multi_matrices(vx, vx);
+	// // printf("The vx2 matrix is:\n");
+	// // ft_print_matrix(vx2);
+	// vx2 = ft_matrix_scl(vx2, (1-c)/pow(s, 2));
+	// final = ft_add_matrices(ft_add_matrices(vx, vx2), g_identity_matrix);
+	// // printf("The transformation matrix is:\n");
+	// // ft_print_matrix(final);
+	// printf("The transformed vector is:\n");
+	// ft_print_tuple(ft_transform_tuple(final, a));
+	// printf("b normalized is:\n");
+	// ft_print_tuple(b);
 
-	// wall
-	pl = ft_calloc(1, sizeof(t_plane));
-	t_obj	*wall = ft_objnew(OT_PLANE, pl);
-	((t_plane*)(wall -> props)) -> normal = ft_vector(0, 0, 1);
-	((t_plane*)(wall -> props)) -> pt = ft_point(0, 0, 3);
-	wall->material.color = ft_color(1, 1, 0);
-	// wall->material.specular = 0;
+	/* ---------------------------------------------------- */
 
-	// SPHERES
-	t_obj	*middle;
+	t_tuple     v1, v2;
+    t_matrix    m;
 
-	middle = ft_objnew(OT_SPHERE, NULL);
-	middle->transform_inverse = ft_inverse(ft_translate(-.5, 1, .5));
-	middle->material.color = ft_color(.1, 1, .5);
-	middle->material.diffuse = .7;
-	middle->material.specular = .3;
-
-	// WORLD
-	t_world		w;
-	t_camera	camera;
-	t_canvas	canvas;
-
-	w.light = ft_point_light(ft_point(-10, 10, -10), ft_color(1, 1, 1));
-	
-	// Adding to world
-	w.objlst = NULL;
-	ft_objadd_back(&w.objlst, wall);
-	ft_objadd_back(&w.objlst, floor);
-	ft_objadd_back(&w.objlst, middle);
-
-	camera = ft_camera(CANVAS_WIDTH, CANVAS_HEIGHT, PI/3);
-	camera.view_transform_inverse = ft_view_transform_inverse(
-		ft_point(0, 1, -10), ft_vector(0, 0, 1));
-	(void)canvas;
-	canvas = ft_render(w, camera);
-	ft_canvas_to_ppm(&canvas);
+    v1 = ft_normalize(ft_vector(.341, 1.142, .69420));
+    v2 = ft_normalize(ft_vector(54.4150, 3.1574, 25.124));
+    m = ft_get_rotation_matrix(v1, v2);
+	printf("The matrix is:\n");
+	ft_print_matrix(m);
+    printf("The transformed v1 is:\n");
+    ft_print_tuple(ft_transform_tuple(m, v1));
+    printf("V2 is:\n");
+    ft_print_tuple(v2);
 }

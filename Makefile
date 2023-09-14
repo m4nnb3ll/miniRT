@@ -21,7 +21,7 @@ LIBS				:=	$(LIBMLX) $(GLFW) -ldl $(LIBFT) -lm -pthread
 # SRCS
 TUPLES				:=	${addprefix tuples/, tuples.c}
 CANVAS				:=	${addprefix canvas/, canvas.c color.c}
-MATRICES			:=	${addprefix matrices/, matrices.c matrix_transformations.c}
+MATRICES			:=	${addprefix matrices/, matrices.c matrix_transformations.c quaternions.c}
 RAY_INTERSECT		:=	${addprefix ray_intersect/, ray.c intersect.c}
 LSTS				:=	${addprefix lsts/, objs.c xs.c}
 SCENE				:=	${addprefix scene/, scene.c camera.c}
