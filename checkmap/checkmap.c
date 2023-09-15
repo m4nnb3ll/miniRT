@@ -6,7 +6,7 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:34:38 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/15 13:14:11 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/15 19:48:39 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,15 +151,14 @@ void	sphere_data(char **split, t_obj1 *obj)
 
 void	plane_data(char **split, t_obj1 *obj)
 {
-	t_plane1 *plane;
-	char	**rgb;
-	char	**axis;
-	char	**coords;
-	t_tuple	axis_tuple;
-	t_tuple	coords_tuple;
+	t_tuple		coords_tuple;
+	t_tuple		axis_tuple;
+	t_plane1	*plane;
+	char		**coords;
+	char		**axis;
+	char		**rgb;
 
 	obj->type = OT_PLANE;
-	// display_map(split);
 	if (nbr_info(split, 4))
 		error_msg("Error: Incomplete plane input\n");
 	
@@ -169,7 +168,6 @@ void	plane_data(char **split, t_obj1 *obj)
 	
 	coords_tuple = ft_point(my_strtod(coords[0]), my_strtod(coords[1]), my_strtod(coords[2]));
 	axis_tuple = ft_vector(my_strtod(axis[0]), my_strtod(axis[1]), my_strtod(axis[2]));
-	// in range [-1,1] for each x,y,z axis should check it
 	
 	if (nbr_info(rgb, 3) || nbr_info(coords, 3) || nbr_info(axis, 3) || ft_mag(axis_tuple) != 1 || check_range(axis_tuple))
 		error_msg("Error: Incomplete plane input\n");
@@ -206,7 +204,7 @@ void	cylinder_data(char **split, t_obj1 *obj)
 	char		**axis;
 	char		**rgb;
 
-	obj->type = OT_CYLINDER;
+	obj->type = 13;
 	if (nbr_info(split, 6))
 		error_msg("Error: Incomplete cylinder input\n");
 	
@@ -244,6 +242,29 @@ void	cylinder_data(char **split, t_obj1 *obj)
 	free_double(coords);
 }
 
+void	objs_data(char **split, t_obj1 *obj)
+{
+	if (ft_strcmp(split[0], "cy") == 0)
+		cylinder_data(split, obj);
+	else if (ft_strcmp(split[0], "sp") == 0)
+		sphere_data(split, obj);
+	else
+		plane_data(split, obj);
+}
+
+void	free_struct(t_find *find)
+{
+	int i;
+
+	i = 0;
+	while (find[i].split)
+	{
+		free_double(find[i].split);
+		i++;
+	}
+	free(find);
+}
+
 t_world1	*fill_data(t_data *data)
 {
 	t_world1 *world;
@@ -253,9 +274,9 @@ t_world1	*fill_data(t_data *data)
 
 	i = 0;
 	j = 0;
-	world = malloc(sizeof(t_world1));
-	if (!world)
-		exit(1);
+	world = ft_calloc(sizeof(t_world1), 1);
+	world->nbr_obj = calculate_objs(data);
+	world->objects = ft_calloc(sizeof(t_obj1) , world->nbr_obj);
 	while (data->find[i].split)
 	{
 		split = &data->find[i].split[0];
@@ -276,15 +297,8 @@ t_world1	*fill_data(t_data *data)
 		}
 		else if (split[0] && (!ft_strcmp(split[0], "pl") || !ft_strcmp(split[0], "sp") || !ft_strcmp(split[0], "cy")))
 		{
-			// printf("obj detected\n");
-			world->objects = malloc(sizeof(t_obj1) * (calculate_objs(data) + 1));
-			
-			if (ft_strcmp(split[0], "cy") == 0)
-				cylinder_data(split, &world->objects[j]);
-			else if (ft_strcmp(split[0], "sp") == 0)
-				sphere_data(split, &world->objects[j]);
-			else
-				plane_data(split, &world->objects[j]);
+			// printf("obj id a detected\n");
+			objs_data(split, world->objects + j);
 			j++;
 		}
 		else
@@ -292,6 +306,8 @@ t_world1	*fill_data(t_data *data)
 		i++;
 	}
 	free_double(data->map);
+	free_struct(data->find);
+	// 'world' struct and 'world->objects' should be freed after they have finished their job.
 	return (world);
 }
 
@@ -306,13 +322,17 @@ t_world1	*world_data(char *filename)
 	split_data(&data);
 	world = fill_data(&data);
 
+	
 	return (world);
 }
 
-int main()
-{
-	world_data("../artwork/test.rt");
-}
+// int main()
+// {
+// 	world_data("../artwork/test.rt");
+// 	// t_cylinder *test = world->objects[2].props;
+// 	// printf("---------------> %.1f\n", test->diameter);
+// 	// printf("---------------> %.2f\n", world->camera.fov);
+// }
 
 
 

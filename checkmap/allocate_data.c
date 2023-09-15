@@ -6,7 +6,7 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:22:23 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/15 13:00:30 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/15 19:47:24 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	allocate_map(char *file, t_data *data)
 {
 	char	*joiner;
+	char	*leak;
 	char	*line;
 	int		fd;
 
@@ -28,7 +29,9 @@ void	allocate_map(char *file, t_data *data)
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-		joiner = ft_strjoin(joiner, line);
+		leak = joiner;
+		joiner = ft_strjoin(leak, line);
+		free (leak);
 		if (ft_strncmp(line, "\n", ft_strlen(line)))
 			data->mapsize++;
 		free (line);
@@ -43,7 +46,7 @@ void	split_data(t_data *data)
 
 	i = 0;
 	// printf("size : %d\n", data->mapsize);
-	data->find = malloc(sizeof(t_find) * (data->mapsize + 1));
+	data->find = ft_calloc(sizeof(t_find), (data->mapsize + 1));
 	if (!data->find)
 		exit (1);
 	while (data->map[i])
@@ -51,7 +54,6 @@ void	split_data(t_data *data)
 		data->find[i].split = split_string(data->map[i]);
 		i++;
 	}
-	data->find[i].split = NULL;
 }
 
 int	calculate_objs(t_data *data)

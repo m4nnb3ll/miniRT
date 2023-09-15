@@ -205,6 +205,7 @@ typedef struct s_world1
 	t_camera1	camera;
 	t_light		light;
 	t_obj1		*objects;
+	int			nbr_obj; // number of objects
 }	t_world1;
 
 typedef struct s_find
