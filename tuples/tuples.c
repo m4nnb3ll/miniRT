@@ -1,4 +1,4 @@
-#include "minirt.h"
+#include "../include/minirt.h"
 
 void	ft_print_tuple(t_tuple a)
 {

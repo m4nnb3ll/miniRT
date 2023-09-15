@@ -195,8 +195,8 @@ typedef struct s_cylinder
 {
 	t_tuple	center;
 	t_tuple	axis;// should be normalized
-	float	diameter;
-	float	height;
+	double	diameter;
+	double	height;
 }	t_cylinder;
 
 typedef struct s_world1
