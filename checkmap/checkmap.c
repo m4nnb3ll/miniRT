@@ -6,7 +6,7 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:34:38 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/15 19:48:39 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/15 20:27:20 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -321,17 +321,15 @@ t_world1	*world_data(char *filename)
 	allocate_map(filename, &data);
 	split_data(&data);
 	world = fill_data(&data);
-
-	
 	return (world);
 }
 
 // int main()
 // {
-// 	world_data("../artwork/test.rt");
-// 	// t_cylinder *test = world->objects[2].props;
-// 	// printf("---------------> %.1f\n", test->diameter);
-// 	// printf("---------------> %.2f\n", world->camera.fov);
+// 	t_world1 *world = world_data("../artwork/test.rt");
+// 	t_sphere *test = world->objects[1].props;
+// 	printf("---------------> %.1f\n", test->diameter);
+// 	printf("---------------> %.2f\n", world->camera.fov);
 // }
 
 
