@@ -17,4 +17,6 @@
 # include "scene.h"
 # include "light_shading.h"
 
+bool	ft_fequals(double a, double b);
+
 #endif
