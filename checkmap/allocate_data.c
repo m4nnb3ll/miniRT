@@ -6,11 +6,11 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:22:23 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/15 19:47:24 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/16 11:55:43 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minirt.h"
+#include "minirt.h"
 
 void	allocate_map(char *file, t_data *data)
 {

@@ -203,15 +203,24 @@ typedef struct s_world1
 {
 	t_ambient	ambient;
 	t_camera1	camera;
-	t_light		light;
+	t_light		light[2];
 	t_obj1		*objects;
-	int			nbr_obj; // number of objects
+	int			num_objs; // number of objects
+	int			num_lights;
 }	t_world1;
 
 typedef struct s_find
 {
 	char **split;
 }	t_find;
+
+typedef struct s_count
+{
+	int	A;
+	int C;
+	int L;
+	int l;
+}	t_count;
 
 typedef struct s_data
 {

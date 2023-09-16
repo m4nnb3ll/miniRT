@@ -6,12 +6,12 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:02:55 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/15 12:50:06 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/16 11:55:04 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
-#include "../include/minirt.h"
+#include "minirt.h"
 
 void	display_map(char **map)
 {
@@ -89,4 +89,24 @@ void	free_double(char **ptr)
 		}
 		free(ptr);
     }
+}
+
+void	free_struct(t_find *find)
+{
+	int i;
+
+	i = 0;
+	while (find[i].split)
+	{
+		free_double(find[i].split);
+		i++;
+	}
+	free(find);
+}
+
+int	check_name(char *str)
+{
+	if (ft_strnstr(str, ".rt", ft_strlen(str)))
+		return (0);
+	return (1);
 }

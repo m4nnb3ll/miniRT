@@ -6,14 +6,11 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:34:38 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/15 20:27:20 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/16 12:02:20 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minirt.h"
-#include <fcntl.h>
-#include <stdio.h>
-
+#include "minirt.h"
 
 void	ambient_data(char **split, t_ambient *ambient)
 {
@@ -252,31 +249,48 @@ void	objs_data(char **split, t_obj1 *obj)
 		plane_data(split, obj);
 }
 
-void	free_struct(t_find *find)
+void	check_count(t_data *data)
 {
-	int i;
+	t_count	count;
+	char	**split;
+	int 	i;
 
 	i = 0;
-	while (find[i].split)
+	count.A = 0;
+	count.C = 0;
+	count.L = 0;
+	count.l = 0;
+	while (data->find[i].split)
 	{
-		free_double(find[i].split);
+		split = &data->find[i].split[0];
+		if (split[0] && !ft_strcmp(split[0], "A"))
+			count.A++;
+		else if (split[0] && !ft_strcmp(split[0], "C"))
+			count.C++;
+		else if (split[0] && !ft_strcmp(split[0], "L"))
+			count.L++;
+		else if (split[0] && !ft_strcmp(split[0], "l"))
+			count.l++;
+		else if (split[0] && ft_strcmp(split[0], "pl") && ft_strcmp(split[0], "sp") && ft_strcmp(split[0], "cy"))
+			error_msg("Invalid input\n");
 		i++;
 	}
-	free(find);
+	if (count.A != 1 || count.C != 1 || count.L != 1 || count.l > 1)
+			error_msg("Invalid input\n");
 }
 
-t_world1	*fill_data(t_data *data)
+void	fill_data(t_world1 *world, t_data *data)
 {
-	t_world1 *world;
 	char	**split;
 	int j;
 	int	i;
 
 	i = 0;
 	j = 0;
-	world = ft_calloc(sizeof(t_world1), 1);
-	world->nbr_obj = calculate_objs(data);
-	world->objects = ft_calloc(sizeof(t_obj1) , world->nbr_obj);
+	check_count(data);
+	world->num_lights = 0; 
+	world->num_objs = calculate_objs(data);
+	world->objects = ft_calloc(sizeof(t_obj1) , world->num_objs);
 	while (data->find[i].split)
 	{
 		split = &data->find[i].split[0];
@@ -290,46 +304,51 @@ t_world1	*fill_data(t_data *data)
 			// printf("C id a detected\n");
 			camera_data(data->find[i].split, &world->camera);
 		}
-		else if (split[0] && !ft_strcmp(split[0], "L"))
+		else if (split[0] && (!ft_strcmp(split[0], "L") || !ft_strcmp(split[0], "l")))
 		{
-			// printf("L id a detected\n");
-			light_data(data->find[i].split, &world->light);
+			// printf("L/l id a detected\n");
+			light_data(data->find[i].split, &world->light[world->num_lights]);
+			world->num_lights++;
 		}
-		else if (split[0] && (!ft_strcmp(split[0], "pl") || !ft_strcmp(split[0], "sp") || !ft_strcmp(split[0], "cy")))
+		else
 		{
 			// printf("obj id a detected\n");
 			objs_data(split, world->objects + j);
 			j++;
 		}
-		else
-			error_msg("Invalid input\n");
 		i++;
 	}
 	free_double(data->map);
 	free_struct(data->find);
-	// 'world' struct and 'world->objects' should be freed after they have finished their job.
-	return (world);
+	// 'world->objects' should be freed
 }
 
 //call world_data function to get all data (filename is av[1])
-t_world1	*world_data(char *filename)
+void	world_data(t_world1 *world, char *filename)
 {
-	t_world1	*world;
 	t_data		data;
 
-	// check name function should be here
+	if (check_name(filename))
+		error_msg("Invalid file name!\n");
 	allocate_map(filename, &data);
 	split_data(&data);
-	world = fill_data(&data);
-	return (world);
+	fill_data(world, &data);
 }
 
 // int main()
 // {
-// 	t_world1 *world = world_data("../artwork/test.rt");
-// 	t_sphere *test = world->objects[1].props;
+// 	t_world1 world;
+	
+// 	world_data(&world, "../artwork/mandatory.rt");
+// 	t_sphere *test = world.objects[1].props;
 // 	printf("---------------> %.1f\n", test->diameter);
-// 	printf("---------------> %.2f\n", world->camera.fov);
+// 	printf("---------------> %.2f\n", world.camera.fov);
+// 	printf("---------------> %.2f\n", world.light[0].brightness);
+// 	printf("---------------> %.2f\n", world.light[1].brightness);
+	
+// 	printf("---------------> %.2f\n", world.objects[2].material.color.r * 255);
+// 	printf("---------------> %.2f\n", world.objects[2].material.color.g * 255);
+// 	printf("---------------> %.2f\n", world.objects[2].material.color.b * 255);
 // }
 
 

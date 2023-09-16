@@ -6,12 +6,14 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:27:14 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/15 13:13:06 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/16 11:59:49 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WORD_H
 #define	WORD_H
+
+# include <fcntl.h>
 
 char		**split_string(char *s);
 double		my_strtod(char *str);
@@ -24,11 +26,14 @@ void		error_msg(char *str);
 
 void		allocate_map(char *file, t_data *data);
 void		split_data(t_data *data);
-int			calculate_objs(t_data *data);
 void		free_double(char **ptr);
-t_world1	*world_data(char *filename);
+void	    free_struct(t_find *find);
+int			calculate_objs(t_data *data);
+int         check_name(char *str);
+void        world_data(t_world1 *world, char *filename);
 
-//tmp function i  will remove it later
-void	display_map(char **map);
+//TMP
+void	    display_map(char **map);
+//TMP
 
 #endif

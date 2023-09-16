@@ -6,11 +6,11 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 15:41:32 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/13 15:54:55 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/16 11:55:32 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "minirt.h"
 
 int	ft_wordlen(char *str)
 {
