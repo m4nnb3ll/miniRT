@@ -158,18 +158,83 @@ typedef struct s_camera
 	t_matrix	view_transform_inverse;
 }	t_camera;
 
+/*---------DATACHECK-----------*/
+
 typedef struct s_ambient
 {
-	float	ratio;
+	double	ratio;
 	t_color	color;// needs to be converted to range [0-1]
 }	t_ambient;
 
-// typedef struct s_minirt
-// {
-// 	ambient;
-// 	camera;
-// 	light;
-// 	array_of_objs;
-// }	t_minirt;
+typedef struct s_camera1
+{
+	t_tuple		position;
+	t_tuple		forward_v;// should be normalized
+	double		fov;// convert from degrees to radians
+}	t_camera1;
+
+typedef struct s_light
+{
+	t_tuple	position;
+	float	brightness;
+	t_color	color;
+}	t_light;
+
+typedef struct s_obj11
+{
+	enum e_obj_type		type;
+	t_material			material;
+	void				*props;
+}	t_obj1;
+
+typedef struct s_sphere
+{
+	t_tuple	position;
+	float	diameter;
+}	t_sphere;
+
+typedef struct s_plane1
+{
+	t_tuple	position;
+	t_tuple	normal;
+}	t_plane1;
+
+typedef struct s_cylinder
+{
+	t_tuple	center;
+	t_tuple	axis;// should be normalized
+	double	diameter;
+	double	height;
+}	t_cylinder;
+
+typedef struct s_world1
+{
+	t_ambient	ambient;
+	t_camera1	camera;
+	t_light		light[2];
+	t_obj1		*objects;
+	int			num_objs; // number of objects
+	int			num_lights;
+}	t_world1;
+
+typedef struct s_find
+{
+	char **split;
+}	t_find;
+
+typedef struct s_count
+{
+	int	A;
+	int C;
+	int L;
+	int l;
+}	t_count;
+
+typedef struct s_data
+{
+	t_find	*find;
+	char	**map;
+	int		mapsize;
+}	t_data;
 
 #endif

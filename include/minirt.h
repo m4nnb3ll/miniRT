@@ -16,6 +16,7 @@
 # include "lsts.h"
 # include "scene.h"
 # include "light_shading.h"
+# include "world.h"
 
 bool	ft_fequals(double a, double b);
 
