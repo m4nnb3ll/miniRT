@@ -15,10 +15,10 @@ t_tuple	ft_obj_normal(t_obj *o, t_tuple wp)
 	t_tuple	op;
 
 	if (o -> type == OT_PLANE)
-		return (((t_plane*)o->props)->normal);
+		return ((t_tuple){0, 1, 0, 0});
 	else
 	{
-		op = ft_transform_tuple(o->transform_inverse, wp);
+		op = ft_transform_tuple(o -> transform_inverse, wp);
 		return (ft_sub_tuples(op, ft_point(0, 0, 0)));
 	}
 }
@@ -44,7 +44,7 @@ t_comps	ft_prepare_comps(t_ray r, t_xnode *hit)
 
 	comps.o = hit -> o;
 	comps.x = hit -> x;
-	comps.pt	= ft_pos_on_ray(r, hit -> x);
+	comps.pt = ft_pos_on_ray(r, hit -> x);
 	comps.ev = ft_negv(r.direction);
 	comps.nv = ft_normal_at(hit -> o, comps.pt);
 	comps.inside = false;
@@ -59,6 +59,8 @@ t_comps	ft_prepare_comps(t_ray r, t_xnode *hit)
 
 bool	ft_is_shadowed(t_world w, t_tuple over_pt)
 {
+	(void)w;
+	(void)over_pt;
 	t_tuple	lv;
 	double	distance;
 	t_xnode	*hit;
@@ -67,7 +69,7 @@ bool	ft_is_shadowed(t_world w, t_tuple over_pt)
 	distance = ft_mag(lv);
 	lv = ft_normalize(lv);
 	hit = ft_hit(ft_intersect_world(w, ft_ray(over_pt, lv)));
-	if (hit && hit->x < distance)
+	if (hit && (hit->x - distance < EPSILON))
 		return (true);
 	return (false);
 }

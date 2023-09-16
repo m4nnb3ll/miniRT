@@ -7,8 +7,6 @@ t_xnode	*ft_intersect_sphere(t_obj *o, t_ray r)
 	t_xnode				*xs;
 
 	r = ft_transform_ray(o -> transform_inverse, r);
-	// TRY TO NORMALIZE THE DIRECTION VECTOR LATER
-	// the vector formed by origin - sphere center
 	o_c = ft_sub_tuples(r.origin, ft_point(0, 0, 0));
 	q.a = ft_dot(r.direction, r.direction);
 	q.b = 2 * ft_dot(o_c, r.direction);
@@ -24,18 +22,19 @@ t_xnode	*ft_intersect_sphere(t_obj *o, t_ray r)
 	return (xs);
 }
 
+// STOPPED INVESTIGATING THE ACNE
+
 t_xnode	*ft_intersect_plane(t_obj *o, t_ray r)
 {
-	double	num;
-	double	denom;
-	t_plane	*props;
-
-	props = o -> props;
-	denom = ft_dot(props->normal, ft_normalize(r.direction));
-	if (fabs(denom) < EPSILON)
+	// printf("The ray");
+	r = ft_transform_ray(o -> transform_inverse, r);
+	if (fabs(r.direction.y) < EPSILON)
+	{
+		// printf("I enter the NULL\n");
 		return (NULL);
-	num = ft_dot(props->normal, ft_sub_tuples(props->pt, r.origin));
-	return (ft_xnew(o, num/denom));
+	}
+	// printf("r.direction.y is: %f\n", r.direction.y);
+	return (ft_xnew(o, - r.origin.y / r.direction.y));
 }
 
 t_xnode	*ft_hit(t_xnode *xlst)
