@@ -76,6 +76,14 @@ typedef struct s_plane {
 	t_tuple	pt;
 }	t_plane;
 
+typedef struct s_cylinder {
+	double	height;
+}	t_cylinder;
+
+typedef struct s_cone {
+	double	height;
+}	t_cone;
+
 typedef struct s_objnode
 {
 	enum e_obj_type		type;
