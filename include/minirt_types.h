@@ -54,6 +54,14 @@ typedef struct s_ray
 	t_tuple	direction;
 }	t_ray;
 
+enum e_obj_type
+{
+	OT_SPHERE,
+	OT_PLANE,
+	OT_CYLINDER,
+	OT_CONE
+};
+
 typedef struct s_material
 {
 	t_color	color;
@@ -68,13 +76,13 @@ typedef struct s_plane {
 	t_tuple	pt;
 }	t_plane;
 
-enum e_obj_type
-{
-	OT_SPHERE,
-	OT_PLANE,
-	OT_CYLINDER,
-	OT_CONE
-};
+typedef struct s_cylinder {
+	double	height;
+}	t_cylinder;
+
+typedef struct s_cone {
+	double	height;
+}	t_cone;
 
 typedef struct s_objnode
 {

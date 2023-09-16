@@ -10,17 +10,51 @@ t_material	ft_material(void)
 	return ((t_material){ g_white, .1, .9, .9, 200 });
 }
 
+t_tuple	ft_get_cyl_normal(t_obj *cy, t_tuple op)
+{
+	double	h;
+	double	d;
+
+	h = (((t_cylinder*)(cy->props)) -> height) / 2;
+	d = pow(op.x, 2) + pow(op.z, 2);
+	if (d < 1 && op.y >= h - EPSILON)
+		return (ft_vector(0, 1, 0));
+	if (d < 1 && op.y <= -h + EPSILON)
+		return (ft_vector(0, -1, 0));
+	// printf("I reach bottom\n");
+	return (ft_vector(op.x, 0, op.z));
+}
+
+t_tuple	ft_get_cone_normal(t_obj *cone, t_tuple op)
+{
+	double	h;
+	double	d;
+	double	y;
+
+	y = sqrt(pow(op.x, 2) + pow(op.z, 2)) * (-2 * (op.y > 0) + 1);
+	h = (((t_cone*)(cone->props)) -> height) / 2;
+	d = pow(op.x, 2) + pow(op.z, 2);
+	if (d < 1 && op.y >= h - EPSILON)
+		return (ft_vector(0, 1, 0));
+	if (d < 1 && op.y <= -h + EPSILON)
+		return (ft_vector(0, -1, 0));
+	// printf("I reach bottom\n");
+	return (ft_vector(op.x, y, op.z));
+}
+
 t_tuple	ft_obj_normal(t_obj *o, t_tuple wp)
 {
 	t_tuple	op;
 
+	op = ft_transform_tuple(o -> transform_inverse, wp);
 	if (o -> type == OT_PLANE)
-		return (((t_plane*)o->props)->normal);
+		return ((t_tuple){0, 1, 0, 0});
+	else if (o -> type == OT_CYLINDER)
+		return (ft_normalize(ft_get_cyl_normal(o, op)));
+	else if (o -> type == OT_CONE)
+		return (ft_normalize(ft_get_cone_normal(o, op)));
 	else
-	{
-		op = ft_transform_tuple(o->transform_inverse, wp);
 		return (ft_sub_tuples(op, ft_point(0, 0, 0)));
-	}
 }
 
 t_tuple	ft_normal_at(t_obj *o, t_tuple wp)
@@ -44,7 +78,7 @@ t_comps	ft_prepare_comps(t_ray r, t_xnode *hit)
 
 	comps.o = hit -> o;
 	comps.x = hit -> x;
-	comps.pt	= ft_pos_on_ray(r, hit -> x);
+	comps.pt = ft_pos_on_ray(r, hit -> x);
 	comps.ev = ft_negv(r.direction);
 	comps.nv = ft_normal_at(hit -> o, comps.pt);
 	comps.inside = false;
@@ -59,6 +93,8 @@ t_comps	ft_prepare_comps(t_ray r, t_xnode *hit)
 
 bool	ft_is_shadowed(t_world w, t_tuple over_pt)
 {
+	(void)w;
+	(void)over_pt;
 	t_tuple	lv;
 	double	distance;
 	t_xnode	*hit;
@@ -67,7 +103,7 @@ bool	ft_is_shadowed(t_world w, t_tuple over_pt)
 	distance = ft_mag(lv);
 	lv = ft_normalize(lv);
 	hit = ft_hit(ft_intersect_world(w, ft_ray(over_pt, lv)));
-	if (hit && hit->x < distance)
+	if (hit && (hit->x - distance < EPSILON))
 		return (true);
 	return (false);
 }
