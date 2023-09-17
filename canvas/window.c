@@ -1,6 +1,3 @@
-// gcc window.c  ~/MLX42/build/libmlx42.a -Iinclude -lglfw
-//  -L/goinfre/ogorfti/.brew/opt/glfw/lib/ -framework Cocoa -framework OpenGL -framework IOKit
-#include "../../../MLX42/include/MLX42/MLX42.h"
 #include "minirt.h"
 
 void handle_keys(mlx_key_data_t keydata, void* param)
@@ -36,11 +33,11 @@ mlx_image_t *image_ptr(void)
 	mlx_image_t	*image;
 	mlx_t		*mlx;
 
-	mlx = mlx_init(600, 400, "miniRT", false);
-	image = mlx_new_image(mlx, 600, 400);
+	mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, "miniRT", false);
+	image = mlx_new_image(mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	
 	//tmp func
-	set_background(image, 600, 400);
+	set_background(image, SCREEN_WIDTH, SCREEN_HEIGHT);
 	
 	//display image at the coordinates (0, 0)
 	mlx_image_to_window(mlx, image, 0,0);
@@ -53,7 +50,7 @@ mlx_image_t *image_ptr(void)
 	return (image);
 }
 
-int main()
-{
-	mlx_image_t	*image = image_ptr();
-}
+// int main()
+// {
+// 	mlx_image_t	*image = image_ptr();
+// }
