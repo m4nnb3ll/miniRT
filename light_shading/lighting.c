@@ -1,8 +1,8 @@
 #include "minirt.h"
 
-t_point_light	ft_point_light(t_tuple position, t_color intensity)
+t_point_light	ft_point_light(t_tuple position, t_color color)
 {
-	return ((t_point_light){ position, intensity });
+	return ((t_point_light){ position, color });
 }
 
 t_material	ft_material(void)
@@ -12,14 +12,15 @@ t_material	ft_material(void)
 
 t_tuple	ft_get_cyl_normal(t_obj *cy, t_tuple op)
 {
-	double	h;
+	double	half_height;
 	double	d;
 
-	h = (((t_cylinder*)(cy->props)) -> height) / 2;
+	(void)cy;
+	half_height = .5;
 	d = pow(op.x, 2) + pow(op.z, 2);
-	if (d < 1 && op.y >= h - EPSILON)
+	if (d < 1 && op.y >= half_height - EPSILON)
 		return (ft_vector(0, 1, 0));
-	if (d < 1 && op.y <= -h + EPSILON)
+	if (d < 1 && op.y <= -half_height + EPSILON)
 		return (ft_vector(0, -1, 0));
 	// printf("I reach bottom\n");
 	return (ft_vector(op.x, 0, op.z));
@@ -27,16 +28,17 @@ t_tuple	ft_get_cyl_normal(t_obj *cy, t_tuple op)
 
 t_tuple	ft_get_cone_normal(t_obj *cone, t_tuple op)
 {
-	double	h;
+	double	half_height;
 	double	d;
 	double	y;
 
+	(void)cone;
 	y = sqrt(pow(op.x, 2) + pow(op.z, 2)) * (-2 * (op.y > 0) + 1);
-	h = (((t_cone*)(cone->props)) -> height) / 2;
+	half_height = .5;
 	d = pow(op.x, 2) + pow(op.z, 2);
-	if (d < 1 && op.y >= h - EPSILON)
+	if (d < 1 && op.y >= half_height - EPSILON)
 		return (ft_vector(0, 1, 0));
-	if (d < 1 && op.y <= -h + EPSILON)
+	if (d < 1 && op.y <= -half_height + EPSILON)
 		return (ft_vector(0, -1, 0));
 	// printf("I reach bottom\n");
 	return (ft_vector(op.x, y, op.z));
@@ -91,7 +93,7 @@ t_comps	ft_prepare_comps(t_ray r, t_xnode *hit)
 	return (comps);
 }
 
-bool	ft_is_shadowed(t_world w, t_tuple over_pt)
+bool	ft_is_shadowed(t_world *w, t_tuple over_pt)
 {
 	(void)w;
 	(void)over_pt;
@@ -99,7 +101,8 @@ bool	ft_is_shadowed(t_world w, t_tuple over_pt)
 	double	distance;
 	t_xnode	*hit;
 
-	lv = ft_sub_tuples(w.light.position, over_pt);
+	// lights[0] below is temp
+	lv = ft_sub_tuples(w -> lights[0].position, over_pt);
 	distance = ft_mag(lv);
 	lv = ft_normalize(lv);
 	hit = ft_hit(ft_intersect_world(w, ft_ray(over_pt, lv)));
@@ -114,17 +117,17 @@ bool	ft_is_shadowed(t_world w, t_tuple over_pt)
 	d_color(diffuse);
 	s_color(specular);
 */
-t_color	ft_lighting(t_world w, t_comps comps)
+t_color	ft_lighting(t_world *w, t_comps comps)
 {
 	t_phong			ph;
 	t_material	m;
 
 	m = comps.o -> material;
-	ph.e_color = ft_multi_colors(m.color, w.light.intensity);
+	ph.e_color = ft_multi_colors(m.color, w->lights[0].color);
 	ph.a_color = ft_color_scl(ph.e_color, m.ambient);
 	if (ft_is_shadowed(w, comps.over_pt))
 		return (ph.a_color);
-	ph.lv = ft_normalize(ft_sub_tuples(w.light.position, comps.pt));
+	ph.lv = ft_normalize(ft_sub_tuples(w->lights[0].position, comps.pt));
 	ph.ldn = ft_dot(ph.lv, comps.nv);
 	if (ph.ldn <= 0)
 		return (ph.a_color);
@@ -138,18 +141,18 @@ t_color	ft_lighting(t_world w, t_comps comps)
 		else
 		{
 			ph.spec_factor = pow(ph.rde, m.shininess);
-			ph.s_color = ft_color_scl(w.light.intensity, ph.spec_factor * m.specular);
+			ph.s_color = ft_color_scl(w->lights[0].color, ph.spec_factor * m.specular);
 		}
 	}
 	return (ft_add_colors(ph.s_color, ft_add_colors(ph.a_color, ph.d_color)));
 }
 
-t_color	ft_shade_hit(t_world w, t_comps comps)
+t_color	ft_shade_hit(t_world *w, t_comps comps)
 {
-	return (ft_lighting( w, comps ));
+	return (ft_lighting(w, comps));
 }
 
-t_color	ft_color_at(t_world w, t_ray r)
+t_color	ft_color_at(t_world *w, t_ray r)
 {
 	t_xnode	*hit;
 	t_comps	comps;

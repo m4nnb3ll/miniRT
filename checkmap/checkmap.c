@@ -34,12 +34,10 @@ void	ambient_data(char **split, t_ambient *ambient)
 	free_double(rgb);
 }
 
-void	camera_data(char **split, t_camera1 *camera)
+void	camera_data(char **split, t_camera *camera)
 {
 	char	**vector;
 	char	**coords;
-	t_tuple	forward;
-	t_tuple	tuple;
 	double	degree;
 
 	if (nbr_info(split, 4))
@@ -48,27 +46,15 @@ void	camera_data(char **split, t_camera1 *camera)
 	degree = my_strtod(split[3]);
 	if (degree < 0 || degree > 180)
 		error_msg("Error: Invalid camera FOV value\n");
-	camera->fov = degree * (3.14 / 180.0);
-	// printf("fov : %f\n", camera->fov);
-	
+	camera->fov = degree * (PI / 180);
 	vector = ft_split(split[2], ',');
 	coords = ft_split(split[1], ',');
-	
 	if (nbr_info(coords, 3) || nbr_info(vector, 3))
 		error_msg("Error: Incomplete camera input\n");
-
-	tuple = ft_point(my_strtod(coords[0]), my_strtod(coords[1]), my_strtod(coords[2]));
-	camera->position.x = tuple.x;
-	camera->position.y = tuple.y;
-	camera->position.z = tuple.z;
-	camera->position.w = tuple.w;
-
-	forward = ft_vector(my_strtod(vector[0]), my_strtod(vector[1]), my_strtod(vector[2]));
-	camera->forward_v.x = forward.x;
-	camera->forward_v.y = forward.y;
-	camera->forward_v.z = forward.z;
-	camera->forward_v.w = forward.w;
-
+	camera->pt = ft_point(
+		my_strtod(coords[0]), my_strtod(coords[1]), my_strtod(coords[2]));
+	camera->forward_v = ft_vector(
+		my_strtod(vector[0]), my_strtod(vector[1]), my_strtod(vector[2]));
 	free_double(coords);
 	free_double(vector);
 }
@@ -108,7 +94,7 @@ void	light_data(char **split, t_light *light)
 	free_double(coords);
 }
 
-void	sphere_data(char **split, t_obj1 *obj)
+void	sphere_data(char **split, t_obj *obj)
 {
 	t_sphere	*sphere;
 	t_tuple		tuple;
@@ -125,18 +111,15 @@ void	sphere_data(char **split, t_obj1 *obj)
 	if (nbr_info(rgb, 3) || nbr_info(coords, 3))
 		error_msg("Error: Incomplete sphere input\n");
 
-	sphere = malloc(sizeof(t_sphere));
+	sphere = ft_calloc(1, sizeof(t_sphere)); // Make sure to ft_calloc instead of malloc
 	obj->props = sphere;
-	if (!sphere)
-		exit(1);
-
-	sphere->diameter = my_strtod(split[2]);
+	sphere->d = my_strtod(split[2]);
 	tuple = ft_point(my_strtod(coords[0]), my_strtod(coords[1]), my_strtod(coords[2]));
 
-	sphere->position.x = tuple.x;
-	sphere->position.y = tuple.y;
-	sphere->position.z = tuple.z;
-	sphere->position.w = tuple.z;
+	sphere->pt.x = tuple.x;
+	sphere->pt.y = tuple.y;
+	sphere->pt.z = tuple.z;
+	sphere->pt.w = tuple.z;
 
 	obj->material.color.r = translatecolor(my_strtod(rgb[0]));
 	obj->material.color.g = translatecolor(my_strtod(rgb[1]));
@@ -146,11 +129,11 @@ void	sphere_data(char **split, t_obj1 *obj)
 	free_double(coords);
 }
 
-void	plane_data(char **split, t_obj1 *obj)
+void	plane_data(char **split, t_obj *obj)
 {
 	t_tuple		coords_tuple;
 	t_tuple		axis_tuple;
-	t_plane1	*plane;
+	t_plane		*plane;
 	char		**coords;
 	char		**axis;
 	char		**rgb;
@@ -173,14 +156,14 @@ void	plane_data(char **split, t_obj1 *obj)
 	obj->material.color.g = translatecolor(my_strtod(rgb[1]));
 	obj->material.color.b = translatecolor(my_strtod(rgb[2]));
 
-	plane = malloc(sizeof(t_plane1));
+	plane = malloc(sizeof(t_plane));
 	if (!plane)
 		exit(1);
 	obj->props = plane;
-	plane->position.x = coords_tuple.x;
-	plane->position.y = coords_tuple.y;
-	plane->position.z = coords_tuple.z;
-	plane->position.w = coords_tuple.w;
+	plane->pt.x = coords_tuple.x;
+	plane->pt.y = coords_tuple.y;
+	plane->pt.z = coords_tuple.z;
+	plane->pt.w = coords_tuple.w;
 
 	plane->normal.x = axis_tuple.x;
 	plane->normal.y = axis_tuple.y;
@@ -192,7 +175,7 @@ void	plane_data(char **split, t_obj1 *obj)
 	free_double(coords);
 }
 
-void	cylinder_data(char **split, t_obj1 *obj)
+void	cylinder_data(char **split, t_obj *obj)
 {
 	t_cylinder	*cylinder;
 	t_tuple		coords_tuple;
@@ -217,8 +200,8 @@ void	cylinder_data(char **split, t_obj1 *obj)
 	
 	cylinder = malloc(sizeof(t_cylinder));
 	obj->props = cylinder;
-	cylinder->diameter = my_strtod(split[3]);
-	cylinder->height = my_strtod(split[4]);
+	cylinder->d = my_strtod(split[3]);
+	cylinder->h = my_strtod(split[4]);
 	
 	obj->material.color.r = translatecolor(my_strtod(rgb[0]));
 	obj->material.color.g = translatecolor(my_strtod(rgb[1]));
@@ -239,7 +222,7 @@ void	cylinder_data(char **split, t_obj1 *obj)
 	free_double(coords);
 }
 
-void	objs_data(char **split, t_obj1 *obj)
+void	objs_data(char **split, t_obj *obj)
 {
 	if (ft_strcmp(split[0], "cy") == 0)
 		cylinder_data(split, obj);
@@ -279,7 +262,7 @@ void	check_count(t_data *data)
 			error_msg("Invalid input\n");
 }
 
-void	fill_data(t_world1 *world, t_data *data)
+void	fill_data(t_world *world, t_data *data)
 {
 	char	**split;
 	int j;
@@ -290,7 +273,7 @@ void	fill_data(t_world1 *world, t_data *data)
 	check_count(data);
 	world->num_lights = 0; 
 	world->num_objs = calculate_objs(data);
-	world->objects = ft_calloc(sizeof(t_obj1) , world->num_objs);
+	world->objs = ft_calloc(sizeof(t_obj) , world->num_objs);
 	while (data->find[i].split)
 	{
 		split = &data->find[i].split[0];
@@ -307,24 +290,24 @@ void	fill_data(t_world1 *world, t_data *data)
 		else if (split[0] && (!ft_strcmp(split[0], "L") || !ft_strcmp(split[0], "l")))
 		{
 			// printf("L/l id a detected\n");
-			light_data(data->find[i].split, &world->light[world->num_lights]);
+			light_data(data->find[i].split, &world->lights[world->num_lights]);
 			world->num_lights++;
 		}
 		else
 		{
 			// printf("obj id a detected\n");
-			objs_data(split, world->objects + j);
+			objs_data(split, world->objs + j);
 			j++;
 		}
 		i++;
 	}
 	free_double(data->map);
 	free_struct(data->find);
-	// 'world->objects' should be freed
+	// 'world->objs' should be freed
 }
 
 //call world_data function to get all data (filename is av[1])
-void	world_data(t_world1 *world, char *filename)
+void	world_data(t_world *world, char *filename)
 {
 	t_data		data;
 
@@ -337,7 +320,7 @@ void	world_data(t_world1 *world, char *filename)
 
 // int main()
 // {
-// 	t_world1 world;
+// 	t_world world;
 	
 // 	world_data(&world, "../artwork/mandatory.rt");
 // 	t_sphere *test = world.objects[1].props;

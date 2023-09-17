@@ -2,8 +2,8 @@
 # define MINIRT_TYPES_H
 
 # define EPSILON		0.00001
-# define CANVAS_WIDTH	400
-# define CANVAS_HEIGHT	400
+# define SCREEN_WIDTH	400
+# define SCREEN_HEIGHT	400
 # define PPM_MAGIC_NUM	"P3"
 # define PPM_MAX_COLOR	255
 # define PI				3.14159265358979
@@ -13,6 +13,8 @@
 # define RESET_COLOR	"\033[0m"
 # define TRUE_S			GREEN"TRUE"RESET_COLOR
 # define FALSE_S		RED"FALSE"RESET_COLOR
+
+// STOPPED HERE
 
 typedef struct s_tuple
 {
@@ -37,7 +39,7 @@ extern t_color	g_green;
 extern t_color	g_blue;
 
 typedef struct s_canvas {
-	t_color	pixel_grid[CANVAS_WIDTH][CANVAS_HEIGHT];
+	t_color	pixel_grid[SCREEN_WIDTH][SCREEN_HEIGHT];
 }	t_canvas;
 
 typedef struct s_matrix
@@ -76,21 +78,17 @@ typedef struct s_plane {
 	t_tuple	pt;
 }	t_plane;
 
-typedef struct s_cylinder {
-	double	height;
-}	t_cylinder;
-
 typedef struct s_cone {
 	double	height;
 }	t_cone;
 
-typedef struct s_objnode
+typedef struct s_obj
 {
 	enum e_obj_type		type;
 	t_matrix			transform_inverse;
 	t_material			material;
 	void				*props;
-	struct s_objnode	*next;
+	struct s_obj		*next;
 }	t_obj;
 
 typedef struct s_xnode
@@ -112,7 +110,7 @@ typedef struct s_quadratics
 typedef struct s_point_light
 {
 	t_tuple	position;
-	t_color	intensity;
+	t_color	color;
 }	t_point_light;
 
 typedef struct s_phong
@@ -140,16 +138,11 @@ typedef struct s_comps
 	bool		is_shadowed;
 }	t_comps;
 
-typedef struct s_world
-{
-	t_obj		*objlst;
-	t_point_light	light;
-}	t_world;
-
 typedef struct s_camera
 {
-	t_tuple		position;
+	t_tuple		pt;
 	t_tuple		forward_v;// should be normalized
+	double		fov;
 	int			screen_w;
 	int			screen_h;
 	double		psize;
@@ -166,13 +159,6 @@ typedef struct s_ambient
 	t_color	color;// needs to be converted to range [0-1]
 }	t_ambient;
 
-typedef struct s_camera1
-{
-	t_tuple		position;
-	t_tuple		forward_v;// should be normalized
-	double		fov;// convert from degrees to radians
-}	t_camera1;
-
 typedef struct s_light
 {
 	t_tuple	position;
@@ -180,42 +166,29 @@ typedef struct s_light
 	t_color	color;
 }	t_light;
 
-typedef struct s_obj11
-{
-	enum e_obj_type		type;
-	t_material			material;
-	void				*props;
-}	t_obj1;
-
 typedef struct s_sphere
 {
-	t_tuple	position;
-	float	diameter;
+	t_tuple	pt;//position
+	float	d;//diameter
 }	t_sphere;
-
-typedef struct s_plane1
-{
-	t_tuple	position;
-	t_tuple	normal;
-}	t_plane1;
 
 typedef struct s_cylinder
 {
 	t_tuple	center;
 	t_tuple	axis;// should be normalized
-	double	diameter;
-	double	height;
+	double	d; // diameter
+	double	h; // height
 }	t_cylinder;
 
-typedef struct s_world1
+typedef struct s_world
 {
 	t_ambient	ambient;
-	t_camera1	camera;
-	t_light		light[2];
-	t_obj1		*objects;
+	t_camera	camera;
+	t_light		lights[2];
+	t_obj		*objs;
 	int			num_objs; // number of objects
 	int			num_lights;
-}	t_world1;
+}	t_world;
 
 typedef struct s_find
 {

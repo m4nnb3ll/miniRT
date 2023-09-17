@@ -13,8 +13,6 @@
 #ifndef WORD_H
 #define	WORD_H
 
-# include <fcntl.h>
-
 char		**split_string(char *s);
 double		my_strtod(char *str);
 
@@ -30,7 +28,7 @@ void		free_double(char **ptr);
 void	    free_struct(t_find *find);
 int			calculate_objs(t_data *data);
 int         check_name(char *str);
-void        world_data(t_world1 *world, char *filename);
+void        world_data(t_world *world, char *filename);
 
 //TMP
 void	    display_map(char **map);

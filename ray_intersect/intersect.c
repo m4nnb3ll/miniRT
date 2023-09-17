@@ -6,6 +6,10 @@ t_xnode	*ft_intersect_sphere(t_obj *o, t_ray r)
 	t_tuple				o_c;
 	t_xnode				*xs;
 
+	// // TEST
+	// o -> transform_inverse = ft_multi_matrices();
+	// // TEST
+	o -> transform_inverse = g_identity_matrix;
 	r = ft_transform_ray(o -> transform_inverse, r);
 	o_c = ft_sub_tuples(r.origin, ft_point(0, 0, 0));
 	q.a = ft_dot(r.direction, r.direction);
@@ -22,8 +26,6 @@ t_xnode	*ft_intersect_sphere(t_obj *o, t_ray r)
 	return (xs);
 }
 
-// STOPPED INVESTIGATING THE ACNE
-
 t_xnode	*ft_intersect_plane(t_obj *o, t_ray r)
 {
 	// printf("The ray");
@@ -37,18 +39,19 @@ t_xnode	*ft_intersect_plane(t_obj *o, t_ray r)
 	return (ft_xnew(o, - r.origin.y / r.direction.y));
 }
 
+// .5 is the height/2
 bool	ft_pt_bound_cy(t_obj *o, t_ray r, double t)
 {
-	if (fabs(r.origin.y + t * r.direction.y)
-		< ((t_cylinder*)(o->props))->height / 2)
+	(void)o;
+	if (fabs(r.origin.y + t * r.direction.y) < .5)
 		return (true);
 	return (false);
 }
 
 bool	ft_pt_bound_cone(t_obj *o, t_ray r, double t)
 {
-	if (fabs(r.origin.y + t * r.direction.y)
-		< ((t_cone*)(o->props))->height / 2)
+	(void)o;
+	if (fabs(r.origin.y + t * r.direction.y) < .5)
 		return (true);
 	return (false);
 }
@@ -78,15 +81,15 @@ bool	ft_check_cap_cone(t_ray r, double t)
 t_xnode	*ft_add_caps_cy(t_obj *cy, t_ray r, t_xnode **xs)
 {
 	double	t;
-	double	h;
+	double	half_height;
 
 	if (fabs(r.direction.y) < EPSILON)
 		return (*xs);
-	h = ((t_cylinder*)(cy->props)) -> height;
-	t = (-(h / 2) - r.origin.y) / r.direction.y;
+	half_height = .5;
+	t = (-half_height - r.origin.y) / r.direction.y;
 	if (ft_check_cap_cy(r, t))
 		ft_xadd_back(xs, ft_xnew(cy, t));
-	t = ((h / 2) - r.origin.y) / r.direction.y;
+	t = (half_height - r.origin.y) / r.direction.y;
 	if (ft_check_cap_cy(r, t))
 		ft_xadd_back(xs, ft_xnew(cy, t));
 	return (*xs);
@@ -95,15 +98,15 @@ t_xnode	*ft_add_caps_cy(t_obj *cy, t_ray r, t_xnode **xs)
 t_xnode	*ft_add_caps_cone(t_obj *cy, t_ray r, t_xnode **xs)
 {
 	double	t;
-	double	h;
+	double	half_height;
 
 	if (fabs(r.direction.y) < EPSILON)
 		return (*xs);
-	h = ((t_cone*)(cy->props)) -> height / 2;
-	t = (-h - r.origin.y) / r.direction.y;
+	half_height = .5;
+	t = (-half_height - r.origin.y) / r.direction.y;
 	if (ft_check_cap_cone(r, t))
 		ft_xadd_back(xs, ft_xnew(cy, t));
-	t = (h - r.origin.y) / r.direction.y;
+	t = (half_height - r.origin.y) / r.direction.y;
 	if (ft_check_cap_cone(r, t))
 		ft_xadd_back(xs, ft_xnew(cy, t));
 	return (*xs);
@@ -201,17 +204,14 @@ t_xnode	*ft_intersect_obj(t_obj *o, t_ray r)
 	return (ft_intersect_sphere(o, r));
 }
 
-t_xnode	*ft_intersect_world(t_world w, t_ray r)
+t_xnode	*ft_intersect_world(t_world *w, t_ray r)
 {
-	t_obj	*tmp_obj;
+	int			i;
 	t_xnode		*xs;
 
-	tmp_obj = w.objlst;
 	xs = NULL;
-	while (tmp_obj)
-	{
-		ft_xadd_back(&xs, ft_intersect_obj(tmp_obj, r));
-		tmp_obj = tmp_obj -> next;
-	}
+	i = 0;
+	while (i < w -> num_objs)
+		ft_xadd_back(&xs, ft_intersect_obj(&w->objs[i++], r));
 	return (xs);
 }

@@ -26,6 +26,7 @@ RAY_INTERSECT		:=	${addprefix ray_intersect/, ray.c intersect.c}
 LSTS				:=	${addprefix lsts/, objs.c xs.c}
 SCENE				:=	${addprefix scene/, scene.c camera.c}
 LIGHT_SHADING		:=	${addprefix light_shading/, lighting.c}
+PARSING				:=	${addprefix checkmap/, allocate_data.c checkmap.c helpers.c my_strtod.c split_string.c}
 
 SRCS				:=	main.c \
 								$(TUPLES) \
@@ -35,10 +36,14 @@ SRCS				:=	main.c \
 								$(LSTS) \
 								$(SCENE) \
 								$(LIGHT_SHADING) \
+								$(PARSING) \
 
-OBJS				:=	${SRCS:.c=.o}
 
-%.o					:		%.c
+OBJS_DIR			:=	Makefile_objects
+OBJS				:=	$(patsubst %.c, $(OBJS_DIR)/%.o, $(SRCS))
+
+$(OBJS_DIR)/%.o		:	%.c
+									@mkdir -p $(@D)
 									@$(CC) \
 									$(CFLAGS) \
 									$(HEADERS) \

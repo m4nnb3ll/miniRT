@@ -2,15 +2,15 @@
 
 void	ft_write_pixel(t_canvas *c, uint32_t row, uint32_t col, t_color color)
 {
-	if (row < CANVAS_HEIGHT && col < CANVAS_WIDTH)
+	if (row < SCREEN_HEIGHT && col < SCREEN_WIDTH)
 		c->pixel_grid[row][col] = color;
 }
 
 void	ft_print_canvas(t_canvas canvas)
 {
-	for(int i=0; i< CANVAS_HEIGHT; i++)
+	for(int i=0; i< SCREEN_HEIGHT; i++)
 	{
-		for(int j=0; j< CANVAS_WIDTH; j++)
+		for(int j=0; j< SCREEN_WIDTH; j++)
 		{
 			printf("[%d][%d]: ", i, j);
 			ft_print_color(canvas.pixel_grid[i][j]);
@@ -33,14 +33,14 @@ void	ft_canvas_to_ppm(t_canvas *canvas)
 		(printf("dup2 failed \"test.ppm\"\n"), exit(1));
 	close(file_fd);
 	printf("%s\n", PPM_MAGIC_NUM);
-	printf("%d %d\n", CANVAS_WIDTH, CANVAS_HEIGHT);
+	printf("%d %d\n", SCREEN_WIDTH, SCREEN_HEIGHT);
 	printf("%d\n", PPM_MAX_COLOR);
 	y = 0;
 	row_length = 0;
-	while (y < CANVAS_HEIGHT)
+	while (y < SCREEN_HEIGHT)
 	{
 		x = 0;
-		while (x < CANVAS_WIDTH)
+		while (x < SCREEN_WIDTH)
 		{
 			// RED
 			// 5 for space + color-max-length + \n

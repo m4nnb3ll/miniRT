@@ -106,7 +106,7 @@ void	free_struct(t_find *find)
 
 int	check_name(char *str)
 {
-	if (ft_strnstr(str, ".rt", ft_strlen(str)))
+	if (str && ft_strnstr(str, ".rt", ft_strlen(str)))
 		return (0);
 	return (1);
 }

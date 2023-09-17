@@ -27,29 +27,32 @@ t_matrix	ft_view_transform_inverse(t_tuple from, t_tuple forward)
 			ft_translate(-from.x, -from.y, -from.z))));
 }
 
-t_camera	ft_camera(int screen_w, int screen_h, double fov)
+t_camera	ft_camera(t_camera raw_camera)
 {
-	t_camera	camera;
+	t_camera	c;
 	double		half_view;
 	double		aspect;
 
-	half_view = tan(fov / 4) * 2;
-	camera.screen_w = screen_w;
-	camera.screen_h = screen_h;
-	aspect = (double)screen_w / screen_h;
+	c = raw_camera;
+	half_view = tan(c.fov / 4) * 2;
+	c.screen_w = SCREEN_WIDTH;
+	c.screen_h = SCREEN_HEIGHT;
+	aspect = (double)SCREEN_WIDTH / SCREEN_HEIGHT;
 	if (aspect > 1)
 	{
-		camera.half_c_w = half_view;
-		camera.half_c_h = camera.half_c_w * (1 / aspect);
+		c.half_c_w = half_view;
+		c.half_c_h = c.half_c_w * (1 / aspect);
 	}
 	else
 	{
-		camera.half_c_h = half_view;
-		camera.half_c_w = camera.half_c_h * aspect;
+		c.half_c_h = half_view;
+		c.half_c_w = c.half_c_h * aspect;
 	}
-	camera.psize = camera.half_c_w * 2 / screen_w;
-	camera.view_transform_inverse = g_identity_matrix;
-	return (camera);
+	c.psize = c.half_c_w * 2 / SCREEN_WIDTH;
+	c.view_transform_inverse = ft_view_transform_inverse(c.pt, c.forward_v);
+	printf("The transform inverse is\n");
+	ft_print_matrix(c.view_transform_inverse);
+	return (c);
 }
 
 t_ray	ft_ray_for_pixel(int x, int y, t_camera c)
@@ -67,7 +70,7 @@ t_ray	ft_ray_for_pixel(int x, int y, t_camera c)
 	return (r);
 }
 
-t_canvas	ft_render(t_world w, t_camera c)
+t_canvas	ft_render(t_world *w, t_camera c)
 {
 	t_ray			r;
 	t_canvas	canvas;
