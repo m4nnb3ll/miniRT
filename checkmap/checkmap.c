@@ -6,7 +6,7 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:34:38 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/16 12:02:20 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/17 13:46:11 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,7 +293,7 @@ void	fill_data(t_world *world, t_data *data)
 			light_data(data->find[i].split, &world->lights[world->num_lights]);
 			world->num_lights++;
 		}
-		else
+		else if (split[0])
 		{
 			// printf("obj id a detected\n");
 			objs_data(split, world->objs + j);
