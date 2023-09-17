@@ -6,7 +6,7 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:34:38 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/16 12:02:20 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/17 16:59:54 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,11 @@ void	sphere_data(char **split, t_obj *obj)
 
 	sphere = ft_calloc(1, sizeof(t_sphere)); // Make sure to ft_calloc instead of malloc
 	obj->props = sphere;
+	obj->material = ft_material();
+	ft_inverse(ft_multi_matrices(ft_translate(sphere->pt.x, sphere->pt.y, sphere->pt.z), ft_scale(sphere->d, sphere->d, sphere->d)));
+	
+	// ft_inverse(ft_multimatrices)
+	
 	sphere->d = my_strtod(split[2]);
 	tuple = ft_point(my_strtod(coords[0]), my_strtod(coords[1]), my_strtod(coords[2]));
 
@@ -151,15 +156,15 @@ void	plane_data(char **split, t_obj *obj)
 	
 	if (nbr_info(rgb, 3) || nbr_info(coords, 3) || nbr_info(axis, 3) || ft_mag(axis_tuple) != 1 || check_range(axis_tuple))
 		error_msg("Error: Incomplete plane input\n");
-
 	obj->material.color.r = translatecolor(my_strtod(rgb[0]));
 	obj->material.color.g = translatecolor(my_strtod(rgb[1]));
 	obj->material.color.b = translatecolor(my_strtod(rgb[2]));
 
-	plane = malloc(sizeof(t_plane));
-	if (!plane)
-		exit(1);
+	plane = ft_calloc(sizeof(t_plane), 1);
 	obj->props = plane;
+	obj->material = ft_material();
+	obj->transform_inverse = ft_inverse(ft_multi_matrices(ft_translate(plane->pt.x, plane->pt.y, plane->pt.z),
+		ft_get_rotation_matrix(ft_vector(0, 1, 0), plane->normal)));
 	plane->pt.x = coords_tuple.x;
 	plane->pt.y = coords_tuple.y;
 	plane->pt.z = coords_tuple.z;
@@ -198,11 +203,15 @@ void	cylinder_data(char **split, t_obj *obj)
 	if (nbr_info(rgb, 3) || nbr_info(coords, 3) || nbr_info(axis, 3) || check_range(axis_tuple) || ft_mag(axis_tuple) != 1)
 		error_msg("Error: Incomplete cylinder input\n");
 	
-	cylinder = malloc(sizeof(t_cylinder));
+	cylinder = ft_calloc(sizeof(t_cylinder), 1);
 	obj->props = cylinder;
+	
+	obj->material = ft_material();
+	obj->transform_inverse = ft_inverse(ft_multi_matrices(ft_translate(cylinder->center.x, cylinder->center.y, cylinder->center.z),
+		ft_multi_matrices(ft_get_rotation_matrix(ft_vector(0, 1, 0), cylinder->axis),ft_scale(cylinder->d, cylinder->h, cylinder->d))));
+
 	cylinder->d = my_strtod(split[3]);
 	cylinder->h = my_strtod(split[4]);
-	
 	obj->material.color.r = translatecolor(my_strtod(rgb[0]));
 	obj->material.color.g = translatecolor(my_strtod(rgb[1]));
 	obj->material.color.b = translatecolor(my_strtod(rgb[2]));
@@ -293,7 +302,7 @@ void	fill_data(t_world *world, t_data *data)
 			light_data(data->find[i].split, &world->lights[world->num_lights]);
 			world->num_lights++;
 		}
-		else
+		else if (split[0])
 		{
 			// printf("obj id a detected\n");
 			objs_data(split, world->objs + j);

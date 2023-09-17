@@ -6,7 +6,7 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:02:55 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/16 11:55:04 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/17 13:56:44 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ double translatecolor(double color)
 //verifies if tuple components are within the range [-1, 1]
 int	check_range(t_tuple tuple)
 {
-    if (tuple.x < -1 || tuple.x > 1 || tuple.y < -1 || tuple.y > 1 || tuple.z < -1 || tuple.z > 1)
+	if (tuple.x < -1 || tuple.x > 1 || tuple.y < -1 || tuple.y > 1 || tuple.z < -1 || tuple.z > 1)
 		return (1);
 	return (0);
 }
@@ -79,7 +79,7 @@ void	free_double(char **ptr)
 	int	i;
 
 	i = 0;
-    if (ptr) 
+	if (ptr) 
 	{
 		while (ptr[i])
 		{
@@ -88,7 +88,7 @@ void	free_double(char **ptr)
 			i++;
 		}
 		free(ptr);
-    }
+	}
 }
 
 void	free_struct(t_find *find)
@@ -106,7 +106,7 @@ void	free_struct(t_find *find)
 
 int	check_name(char *str)
 {
-	if (str && ft_strnstr(str, ".rt", ft_strlen(str)))
-		return (0);
-	return (1);
+	if (ft_strlen(str) <= 3 || ft_strcmp(str + ft_strlen(str) - 3, ".rt"))
+		return (1);
+	return (0);
 }
