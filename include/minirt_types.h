@@ -88,6 +88,7 @@ typedef struct s_obj
 	t_matrix			transform_inverse;
 	t_material			material;
 	void				*props;
+	bool				checkered;
 	struct s_obj		*next;
 }	t_obj;
 
