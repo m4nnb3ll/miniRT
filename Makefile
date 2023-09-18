@@ -7,7 +7,7 @@ RESET_COLOR			:=	\033[0m
 NAME				:=	miniRT
 CC					:=	cc
 CFLAGS				:=	-Wextra -Wall -Werror -O3 -g
-HEADERS				:=	-Ilibft/include -Iinclude -I~/MLX42/include
+HEADERS				:=	-Ilibft/include -Iinclude -I$(HOME)/MLX42/include/MLX42
 
 # Frameworks
 FRAMEWORKS			:=	-framework Cocoa -framework OpenGL -framework IOKit
@@ -20,7 +20,7 @@ LIBS				:=	$(LIBMLX) $(GLFW) -ldl $(LIBFT) -lm -pthread
 
 # SRCS
 TUPLES				:=	${addprefix tuples/, tuples.c}
-CANVAS				:=	${addprefix canvas/, canvas.c color.c}
+CANVAS				:=	${addprefix canvas/, canvas.c color.c window.c}
 MATRICES			:=	${addprefix matrices/, matrices.c matrix_transformations.c quaternions.c}
 RAY_INTERSECT		:=	${addprefix ray_intersect/, ray.c intersect.c}
 LSTS				:=	${addprefix lsts/, objs.c xs.c}
@@ -58,9 +58,9 @@ $(LIBFT)			:
 									@make fclean -C libft/
 									@echo "$(GREEN)libft ✓$(RESET_COLOR)"
 
-$(NAME)				:		$(OBJS) $(LIBFT)
-									@$(CC) $(OBJS) $(LIBS) -fsanitize=address -o $(NAME)
-# @$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -o $(NAME)
+$(NAME)				:		$(OBJS) $(LIBFT) 
+# @$(CC) $(OBJS) $(LIBS) -fsanitize=address -o $(NAME)
+									@$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -o $(NAME)
 									@echo "$(GREEN)All Done ✓$(RESET_COLOR)"
 
 clean				:
