@@ -58,21 +58,25 @@ void	ft_print_obj(t_obj *obj)
 	printf("The props are: %p\n", obj->props);
 }
 
-int main(int argc, char **argv)
+int main(/* int argc, char **argv */)
 {
 	t_canvas	canvas;
 	t_world		w;
 
-	if (argc != 2)
-		return (printf("usage: ./miniRT <file>\n"));
-	world_data(&w, argv[1]);
+	// if (argc != 2)
+		// return (printf("usage: ./miniRT <file>\n"));
+	world_data(&w, "test.rt");
 	printf("The object type is: %s\n", objs_strs[w.objs[0].type]);
-	w.objs[0].transform_inverse = g_identity_matrix;
+	w.objs[0].transform_inverse = ft_inverse(ft_translate(1, 0, 0));
+	// w.objs[0].transform_inverse = g_identity_matrix;
 	w.objs[0].material = ft_material();
+	// w.objs[0].material.color = g_red;
+	w.objs[0].checkered = true;
 	w.camera = ft_camera(w.camera);
 	ft_print_obj(&w.objs[0]);
 	canvas = ft_render(&w, w.camera);
 	ft_canvas_to_ppm(&canvas);
+	execv("/usr/bin/open", (char*[]){"/usr/bin/open", "test.ppm"});
 }
 
 // t_matrix

@@ -9,7 +9,7 @@ t_xnode	*ft_intersect_sphere(t_obj *o, t_ray r)
 	// // TEST
 	// o -> transform_inverse = ft_multi_matrices();
 	// // TEST
-	o -> transform_inverse = g_identity_matrix;
+	// o -> transform_inverse = g_identity_matrix;
 	r = ft_transform_ray(o -> transform_inverse, r);
 	o_c = ft_sub_tuples(r.origin, ft_point(0, 0, 0));
 	q.a = ft_dot(r.direction, r.direction);

@@ -111,6 +111,24 @@ bool	ft_is_shadowed(t_world *w, t_tuple over_pt)
 	return (false);
 }
 
+t_color	ft_checkered(t_comps comps)
+{
+	t_obj	*o;
+	t_tuple	op;
+
+	o = comps.o;
+	op = ft_transform_tuple(o->transform_inverse, comps.pt);
+	// op = ft_transform_tuple(g_identity_matrix, comps.pt);
+	if (o->checkered)
+	{
+		if (((int)floor(op.x) % 2 == 0 && (int)floor(op.y) % 2 == 0)
+			|| ((int)floor(op.x) % 2 != 0 && (int)floor(op.y) % 2 != 0))
+			return (g_black);
+		return (g_white);
+	}
+	return (o -> material.color);
+}
+
 /*
 	e_color(efficient);
 	a_color(ambient);
@@ -121,9 +139,12 @@ t_color	ft_lighting(t_world *w, t_comps comps)
 {
 	t_phong			ph;
 	t_material	m;
+	t_color		c;
 
 	m = comps.o -> material;
-	ph.e_color = ft_multi_colors(m.color, w->lights[0].color);
+	c = ft_checkered(comps);
+	// printf("is is checkered? %d\n", comps.o -> checkered);
+	ph.e_color = ft_multi_colors(c, w->lights[0].color);
 	ph.a_color = ft_color_scl(ph.e_color, m.ambient);
 	if (ft_is_shadowed(w, comps.over_pt))
 		return (ph.a_color);
