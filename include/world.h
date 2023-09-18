@@ -6,7 +6,7 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:27:14 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/17 16:48:52 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/19 00:13:25 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,10 @@ void        world_data(t_world *world, char *filename);
 //TMP
 void	    display_map(char **map);
 //TMP
+
+void	readppm(char *file, t_ppm *ppm);
+void	ppm_data(t_ppm *ppm);
+
+
 
 #endif
