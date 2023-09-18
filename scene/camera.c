@@ -50,8 +50,8 @@ t_camera	ft_camera(t_camera raw_camera)
 	}
 	c.psize = c.half_c_w * 2 / SCREEN_WIDTH;
 	c.view_transform_inverse = ft_view_transform_inverse(c.pt, c.forward_v);
-	printf("The transform inverse is\n");
-	ft_print_matrix(c.view_transform_inverse);
+	// printf("The transform inverse is\n");
+	// ft_print_matrix(c.view_transform_inverse);
 	return (c);
 }
 
@@ -70,18 +70,33 @@ t_ray	ft_ray_for_pixel(int x, int y, t_camera c)
 	return (r);
 }
 
-t_canvas	ft_render(t_world *w, t_camera c)
+uint32_t	ft_merge_colors(int r, int g, int b, int a)
 {
-	t_ray			r;
-	t_canvas	canvas;
+	if (ENDIANESS == 0)
+		return (a << 24 | b << 16 | g << 8 | r);
+	return (r << 24 | g << 16 | b << 8 | a);
+}
 
-	for (int i = 0; i < c.screen_h; i++)
+void	ft_render(t_window window, t_world *w, t_camera c)
+{
+	t_color	color;
+	t_ray			r;
+	// t_canvas	canvas;
+
+	for (uint32_t i = 0; i < window.img->height; i++)
 	{
-		for (int j = 0; j < c.screen_w; j++)
+		for (uint32_t j = 0; j < window.img->width; j++)
 		{
 			r = ft_ray_for_pixel(j, i, c);
-			canvas.pixel_grid[i][j] = ft_color_at(w, r);
+			color = ft_color_at(w, r);
+			mlx_put_pixel(window.img, j, i, ft_merge_colors(
+				ft_255channel(color.r),
+				ft_255channel(color.g),
+				ft_255channel(color.b), 0xFF
+			));
+			// canvas.pixel_grid[i][j] = ;
 		}
-	}	
-	return (canvas);
+	}
+	mlx_image_to_window(window.mlx, window.img, 0, 0);
+	mlx_loop(window.mlx);
 }

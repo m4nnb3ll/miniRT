@@ -2,8 +2,8 @@
 # define MINIRT_TYPES_H
 
 # define EPSILON		0.00001
-# define SCREEN_WIDTH	400
-# define SCREEN_HEIGHT	400
+# define SCREEN_WIDTH	1024
+# define SCREEN_HEIGHT	1024
 # define PPM_MAGIC_NUM	"P3"
 # define PPM_MAX_COLOR	255
 # define PI				3.14159265358979
@@ -13,6 +13,9 @@
 # define RESET_COLOR	"\033[0m"
 # define TRUE_S			GREEN"TRUE"RESET_COLOR
 # define FALSE_S		RED"FALSE"RESET_COLOR
+# define ENDIANESS		1
+
+#include "MLX42.h"
 
 // STOPPED HERE
 
@@ -210,5 +213,11 @@ typedef struct s_data
 	char	**map;
 	int		mapsize;
 }	t_data;
+
+typedef struct s_window
+{
+	mlx_t		*mlx;
+	mlx_image_t	*img;
+}	t_window;
 
 #endif

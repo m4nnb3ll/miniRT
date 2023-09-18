@@ -2,6 +2,7 @@
 #define	CANVAS_H
 
 # include "minirt_types.h"
+// # include "MLX42.h"
 
 void			ft_print_canvas(t_canvas canvas);
 void			ft_write_pixel(t_canvas *c, uint32_t row, uint32_t col, t_color color);
@@ -13,5 +14,6 @@ t_color		ft_sub_colors(t_color a, t_color b);
 t_color		ft_color_scl(t_color c, double scaler);
 t_color		ft_multi_colors(t_color a, t_color b);
 uint8_t		ft_255channel(double c);
+t_window	ft_img_ptr(void);
 
 #endif
