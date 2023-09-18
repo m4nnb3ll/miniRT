@@ -220,4 +220,13 @@ typedef struct s_window
 	mlx_image_t	*img;
 }	t_window;
 
+// TEST S
+typedef struct s_texture
+{
+	int		width;
+	int		height;
+	t_color	**pixels;
+}	t_texture;
+// TEST E
+
 #endif

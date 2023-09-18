@@ -57,28 +57,100 @@ void	ft_print_obj(t_obj *obj)
 	ft_print_material(obj->material);
 	printf("The props are: %p\n", obj->props);
 }
-void set_background(mlx_image_t	*image, int width, int height);
+
+t_texture	ft_get_texture(int w, int h)
+{
+	t_texture	texture;
+	t_color		**pixels;
+
+	pixels	= ft_calloc(h, sizeof(t_color*));
+	for (int i = 0; i < h; i++)
+		pixels[i] = ft_calloc(w, sizeof(t_color));
+	for (int i = 0; i < h; i++)
+	{
+		for (int j = 0; j < w; j++)
+		{
+			if ((i + j)%2 == 0)
+				pixels[i][j] = g_black;
+			else
+				pixels[i][j] = g_white;
+		}
+	}
+	texture = (t_texture){w, h, pixels};
+	return (texture);
+}
+
+t_color	ft_uv_pattern_at(t_texture texture, double u, double v) // u & v [0-1.0]
+{
+	int	x, y;
+
+	x = (int)floor(u * (texture.width)) % texture.width;
+	y = (int)floor(v * (texture.height)) % texture.height;
+	// printf("the x and y are: %d %d\n", x, y);
+	// printf("The x and y are: %d %d\n", x, y);
+	return	(texture.pixels[y][x]);
+}
+
+t_tuple	ft_spherical_map(t_tuple op)// take only the x and y
+{
+	double	theta, phi;
+	t_tuple	vec;
+	double	radius;
+	double	u, v;
+
+	theta = atan2(op.x, op.z);
+	vec = ft_vector(op.x, op.y, op.z);
+	radius = ft_mag(vec);
+	phi = acos(op.y / radius);
+	u = theta / (2 * PI);
+	u = 1 - (u + .5);
+	v = 1 - phi / PI;
+	return ((t_tuple){u, v, 0, 0});
+}
+
 int main(/* int argc, char **argv */)
 {
 	// t_canvas	canvas;
 	t_world		w;
 
-	// if (argc != 2)
-		// return (printf("usage: ./miniRT <file>\n"));
 	world_data(&w, "test.rt");
-	// printf("The object type is: %s\n", objs_strs[w.objs[0].type]);
-	w.objs[0].transform_inverse = ft_inverse(ft_translate(1, 0, 0));
-	// w.objs[0].transform_inverse = g_identity_matrix;
+	// w.objs[0].transform_inverse = ft_inverse(ft_translate(1, 0, 0));
+	w.objs[0].transform_inverse = ft_inverse(ft_translate(1.5, 0, 0));
 	w.objs[0].material = ft_material();
-	// w.objs[0].material.color = g_red;
 	w.objs[0].checkered = true;
 	w.camera = ft_camera(w.camera);
-	// ft_print_obj(&w.objs[0]);
 	t_window window = ft_img_ptr();
 	ft_render(window, &w, w.camera);
-	// ft_canvas_to_ppm(&canvas);
-	// execv("/usr/bin/open", (char*[]){"/usr/bin/open", "test.ppm"});
+	mlx_terminate(window.mlx);
 }
+// RENDERING GOES ABOVE ^^^
+
+// TESTING GOES BELOW vvv
+// int main()
+// {
+// 	t_texture	texture;
+// 	t_color		color;
+
+// 	texture = ft_get_texture(2, 2);
+// 	color = ft_uv_pattern_at(texture, 0, 0);
+// 	ft_print_color(color);
+	
+// 	color = ft_uv_pattern_at(texture, 0.5, 0);
+// 	ft_print_color(color);
+	
+// 	color = ft_uv_pattern_at(texture, 0, 0.5);
+// 	ft_print_color(color);
+	
+// 	color = ft_uv_pattern_at(texture, 0.5, 0.5);
+// 	ft_print_color(color);
+	
+// 	color = ft_uv_pattern_at(texture, 1.0, 1.0);
+// 	ft_print_color(color);
+	
+// }
+
+
+
 
 // t_matrix
 
@@ -144,17 +216,4 @@ int main(/* int argc, char **argv */)
 // 	ft_print_tuple(cam.pt);
 // 	ft_print_tuple(cam.forward_v);
 // 	printf("The fov is: %f\n", cam.fov);
-// }
-
-// int main(int argc, char **argv)
-// {
-// 	t_world	w;
-
-// 	if (argc != 2)
-// 		return (printf("usage: ./miniRT <file>\n"));
-// 	(void)argc;
-// 	world_data(&w, argv[1]);
-// 	ft_print_ambient(w.ambient);
-// 	ft_print_camera(w.camera);
-
 // }
