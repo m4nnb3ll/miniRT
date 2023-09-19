@@ -227,5 +227,13 @@ typedef struct s_ppm
 	int		width;
 	int		height;
 } t_ppm;
+// TEST S
+typedef struct s_texture
+{
+	int		width;
+	int		height;
+	t_color	**pixels;
+}	t_texture;
+// TEST E
 
 #endif
