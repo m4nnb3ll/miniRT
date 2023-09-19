@@ -32,13 +32,13 @@ t_xnode	*ft_intersect_plane(t_obj *o, t_ray r)
 	
 	// printf("The ray");
 	r = ft_transform_ray(o -> transform_inverse, r);
-	if (fabs(r.direction.y) < EPSILON)
+	if (fabs(r.direction.z) < EPSILON)
 	{
 		// printf("I enter the NULL\n");
 		return (NULL);
 	}
 	// printf("r.direction.y is: %f\n", r.direction.y);
-	t = - r.origin.y / r.direction.y;
+	t = - r.origin.z / r.direction.z;
 	if (t >= EPSILON)
 		return (ft_xnew(o, t));
 	return (NULL);

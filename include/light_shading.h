@@ -13,6 +13,8 @@ bool				ft_is_shadowed(t_world *w, t_tuple over_pt);
 // TESTING
 t_texture	ft_get_texture(int w, int h);
 t_color		ft_uv_pattern_at(t_texture texture, double u, double v);
+t_tuple		ft_planar_map(t_tuple op);// take only the x and y
 t_tuple		ft_spherical_map(t_tuple op);
+t_tuple		ft_texture_normal_at(t_texture texture, double u, double v);
 
 #endif

@@ -88,7 +88,23 @@ t_color	ft_uv_pattern_at(t_texture texture, double u, double v) // u & v [0-1.0]
 	y = (int)floor(v * (texture.height)) % texture.height;
 	// printf("the x and y are: %d %d\n", x, y);
 	// printf("The x and y are: %d %d\n", x, y);
+	// printf("The x is: %d and y is: %d\n", x, y);
 	return	(texture.pixels[y][x]);
+}
+
+// t_tuple	ft_texture_normal_at(t_texture texture, double u, double v)
+// {
+// 	t_color	c;
+
+// 	c = ft_uv_pattern_at(texture, u, v);
+// 	return (ft_normalize(ft_vector(c.red, c.green, c.blue)));
+// }
+
+t_tuple	ft_planar_map(t_tuple op)// take only the x and y
+{
+	// printf("The x and y planar are: %d %d\n", (int)op.x % 1, (int)op.y);
+	// printf("The op.x is: %d\n", (int)round(op.x));
+	return ((t_tuple){fabs(fmod(op.x, 1)), fabs(fmod(op.y, 1)), 0, 0});
 }
 
 t_tuple	ft_spherical_map(t_tuple op)// take only the x and y
@@ -114,7 +130,7 @@ int main(/* int argc, char **argv */)
 	t_world		w;
 
 	world_data(&w, "test.rt");
-	// w.objs[0].transform_inverse = ft_inverse(ft_translate(1, 0, 0));
+	// w.objs[0].transform_inverse = ft_inverse(ft_rotate_y(PI/2));
 	w.camera = ft_camera(w.camera);
 	t_window window = ft_img_ptr();
 	ft_render(window, &w, w.camera);

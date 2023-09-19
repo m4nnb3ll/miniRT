@@ -61,8 +61,8 @@ $(LIBFT)			:
 									@echo "$(GREEN)libft ✓$(RESET_COLOR)"
 
 $(NAME)				:		$(OBJS) $(LIBFT) 
-# @$(CC) $(OBJS) $(LIBS) -fsanitize=address -o $(NAME)
-									@$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -o $(NAME)
+									@$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -fsanitize=address -o $(NAME)
+# @$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -o $(NAME)
 									@echo "$(GREEN)All Done ✓$(RESET_COLOR)"
 
 clean				:

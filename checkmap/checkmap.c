@@ -53,8 +53,11 @@ void	camera_data(char **split, t_camera *camera)
 		error_msg("Error: Incomplete camera input\n");
 	camera->pt = ft_point(
 		my_strtod(coords[0]), my_strtod(coords[1]), my_strtod(coords[2]));
-	camera->forward_v = ft_vector(
-		my_strtod(vector[0]), my_strtod(vector[1]), my_strtod(vector[2]));
+	// camera->forward_v = ft_vector(
+	// 	my_strtod(vector[0]), my_strtod(vector[1]), my_strtod(vector[2]));
+	// TEST BELOW
+	camera->forward_v = ft_normalize(ft_vector(
+		my_strtod(vector[0]), my_strtod(vector[1]), my_strtod(vector[2])));
 	free_double(coords);
 	free_double(vector);
 }
@@ -178,7 +181,11 @@ void	plane_data(char **split, t_obj *obj)
 	plane->normal = ft_normalize(plane->normal);
 	
 	obj->transform_inverse = ft_inverse(ft_multi_matrices(ft_translate(plane->pt.x, plane->pt.y, plane->pt.z),
-		ft_get_rotation_matrix(ft_vector(0, 1, 0), plane->normal)));
+		ft_get_rotation_matrix(ft_vector(0, 0, 1), plane->normal)));
+
+	obj -> ppm = ft_calloc(1, sizeof(t_ppm));
+	readppm("/Users/abelayad/Projects/miniRT/test_texture.ppm", obj -> ppm);
+	ppm_data(obj -> ppm);
 
 	free_double(rgb);
 	free_double(axis);

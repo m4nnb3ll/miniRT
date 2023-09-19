@@ -47,10 +47,24 @@ t_tuple	ft_get_cone_normal(t_obj *cone, t_tuple op)
 t_tuple	ft_obj_normal(t_obj *o, t_tuple wp)
 {
 	t_tuple	op;
+	// TESTING GOES BELOW
+	t_tuple	uv;
+	t_color	c;
 
 	op = ft_transform_tuple(o -> transform_inverse, wp);
 	if (o -> type == OT_PLANE)
-		return ((t_tuple){0, 1, 0, 0});
+	{
+		// TESTING BELOW
+		t_texture texture/* ft_get_texture(20, 10) */;
+		texture.width = o->ppm->width;
+		texture.height = o->ppm->height;
+		texture.pixels = o->ppm->pixels;
+		uv = ft_planar_map(op);
+		c = ft_uv_pattern_at(texture, uv.x, uv.y);
+		// TESTING NOW, the normal before is (0, 0, 1)
+		return (ft_normalize(ft_vector(2*c.r-1, 2*c.g-1, 2*c.b-1)));
+		// return (ft_normalize(ft_vector(c.r, c.g, c.b)));
+	}
 	else if (o -> type == OT_CYLINDER)
 		return (ft_normalize(ft_get_cyl_normal(o, op)));
 	else if (o -> type == OT_CONE)
@@ -140,20 +154,35 @@ t_color	ft_lighting(t_world *w, t_comps comps)
 	t_phong			ph;
 	t_material	m;
 	t_color		c;
-	t_tuple		op;
-	t_tuple		uv;
+	// t_tuple		op;
+	// t_tuple		uv;
 
 	m = comps.o -> material;
 	// c = ft_checkered(comps);
 	// TEST S
-	if (comps.o->type == OT_SPHERE)
-	{
-		op = ft_transform_tuple(comps.o->transform_inverse, comps.pt);
-		t_texture texture = ft_get_texture(20, 10);
-		uv = ft_spherical_map(op);
-		c = ft_uv_pattern_at(texture, uv.x, uv.y);
-	}
-	else
+	// if (comps.o->type == OT_SPHERE)
+	// {
+	// 	op = ft_transform_tuple(comps.o->transform_inverse, comps.pt);
+	// 	t_texture texture/* ft_get_texture(20, 10) */;
+	// 	texture.width = w->ppm->width;
+	// 	texture.height = w->ppm->height;
+	// 	texture.pixels = w->ppm->pixels;
+	// 	uv = ft_spherical_map(op);
+	// 	c = ft_uv_pattern_at(texture, uv.x, uv.y);
+	// }
+	// else if (comps.o->type == OT_PLANE)
+	// {
+	// 	op = ft_transform_tuple(comps.o->transform_inverse, comps.pt);
+	// 	// printf("The transform inverse is:\n");
+	// 	// ft_print_matrix(comps.o->transform_inverse);
+	// 	t_texture texture/* ft_get_texture(20, 10) */;
+	// 	texture.width = w->ppm->width;
+	// 	texture.height = w->ppm->height;
+	// 	texture.pixels = w->ppm->pixels;
+	// 	uv = ft_planar_map(op);
+	// 	c = ft_uv_pattern_at(texture, uv.x, uv.y);
+	// }
+	// else
 		c = m.color;
 	// TEST E
 	// printf("is is checkered? %d\n", comps.o -> checkered);
