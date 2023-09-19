@@ -27,6 +27,7 @@ LSTS				:=	${addprefix lsts/, objs.c xs.c}
 SCENE				:=	${addprefix scene/, scene.c camera.c}
 LIGHT_SHADING		:=	${addprefix light_shading/, lighting.c}
 PARSING				:=	${addprefix checkmap/, allocate_data.c checkmap.c helpers.c my_strtod.c split_string.c}
+PPM					:=	${addprefix ppm_file/, ppm.c}
 
 SRCS				:=	main.c \
 								$(TUPLES) \
@@ -37,6 +38,7 @@ SRCS				:=	main.c \
 								$(SCENE) \
 								$(LIGHT_SHADING) \
 								$(PARSING) \
+								$(PPM) \
 
 
 OBJS_DIR			:=	Makefile_objects

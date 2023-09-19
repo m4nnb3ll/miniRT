@@ -220,6 +220,14 @@ typedef struct s_window
 	mlx_image_t	*img;
 }	t_window;
 
+typedef struct s_ppm
+{
+	t_color	**color;
+	char	**read;
+	int		width;
+	int		height;
+} t_ppm;
+
 // TEST S
 typedef struct s_texture
 {
