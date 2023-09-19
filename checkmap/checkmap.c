@@ -114,7 +114,6 @@ void	sphere_data(char **split, t_obj *obj)
 	sphere = ft_calloc(1, sizeof(t_sphere)); // Make sure to ft_calloc instead of malloc
 	obj->props = sphere;
 	obj->material = ft_material();
-	ft_inverse(ft_multi_matrices(ft_translate(sphere->pt.x, sphere->pt.y, sphere->pt.z), ft_scale(sphere->d, sphere->d, sphere->d)));
 	
 	// ft_inverse(ft_multimatrices)
 	
@@ -125,6 +124,8 @@ void	sphere_data(char **split, t_obj *obj)
 	sphere->pt.y = tuple.y;
 	sphere->pt.z = tuple.z;
 	sphere->pt.w = tuple.z;
+
+	obj -> transform_inverse = ft_inverse(ft_multi_matrices(ft_translate(sphere->pt.x, sphere->pt.y, sphere->pt.z), ft_scale(sphere->d, sphere->d, sphere->d)));
 
 	obj->material.color.r = translatecolor(my_strtod(rgb[0]));
 	obj->material.color.g = translatecolor(my_strtod(rgb[1]));
@@ -156,15 +157,15 @@ void	plane_data(char **split, t_obj *obj)
 	
 	if (nbr_info(rgb, 3) || nbr_info(coords, 3) || nbr_info(axis, 3) || ft_mag(axis_tuple) != 1 || check_range(axis_tuple))
 		error_msg("Error: Incomplete plane input\n");
-	obj->material.color.r = translatecolor(my_strtod(rgb[0]));
-	obj->material.color.g = translatecolor(my_strtod(rgb[1]));
-	obj->material.color.b = translatecolor(my_strtod(rgb[2]));
 
 	plane = ft_calloc(sizeof(t_plane), 1);
 	obj->props = plane;
 	obj->material = ft_material();
-	obj->transform_inverse = ft_inverse(ft_multi_matrices(ft_translate(plane->pt.x, plane->pt.y, plane->pt.z),
-		ft_get_rotation_matrix(ft_vector(0, 1, 0), plane->normal)));
+
+	obj->material.color.r = translatecolor(my_strtod(rgb[0]));
+	obj->material.color.g = translatecolor(my_strtod(rgb[1]));
+	obj->material.color.b = translatecolor(my_strtod(rgb[2]));
+
 	plane->pt.x = coords_tuple.x;
 	plane->pt.y = coords_tuple.y;
 	plane->pt.z = coords_tuple.z;
@@ -174,7 +175,11 @@ void	plane_data(char **split, t_obj *obj)
 	plane->normal.y = axis_tuple.y;
 	plane->normal.z = axis_tuple.z;
 	plane->normal.w = axis_tuple.w;
+	plane->normal = ft_normalize(plane->normal);
 	
+	obj->transform_inverse = ft_inverse(ft_multi_matrices(ft_translate(plane->pt.x, plane->pt.y, plane->pt.z),
+		ft_get_rotation_matrix(ft_vector(0, 1, 0), plane->normal)));
+
 	free_double(rgb);
 	free_double(axis);
 	free_double(coords);
@@ -189,10 +194,9 @@ void	cylinder_data(char **split, t_obj *obj)
 	char		**axis;
 	char		**rgb;
 
-	obj->type = 13;
+	obj->type = OT_CYLINDER;
 	if (nbr_info(split, 6))
 		error_msg("Error: Incomplete cylinder input\n");
-	
 	coords = ft_split(split[1], ',');
 	axis = ft_split(split[2], ',');
 	rgb = ft_split(split[5], ',');
@@ -207,8 +211,6 @@ void	cylinder_data(char **split, t_obj *obj)
 	obj->props = cylinder;
 	
 	obj->material = ft_material();
-	obj->transform_inverse = ft_inverse(ft_multi_matrices(ft_translate(cylinder->center.x, cylinder->center.y, cylinder->center.z),
-		ft_multi_matrices(ft_get_rotation_matrix(ft_vector(0, 1, 0), cylinder->axis),ft_scale(cylinder->d, cylinder->h, cylinder->d))));
 
 	cylinder->d = my_strtod(split[3]);
 	cylinder->h = my_strtod(split[4]);
@@ -225,6 +227,9 @@ void	cylinder_data(char **split, t_obj *obj)
 	cylinder->center.y = coords_tuple.y;
 	cylinder->center.z = coords_tuple.z;
 	cylinder->center.w = coords_tuple.w;
+
+	obj->transform_inverse = ft_inverse(ft_multi_matrices(ft_translate(cylinder->center.x, cylinder->center.y, cylinder->center.z),
+		ft_multi_matrices(ft_get_rotation_matrix(ft_vector(0, 1, 0), cylinder->axis),ft_scale(cylinder->d, cylinder->h, cylinder->d))));
 
 	free_double(rgb);
 	free_double(axis);

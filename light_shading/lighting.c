@@ -146,10 +146,15 @@ t_color	ft_lighting(t_world *w, t_comps comps)
 	m = comps.o -> material;
 	// c = ft_checkered(comps);
 	// TEST S
-	op = ft_transform_tuple(comps.o->transform_inverse, comps.pt);
-	t_texture texture = ft_get_texture(20, 10);
-	uv = ft_spherical_map(op);
-	c = ft_uv_pattern_at(texture, uv.x, uv.y);
+	if (comps.o->type == OT_SPHERE)
+	{
+		op = ft_transform_tuple(comps.o->transform_inverse, comps.pt);
+		t_texture texture = ft_get_texture(20, 10);
+		uv = ft_spherical_map(op);
+		c = ft_uv_pattern_at(texture, uv.x, uv.y);
+	}
+	else
+		c = m.color;
 	// TEST E
 	// printf("is is checkered? %d\n", comps.o -> checkered);
 	ph.e_color = ft_multi_colors(c, w->lights[0].color);
