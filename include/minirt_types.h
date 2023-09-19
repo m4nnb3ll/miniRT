@@ -227,6 +227,7 @@ typedef struct s_ppm
 	int		width;
 	int		height;
 } t_ppm;
+
 // TEST S
 typedef struct s_texture
 {
