@@ -6,7 +6,7 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:02:55 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/17 13:56:44 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/19 21:28:01 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,16 @@ void	error_msg(char *str)
 	exit (1);
 }
 
-int nbr_info(char **str, int shouldbe)
+int nbr_info(char **str)
 {
 	int i;
 
 	i = 0;
 	while (str[i])
 		i++;
-	if (i != shouldbe)
-		return (1);
-	return (0);
+	// if (i != shouldbe)
+	// 	return (1);
+	return (i);
 }
 
 //converts a color value from the range of 0 to 255 to a normalized range of 0.0 to 1.0
