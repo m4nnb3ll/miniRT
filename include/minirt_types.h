@@ -85,6 +85,14 @@ typedef struct s_cone {
 	double	height;
 }	t_cone;
 
+typedef struct s_ppm
+{
+	t_color	**pixels;
+	char	**read;
+	int		width;
+	int		height;
+} t_ppm;
+
 typedef struct s_obj
 {
 	enum e_obj_type		type;
@@ -92,6 +100,7 @@ typedef struct s_obj
 	t_material			material;
 	void				*props;
 	bool				checkered;
+	t_ppm				*ppm;
 	struct s_obj		*next;
 }	t_obj;
 
@@ -184,16 +193,6 @@ typedef struct s_cylinder
 	double	h; // height
 }	t_cylinder;
 
-typedef struct s_world
-{
-	t_ambient	ambient;
-	t_camera	camera;
-	t_light		lights[2];
-	t_obj		*objs;
-	int			num_objs; // number of objects
-	int			num_lights;
-}	t_world;
-
 typedef struct s_find
 {
 	char **split;
@@ -220,14 +219,6 @@ typedef struct s_window
 	mlx_image_t	*img;
 }	t_window;
 
-typedef struct s_ppm
-{
-	t_color	**color;
-	char	**read;
-	int		width;
-	int		height;
-} t_ppm;
-
 // TEST S
 typedef struct s_texture
 {
@@ -236,5 +227,16 @@ typedef struct s_texture
 	t_color	**pixels;
 }	t_texture;
 // TEST E
+
+typedef struct s_world
+{
+	t_ambient	ambient;
+	t_camera	camera;
+	t_light		lights[2];
+	t_obj		*objs;
+	int			num_objs; // number of objects
+	int			num_lights;
+	t_ppm		*ppm;
+}	t_world;
 
 #endif
