@@ -115,9 +115,6 @@ int main(/* int argc, char **argv */)
 
 	world_data(&w, "test.rt");
 	// w.objs[0].transform_inverse = ft_inverse(ft_translate(1, 0, 0));
-	w.objs[0].transform_inverse = ft_inverse(ft_translate(1.5, 0, 0));
-	w.objs[0].material = ft_material();
-	w.objs[0].checkered = true;
 	w.camera = ft_camera(w.camera);
 	t_window window = ft_img_ptr();
 	ft_render(window, &w, w.camera);

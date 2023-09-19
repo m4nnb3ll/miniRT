@@ -28,6 +28,8 @@ t_xnode	*ft_intersect_sphere(t_obj *o, t_ray r)
 
 t_xnode	*ft_intersect_plane(t_obj *o, t_ray r)
 {
+	double	t;
+	
 	// printf("The ray");
 	r = ft_transform_ray(o -> transform_inverse, r);
 	if (fabs(r.direction.y) < EPSILON)
@@ -36,7 +38,10 @@ t_xnode	*ft_intersect_plane(t_obj *o, t_ray r)
 		return (NULL);
 	}
 	// printf("r.direction.y is: %f\n", r.direction.y);
-	return (ft_xnew(o, - r.origin.y / r.direction.y));
+	t = - r.origin.y / r.direction.y;
+	if (t >= EPSILON)
+		return (ft_xnew(o, t));
+	return (NULL);
 }
 
 // .5 is the height/2
