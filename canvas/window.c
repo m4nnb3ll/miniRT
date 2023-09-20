@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   window.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/20 12:52:34 by abelayad          #+#    #+#             */
+/*   Updated: 2023/09/20 12:53:46 by abelayad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 void handle_keys(mlx_key_data_t keydata, void* param)
@@ -16,9 +28,10 @@ void	close_window(void *param)
 
 void set_background(mlx_image_t	*image, int width, int height)
 {
-	int x = 0,y = 0;
+	int x;
+	int	y;
 
-	// printf("The image ptr from inside is: %p\n", image);
+	x = 0;
 	while (x < width)
 	{
 		y = 0;
@@ -38,15 +51,7 @@ t_window	ft_img_ptr(void)
 
 	mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, "miniRT", false);
 	image = mlx_new_image(mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
-	// printf("The image produced: %p\n", image);
-	// set_background(image, SCREEN_WIDTH, SCREEN_HEIGHT);
-	//handle red cross and ESC in subject
 	mlx_close_hook(mlx, close_window, NULL);
 	mlx_key_hook(mlx, handle_keys, NULL);
 	return ((t_window){mlx, image});
 }
-
-// int main()
-// {
-// 	mlx_image_t	*image = image_ptr();
-// }

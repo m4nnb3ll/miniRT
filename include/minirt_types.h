@@ -35,11 +35,11 @@ typedef struct s_color
 	double	b;
 }	t_color;
 
-extern t_color	g_black;
-extern t_color	g_white;
-extern t_color	g_red;
-extern t_color	g_green;
-extern t_color	g_blue;
+extern const t_color	g_black;
+extern const t_color	g_white;
+extern const t_color	g_red;
+extern const t_color	g_green;
+extern const t_color	g_blue;
 
 typedef struct s_canvas {
 	t_color	pixel_grid[SCREEN_WIDTH][SCREEN_HEIGHT];
@@ -51,7 +51,7 @@ typedef struct s_matrix
 	double	val[4][4];
 }	t_matrix;
 
-extern t_matrix	g_identity_matrix;
+extern const t_matrix	g_identity_matrix;
 
 typedef struct s_ray
 {
@@ -76,9 +76,18 @@ typedef struct s_material
 	double	shininess;
 }	t_material;
 
+typedef struct s_btex
+{
+	t_color	**pixels;
+	char	**read;
+	int		width;
+	int		height;
+} t_btex;
+
 typedef struct s_plane {
 	t_tuple	normal;
 	t_tuple	pt;
+	t_btex	*btex; // bump map texture
 }	t_plane;
 
 typedef struct s_cone {
@@ -92,6 +101,7 @@ typedef struct s_obj
 	t_material			material;
 	void				*props;
 	bool				checkered;
+	t_btex				*btex;
 	struct s_obj		*next;
 }	t_obj;
 
@@ -110,12 +120,6 @@ typedef struct s_quadratics
 	double	c;
 	double	d;
 }	t_quadratics;
-
-typedef struct s_point_light
-{
-	t_tuple	position;
-	t_color	color;
-}	t_point_light;
 
 typedef struct s_phong
 {
@@ -184,16 +188,6 @@ typedef struct s_cylinder
 	double	h; // height
 }	t_cylinder;
 
-typedef struct s_world
-{
-	t_ambient	ambient;
-	t_camera	camera;
-	t_light		lights[2];
-	t_obj		*objs;
-	int			num_objs; // number of objects
-	int			num_lights;
-}	t_world;
-
 typedef struct s_find
 {
 	char **split;
@@ -220,21 +214,15 @@ typedef struct s_window
 	mlx_image_t	*img;
 }	t_window;
 
-typedef struct s_ppm
-{
-	t_color	**color;
-	char	**read;
-	int		width;
-	int		height;
-} t_ppm;
 
-// TEST S
-typedef struct s_texture
+typedef struct s_world
 {
-	int		width;
-	int		height;
-	t_color	**pixels;
-}	t_texture;
-// TEST E
+	t_ambient	ambient;
+	t_camera	camera;
+	t_light		lights[2];
+	t_obj		*objs;
+	int			num_objs; // number of objects
+	int			num_lights;
+}	t_world;
 
 #endif

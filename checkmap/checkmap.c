@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checkmap.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:34:38 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/20 11:31:35 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/20 13:09:47 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,11 @@ void	plane_data(char **split, t_obj *obj)
 	plane->normal = ft_normalize(plane->normal);
 	
 	obj->transform_inverse = ft_inverse(ft_multi_matrices(ft_translate(plane->pt.x, plane->pt.y, plane->pt.z),
-		ft_get_rotation_matrix(ft_vector(0, 1, 0), plane->normal)));
+		ft_get_rotation_matrix(ft_vector(0, 0, 1), plane->normal)));
+
+	obj -> btex = ft_calloc(1, sizeof(t_btex));
+	readppm("/Users/abelayad/Projects/miniRT/test_texture.ppm", obj -> btex);
+	ppm_data(obj -> btex);
 
 	free_double(rgb);
 	free_double(axis);

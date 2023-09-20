@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ppm.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 20:43:54 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/20 11:32:23 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/20 13:11:27 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	readppm(char *file, t_ppm *ppm)
 	free (joiner);
 }
 
-void	ppm_data(t_ppm *ppm)
+void	ppm_data(t_btex *ppm)
 {
 	char	**tmp;
 	char 	**tmp1;
@@ -62,11 +62,11 @@ void	ppm_data(t_ppm *ppm)
 	tmp = ft_split(ppm->read[1], 32);
 	ppm->width = ft_atoi(tmp[0]);
 	ppm->height = ft_atoi(tmp[1]);
-	ppm->color = ft_calloc(ppm->height, sizeof(t_color *));
+	ppm->pixels = ft_calloc(ppm->height, sizeof(t_color *));
 	ppm->read += 3;
 	while (i < ppm->height)
 	{
-		ppm->color[i] = ft_calloc(ppm->width, sizeof(t_color));
+		ppm->pixels[i] = ft_calloc(ppm->width, sizeof(t_color));
 		i++;
 	}
 	i = 0;
@@ -79,9 +79,9 @@ void	ppm_data(t_ppm *ppm)
 		char **ptr = tmp;
 		while (j < ppm->width)
 		{
-			ppm->color[i][j].r = translatecolor(my_strtod(tmp[0]));
-			ppm->color[i][j].g = translatecolor(my_strtod(tmp[1]));
-			ppm->color[i][j].b = translatecolor(my_strtod(tmp[2]));
+			ppm->pixels[i][j].r = translatecolor(my_strtod(tmp[0]));
+			ppm->pixels[i][j].g = translatecolor(my_strtod(tmp[1]));
+			ppm->pixels[i][j].b = translatecolor(my_strtod(tmp[2]));
 			tmp += 3;
 			j++;
 		}
@@ -94,7 +94,7 @@ void	ppm_data(t_ppm *ppm)
 
 
 // this how to use it just call
-// 	t_ppm	ppm;
+// 	t_btex	ppm;
 // 	readppm("file.ppm", &ppm);
 // 	ppm_data(&ppm);
 // call free_color(ppm->color); after finishing its use

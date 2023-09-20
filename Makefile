@@ -20,12 +20,12 @@ LIBS				:=	$(LIBMLX) $(GLFW) -ldl $(LIBFT) -lm -pthread
 
 # SRCS
 TUPLES				:=	${addprefix tuples/, tuples.c}
-CANVAS				:=	${addprefix canvas/, canvas.c color.c window.c}
+CANVAS				:=	${addprefix canvas/, color.c window.c utils.c}
 MATRICES			:=	${addprefix matrices/, matrices.c matrix_transformations.c quaternions.c}
 RAY_INTERSECT		:=	${addprefix ray_intersect/, ray.c intersect.c}
 LSTS				:=	${addprefix lsts/, objs.c xs.c}
 SCENE				:=	${addprefix scene/, scene.c camera.c}
-LIGHT_SHADING		:=	${addprefix light_shading/, lighting.c}
+LIGHT_SHADING		:=	${addprefix light_shading/, lighting.c normals.c utils.c}
 PARSING				:=	${addprefix checkmap/, allocate_data.c checkmap.c helpers.c my_strtod.c split_string.c}
 PPM					:=	${addprefix ppm_file/, ppm.c}
 
@@ -61,8 +61,8 @@ $(LIBFT)			:
 									@echo "$(GREEN)libft ✓$(RESET_COLOR)"
 
 $(NAME)				:		$(OBJS) $(LIBFT) 
-# @$(CC) $(OBJS) $(LIBS) -fsanitize=address -o $(NAME)
-									@$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -o $(NAME)
+									@$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -fsanitize=address -o $(NAME)
+# @$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -o $(NAME)
 									@echo "$(GREEN)All Done ✓$(RESET_COLOR)"
 
 clean				:
