@@ -34,8 +34,8 @@ void        world_data(t_world *world, char *filename);
 void	    display_map(char **map);
 //TMP
 
-void	readppm(char *file, t_ppm *ppm);
-void	ppm_data(t_ppm *ppm);
+void	readppm(char *file, t_btex *ppm);
+void	ppm_data(t_btex *ppm);
 
 
 

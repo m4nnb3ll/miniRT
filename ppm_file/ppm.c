@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-void	readppm(char *file, t_ppm *ppm)
+void	readppm(char *file, t_btex *ppm)
 {
 	char	*joiner;
 	char	*leak;
@@ -43,7 +43,7 @@ void	readppm(char *file, t_ppm *ppm)
 	free (joiner);
 }
 
-void	ppm_data(t_ppm *ppm)
+void	ppm_data(t_btex *ppm)
 {
 	char	**tmp;
 	int		i = 0;
@@ -80,6 +80,6 @@ void	ppm_data(t_ppm *ppm)
 
 
 // this how to use it just call
-// 	t_ppm	ppm;
+// 	t_btex	ppm;
 // 	readppm("file.ppm", &ppm);
 // 	ppm_data(&ppm);

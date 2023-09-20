@@ -41,7 +41,7 @@ char *objs_strs[] = {
 
 void	ft_print_material(t_material m)
 {
-	ft_print_color(m.color);
+	// ft_print_color(m.color);
 	printf("%f %f %f %f\n", m.ambient, m.diffuse, m.specular, m.shininess);
 }
 
@@ -58,38 +58,40 @@ void	ft_print_obj(t_obj *obj)
 	printf("The props are: %p\n", obj->props);
 }
 
-t_texture	ft_get_texture(int w, int h)
-{
-	t_texture	texture;
-	t_color		**pixels;
+// t_texture	ft_get_texture(int w, int h)
+// {
+// 	t_texture	texture;
+// 	t_color		**pixels;
 
-	pixels	= ft_calloc(h, sizeof(t_color*));
-	for (int i = 0; i < h; i++)
-		pixels[i] = ft_calloc(w, sizeof(t_color));
-	for (int i = 0; i < h; i++)
-	{
-		for (int j = 0; j < w; j++)
-		{
-			if ((i + j)%2 == 0)
-				pixels[i][j] = g_black;
-			else
-				pixels[i][j] = g_white;
-		}
-	}
-	texture = (t_texture){w, h, pixels};
-	return (texture);
-}
+// 	pixels	= ft_calloc(h, sizeof(t_color*));
+// 	for (int i = 0; i < h; i++)
+// 		pixels[i] = ft_calloc(w, sizeof(t_color));
+// 	for (int i = 0; i < h; i++)
+// 	{
+// 		for (int j = 0; j < w; j++)
+// 		{
+// 			if ((i + j)%2 == 0)
+// 				pixels[i][j] = g_black;
+// 			else
+// 				pixels[i][j] = g_white;
+// 		}
+// 	}
+// 	texture = (t_texture){w, h, pixels};
+// 	return (texture);
+// }
 
-t_color	ft_uv_pattern_at(t_texture texture, double u, double v) // u & v [0-1.0]
+t_color	ft_uv_pattern_at(t_btex *texture, double u, double v) // u & v [0-1.0]
 {
+	if (!texture)
+		return (g_black);
 	int	x, y;
 
-	x = (int)floor(u * (texture.width)) % texture.width;
-	y = (int)floor(v * (texture.height)) % texture.height;
+	x = (int)floor(u * (texture->width)) % texture->width;
+	y = (int)floor(v * (texture->height)) % texture->height;
 	// printf("the x and y are: %d %d\n", x, y);
 	// printf("The x and y are: %d %d\n", x, y);
 	// printf("The x is: %d and y is: %d\n", x, y);
-	return	(texture.pixels[y][x]);
+	return	(texture->pixels[y][x]);
 }
 
 // t_tuple	ft_texture_normal_at(t_texture texture, double u, double v)
@@ -126,7 +128,6 @@ t_tuple	ft_spherical_map(t_tuple op)// take only the x and y
 
 int main(/* int argc, char **argv */)
 {
-	// t_canvas	canvas;
 	t_world		w;
 
 	world_data(&w, "test.rt");

@@ -183,9 +183,9 @@ void	plane_data(char **split, t_obj *obj)
 	obj->transform_inverse = ft_inverse(ft_multi_matrices(ft_translate(plane->pt.x, plane->pt.y, plane->pt.z),
 		ft_get_rotation_matrix(ft_vector(0, 0, 1), plane->normal)));
 
-	obj -> ppm = ft_calloc(1, sizeof(t_ppm));
-	readppm("/Users/abelayad/Projects/miniRT/test_texture.ppm", obj -> ppm);
-	ppm_data(obj -> ppm);
+	obj -> btex = ft_calloc(1, sizeof(t_btex));
+	readppm("/Users/abelayad/Projects/miniRT/test_texture.ppm", obj -> btex);
+	ppm_data(obj -> btex);
 
 	free_double(rgb);
 	free_double(axis);
