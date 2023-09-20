@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   allocate_data.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:22:23 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/16 11:55:43 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/20 13:39:04 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	split_data(t_data *data)
 	int i;
 
 	i = 0;
-	// printf("size : %d\n", data->mapsize);
 	data->find = ft_calloc(sizeof(t_find), (data->mapsize + 1));
 	if (!data->find)
 		exit (1);

@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tuples.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/20 13:57:37 by abelayad          #+#    #+#             */
+/*   Updated: 2023/09/20 13:57:39 by abelayad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef TUPLES_H
 # define TUPLES_H
 
-#include "minirt_types.h"
+# include "minirt_types.h"
 
-void		ft_print_tuple(t_tuple a);
+void	ft_print_tuple(t_tuple a);
 t_tuple	ft_point(double x, double y, double z);
 t_tuple	ft_vector(double x, double y, double z);
 t_tuple	ft_add_tuples(t_tuple a, t_tuple b);

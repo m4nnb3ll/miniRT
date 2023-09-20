@@ -1,13 +1,21 @@
-#ifndef	CANVAS_H
-#define	CANVAS_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   canvas.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/20 13:43:10 by abelayad          #+#    #+#             */
+/*   Updated: 2023/09/20 13:44:00 by abelayad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef CANVAS_H
+# define CANVAS_H
 
 # include "minirt_types.h"
 // # include "MLX42.h"
 
-void			ft_print_canvas(t_canvas canvas);
-void			ft_write_pixel(t_canvas *c, uint32_t row, uint32_t col, t_color color);
-void			ft_canvas_to_ppm(t_canvas *canvas);
-void			ft_print_color(t_color c);
 t_color		ft_color(double r, double g, double b);
 t_color		ft_add_colors(t_color a, t_color b);
 t_color		ft_sub_colors(t_color a, t_color b);

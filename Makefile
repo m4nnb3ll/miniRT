@@ -19,12 +19,12 @@ GLFW				:=	~/MLX42/build/_deps/glfw-build/src/libglfw3.a
 LIBS				:=	$(LIBMLX) $(GLFW) -ldl $(LIBFT) -lm -pthread
 
 # SRCS
-TUPLES				:=	${addprefix tuples/, tuples.c}
+TUPLES				:=	${addprefix tuples/, tuple_ops.c tuples.c}
 CANVAS				:=	${addprefix canvas/, color.c window.c utils.c}
-MATRICES			:=	${addprefix matrices/, matrices.c matrix_transformations.c quaternions.c}
-RAY_INTERSECT		:=	${addprefix ray_intersect/, ray.c intersect.c}
-LSTS				:=	${addprefix lsts/, objs.c xs.c}
-SCENE				:=	${addprefix scene/, scene.c camera.c}
+MATRICES			:=	${addprefix matrices/, matrix_ops.c matrix_transformations.c quaternions.c utils.c}
+RAY_INTERSECT		:=	${addprefix ray_intersect/, ray.c intersect.c caps.c utils.c}
+LSTS				:=	${addprefix lsts/, xs.c}
+SCENE				:=	${addprefix camera/, camera.c}
 LIGHT_SHADING		:=	${addprefix light_shading/, lighting.c normals.c utils.c}
 PARSING				:=	${addprefix checkmap/, allocate_data.c checkmap.c helpers.c my_strtod.c split_string.c}
 PPM					:=	${addprefix ppm_file/, ppm.c}

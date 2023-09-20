@@ -1,16 +1,20 @@
-#include "minirt.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/20 16:10:32 by abelayad          #+#    #+#             */
+/*   Updated: 2023/09/20 16:10:33 by abelayad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	ft_print_ray(t_ray r)
-{
-	printf("ray's origin: ");
-	ft_print_tuple(r.origin);
-	printf("ray's direction: ");
-	ft_print_tuple(r.direction);
-}
+#include "minirt.h"
 
 t_ray	ft_ray(t_tuple origin, t_tuple direction)
 {
-	return ((t_ray){ origin, direction });
+	return ((t_ray){origin, direction});
 }
 
 t_tuple	ft_pos_on_ray(t_ray r, double x)
@@ -22,7 +26,5 @@ t_ray	ft_transform_ray(t_matrix m, t_ray r)
 {
 	r.origin = ft_transform_tuple(m, r.origin);
 	r.direction = ft_transform_tuple(m, r.direction);
-	// if normalizing the direction after the transform doesn't affect the others
-	// you can add it here.
 	return (r);
 }

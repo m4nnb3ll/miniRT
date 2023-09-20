@@ -6,21 +6,21 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 12:52:29 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/20 12:52:29 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/20 13:38:21 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-const t_color	g_black = (t_color){ 0, 0, 0 };
-const t_color	g_white = (t_color){ 1, 1, 1 };
-const t_color	g_red = (t_color){ 1, 0, 0 };
-const t_color	g_green = (t_color){ 0, 1, 0 };
-const t_color	g_blue = (t_color){ 0, 0, 1 };
+const t_color	g_black = (t_color){0, 0, 0};
+const t_color	g_white = (t_color){1, 1, 1};
+const t_color	g_red = (t_color){1, 0, 0};
+const t_color	g_green = (t_color){0, 1, 0};
+const t_color	g_blue = (t_color){0, 0, 1};
 
 t_color	ft_color(double r, double g, double b)
 {
-	return ((t_color){ r, g, b });
+	return ((t_color){r, g, b});
 }
 
 t_color	ft_add_colors(t_color a, t_color b)
