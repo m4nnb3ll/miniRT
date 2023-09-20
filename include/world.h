@@ -6,7 +6,7 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:27:14 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/19 00:13:25 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/19 21:28:12 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 char		**split_string(char *s);
 double		my_strtod(char *str);
 
-int			nbr_info(char **str, int shouldbe);
+int         nbr_info(char **str);
 int			ft_strcmp(char *s1, char *s2);
 int			check_range(t_tuple tuple);
 double		translatecolor(double color);
