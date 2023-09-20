@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 16:00:05 by abelayad          #+#    #+#             */
-/*   Updated: 2023/03/15 23:04:03 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/20 14:59:23 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdint.h>
+# include <stdbool.h>
+# include <math.h>
 // My functions headers below
 # include "get_next_line.h"
 
@@ -44,6 +46,7 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 int		ft_atoi(const char *str);
 int		ft_atoi_base(const char *str, int base);
 void	*ft_calloc(size_t count, size_t size);
+bool	ft_fequals(double a, double b);
 char	*ft_strdup(const char *s1);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);

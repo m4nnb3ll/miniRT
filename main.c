@@ -51,10 +51,10 @@ void	ft_print_obj(t_obj *obj)
 	printf("the obj type is: %s\n", objs_strs[obj->type]);
 	// Transform Inverse
 	printf("The transform_inverse is:\n");
-	ft_print_matrix(obj->transform_inverse);
+	// ft_print_matrix(obj->transform_inverse);
 	// Material
 	printf("The material is:\n");
-	ft_print_material(obj->material);
+	// ft_print_material(obj->material);
 	printf("The props are: %p\n", obj->props);
 }
 

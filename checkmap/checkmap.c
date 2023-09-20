@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:34:38 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/20 13:09:47 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/20 14:56:43 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	camera_data(char **split, t_camera *camera)
 	fov = ft_vector(
 		my_strtod(vector[0]), my_strtod(vector[1]), my_strtod(vector[2]));
 	
-	if (ft_mag(fov) != 1)
+	if (!ft_fequals(ft_mag(fov), 1))
 		error_msg("Error: Incomplete camera input --\n");
 	else	
 		camera->forward_v = fov;
@@ -250,26 +250,26 @@ void	check_count(t_data *data)
 	int 	i;
 
 	i = 0;
-	count.A = 0;
-	count.C = 0;
-	count.L = 0;
+	count.a = 0;
+	count.c = 0;
 	count.l = 0;
+	count.ls = 0;
 	while (data->find[i].split)
 	{
 		split = &data->find[i].split[0];
 		if (split[0] && !ft_strcmp(split[0], "A"))
-			count.A++;
+			count.a++;
 		else if (split[0] && !ft_strcmp(split[0], "C"))
-			count.C++;
+			count.c++;
 		else if (split[0] && !ft_strcmp(split[0], "L"))
-			count.L++;
-		else if (split[0] && !ft_strcmp(split[0], "l"))
 			count.l++;
+		else if (split[0] && !ft_strcmp(split[0], "l"))
+			count.ls++;
 		else if (split[0] && ft_strcmp(split[0], "pl") && ft_strcmp(split[0], "sp") && ft_strcmp(split[0], "cy"))
 			error_msg("Invalid input\n");
 		i++;
 	}
-	if (count.A != 1 || count.C != 1 || count.L != 1 || count.l > 1)
+	if (count.a != 1 || count.c != 1 || count.l != 1 || count.ls > 1)
 			error_msg("Invalid input\n");
 }
 

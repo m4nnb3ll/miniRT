@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 00:45:11 by abelayad          #+#    #+#             */
-/*   Updated: 2023/02/02 16:08:49 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/20 14:02:47 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	ft_matchset(char c, char const *set)
 }
 
 static char	*ft_trimmer(char const *s1, char const *set)
-{	
+{
 	size_t	i;
 	size_t	j;
 	char	*trimmed;
