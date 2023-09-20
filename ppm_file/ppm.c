@@ -5,12 +5,26 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/18 13:18:06 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/19 16:20:28 by ogorfti          ###   ########.fr       */
+/*   Created: 2023/09/19 20:43:54 by ogorfti           #+#    #+#             */
+/*   Updated: 2023/09/20 11:32:23 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+void	free_color(t_color **color)
+{
+	int i;
+
+	i = 0;
+	while (color[i])
+	{
+		free (color[i]);
+		color[i] = 0;
+		i++;
+	}
+	free(color);
+}
 
 void	readppm(char *file, t_ppm *ppm)
 {
@@ -21,10 +35,7 @@ void	readppm(char *file, t_ppm *ppm)
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-	{
 		error_msg("Error opening file\n");
-		exit (13);
-	}
 	joiner = ft_calloc(1, 1);
 	while (1)
 	{
@@ -43,10 +54,11 @@ void	readppm(char *file, t_ppm *ppm)
 void	ppm_data(t_ppm *ppm)
 {
 	char	**tmp;
+	char 	**tmp1;
 	int		i = 0;
 	int		j = 0;
 
-	printf("test0\n");
+	tmp1 = ppm->read;
 	tmp = ft_split(ppm->read[1], 32);
 	ppm->width = ft_atoi(tmp[0]);
 	ppm->height = ft_atoi(tmp[1]);
@@ -58,11 +70,13 @@ void	ppm_data(t_ppm *ppm)
 		i++;
 	}
 	i = 0;
-	// free_double(tmp);
+	free_double(tmp);
+	tmp = NULL;
 	while (i < ppm->height)
 	{
 		j = 0;
 		tmp = ft_split(ppm->read[i], 32);
+		char **ptr = tmp;
 		while (j < ppm->width)
 		{
 			ppm->color[i][j].r = translatecolor(my_strtod(tmp[0]));
@@ -71,13 +85,16 @@ void	ppm_data(t_ppm *ppm)
 			tmp += 3;
 			j++;
 		}
-		// free_double(tmp);
+		free_double(ptr);
 		i++;
 	}
+	free_double(tmp1);
 }
+
 
 
 // this how to use it just call
 // 	t_ppm	ppm;
 // 	readppm("file.ppm", &ppm);
 // 	ppm_data(&ppm);
+// call free_color(ppm->color); after finishing its use

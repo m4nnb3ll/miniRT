@@ -6,7 +6,7 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:34:38 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/19 21:47:45 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/20 11:31:35 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	light_data(char **split, t_light *light)
 
 	if (nbr_info(split) == 4)
 	{
-		printf("HERE\n");
 		rgb = ft_split(split[3], ',');
 		if (nbr_info(rgb) != 3)
 			error_msg("Error: Incomplete color input\n");	
