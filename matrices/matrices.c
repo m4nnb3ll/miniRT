@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-t_matrix	g_identity_matrix = {
+const t_matrix	g_identity_matrix = {
 	4, {
 		{1, 0, 0, 0},
 		{0, 1, 0, 0},

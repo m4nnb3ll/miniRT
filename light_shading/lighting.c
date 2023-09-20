@@ -1,86 +1,8 @@
 #include "minirt.h"
 
-t_point_light	ft_point_light(t_tuple position, t_color color)
-{
-	return ((t_point_light){ position, color });
-}
-
 t_material	ft_material(void)
 {
 	return ((t_material){ g_white, .1, .9, .9, 200 });
-}
-
-t_tuple	ft_get_cyl_normal(t_obj *cy, t_tuple op)
-{
-	double	half_height;
-	double	d;
-
-	(void)cy;
-	half_height = .5;
-	d = pow(op.x, 2) + pow(op.z, 2);
-	if (d < 1 && op.y >= half_height - EPSILON)
-		return (ft_vector(0, 1, 0));
-	if (d < 1 && op.y <= -half_height + EPSILON)
-		return (ft_vector(0, -1, 0));
-	// printf("I reach bottom\n");
-	return (ft_vector(op.x, 0, op.z));
-}
-
-t_tuple	ft_get_cone_normal(t_obj *cone, t_tuple op)
-{
-	double	half_height;
-	double	d;
-	double	y;
-
-	(void)cone;
-	y = sqrt(pow(op.x, 2) + pow(op.z, 2)) * (-2 * (op.y > 0) + 1);
-	half_height = .5;
-	d = pow(op.x, 2) + pow(op.z, 2);
-	if (d < 1 && op.y >= half_height - EPSILON)
-		return (ft_vector(0, 1, 0));
-	if (d < 1 && op.y <= -half_height + EPSILON)
-		return (ft_vector(0, -1, 0));
-	// printf("I reach bottom\n");
-	return (ft_vector(op.x, y, op.z));
-}
-
-t_tuple	ft_obj_normal(t_obj *o, t_tuple wp)
-{
-	t_tuple	op;
-	// TESTING GOES BELOW
-	t_tuple	uv;
-	t_color	c;
-
-	op = ft_transform_tuple(o -> transform_inverse, wp);
-	if (o -> type == OT_PLANE)
-	{
-		// TESTING BELOW
-		t_texture texture/* ft_get_texture(20, 10) */;
-		texture.width = o->ppm->width;
-		texture.height = o->ppm->height;
-		texture.pixels = o->ppm->pixels;
-		uv = ft_planar_map(op);
-		c = ft_uv_pattern_at(texture, uv.x, uv.y);
-		// TESTING NOW, the normal before is (0, 0, 1)
-		return (ft_normalize(ft_vector(2*c.r-1, 2*c.g-1, 2*c.b-1)));
-		// return (ft_normalize(ft_vector(c.r, c.g, c.b)));
-	}
-	else if (o -> type == OT_CYLINDER)
-		return (ft_normalize(ft_get_cyl_normal(o, op)));
-	else if (o -> type == OT_CONE)
-		return (ft_normalize(ft_get_cone_normal(o, op)));
-	else
-		return (ft_sub_tuples(op, ft_point(0, 0, 0)));
-}
-
-t_tuple	ft_normal_at(t_obj *o, t_tuple wp)
-{
-	t_tuple		on, wn;
-
-	on = ft_obj_normal(o, wp);
-	wn = ft_transform_tuple(ft_transpose(o -> transform_inverse), on);
-	wn.w = 0;
-	return (ft_normalize(wn));
 }
 
 t_tuple	ft_reflectv(t_tuple in, t_tuple n)
@@ -98,7 +20,7 @@ t_comps	ft_prepare_comps(t_ray r, t_xnode *hit)
 	comps.ev = ft_negv(r.direction);
 	comps.nv = ft_normal_at(hit -> o, comps.pt);
 	comps.inside = false;
-	if (ft_dot(comps.ev, comps.nv) < 0)
+	if (comps.o->type != OT_PLANE && ft_dot(comps.ev, comps.nv) < 0)
 	{
 		comps.inside = true;
 		comps.nv = ft_negv(comps.nv);
@@ -107,7 +29,7 @@ t_comps	ft_prepare_comps(t_ray r, t_xnode *hit)
 	return (comps);
 }
 
-bool	ft_is_shadowed(t_world *w, t_tuple over_pt)
+bool	ft_is_shadowed(t_world *w, t_light l, t_tuple over_pt)
 {
 	(void)w;
 	(void)over_pt;
@@ -116,7 +38,7 @@ bool	ft_is_shadowed(t_world *w, t_tuple over_pt)
 	t_xnode	*hit;
 
 	// lights[0] below is temp
-	lv = ft_sub_tuples(w -> lights[0].position, over_pt);
+	lv = ft_sub_tuples(l.position, over_pt);
 	distance = ft_mag(lv);
 	lv = ft_normalize(lv);
 	hit = ft_hit(ft_intersect_world(w, ft_ray(over_pt, lv)));
@@ -125,22 +47,21 @@ bool	ft_is_shadowed(t_world *w, t_tuple over_pt)
 	return (false);
 }
 
-t_color	ft_checkered(t_comps comps)
+t_color	ft_checkers(t_obj *o, t_tuple pt)
 {
-	t_obj	*o;
 	t_tuple	op;
 
-	o = comps.o;
-	op = ft_transform_tuple(o->transform_inverse, comps.pt);
-	// op = ft_transform_tuple(g_identity_matrix, comps.pt);
-	if (o->checkered)
-	{
-		if (((int)floor(op.x) % 2 == 0 && (int)floor(op.y) % 2 == 0)
-			|| ((int)floor(op.x) % 2 != 0 && (int)floor(op.y) % 2 != 0))
-			return (g_black);
-		return (g_white);
-	}
-	return (o -> material.color);
+	op = ft_transform_tuple(o->transform_inverse, pt);
+	if ((int)(fabs(floor(op.x)) + fabs(floor(op.y))) % 2 == 0)
+		return (g_black);
+	return (g_white);
+}
+
+t_color	ft_get_obj_color(t_comps* comps)
+{
+	if (comps -> o -> type == OT_PLANE)
+		return (ft_checkers(comps->o, comps->pt));
+	return (comps -> o -> material.color);
 }
 
 /*
@@ -149,48 +70,19 @@ t_color	ft_checkered(t_comps comps)
 	d_color(diffuse);
 	s_color(specular);
 */
-t_color	ft_lighting(t_world *w, t_comps comps)
+t_color	ft_lighting(t_world *w, t_light l, t_comps comps)
 {
 	t_phong			ph;
 	t_material	m;
 	t_color		c;
-	// t_tuple		op;
-	// t_tuple		uv;
 
 	m = comps.o -> material;
-	// c = ft_checkered(comps);
-	// TEST S
-	// if (comps.o->type == OT_SPHERE)
-	// {
-	// 	op = ft_transform_tuple(comps.o->transform_inverse, comps.pt);
-	// 	t_texture texture/* ft_get_texture(20, 10) */;
-	// 	texture.width = w->ppm->width;
-	// 	texture.height = w->ppm->height;
-	// 	texture.pixels = w->ppm->pixels;
-	// 	uv = ft_spherical_map(op);
-	// 	c = ft_uv_pattern_at(texture, uv.x, uv.y);
-	// }
-	// else if (comps.o->type == OT_PLANE)
-	// {
-	// 	op = ft_transform_tuple(comps.o->transform_inverse, comps.pt);
-	// 	// printf("The transform inverse is:\n");
-	// 	// ft_print_matrix(comps.o->transform_inverse);
-	// 	t_texture texture/* ft_get_texture(20, 10) */;
-	// 	texture.width = w->ppm->width;
-	// 	texture.height = w->ppm->height;
-	// 	texture.pixels = w->ppm->pixels;
-	// 	uv = ft_planar_map(op);
-	// 	c = ft_uv_pattern_at(texture, uv.x, uv.y);
-	// }
-	// else
-		c = m.color;
-	// TEST E
-	// printf("is is checkered? %d\n", comps.o -> checkered);
-	ph.e_color = ft_multi_colors(c, w->lights[0].color);
-	ph.a_color = ft_color_scl(ph.e_color, m.ambient);
-	if (ft_is_shadowed(w, comps.over_pt))
+	c = ft_get_obj_color(&comps);
+	ph.e_color = ft_multi_colors(c, l.color);
+	ph.a_color = ft_multi_colors(ph.e_color, ft_color_scl(w->ambient.color, w->ambient.ratio));
+	if (ft_is_shadowed(w, l, comps.over_pt))
 		return (ph.a_color);
-	ph.lv = ft_normalize(ft_sub_tuples(w->lights[0].position, comps.pt));
+	ph.lv = ft_normalize(ft_sub_tuples(l.position, comps.pt));
 	ph.ldn = ft_dot(ph.lv, comps.nv);
 	if (ph.ldn <= 0)
 		return (ph.a_color);
@@ -204,7 +96,7 @@ t_color	ft_lighting(t_world *w, t_comps comps)
 		else
 		{
 			ph.spec_factor = pow(ph.rde, m.shininess);
-			ph.s_color = ft_color_scl(w->lights[0].color, ph.spec_factor * m.specular);
+			ph.s_color = ft_color_scl(l.color, ph.spec_factor * m.specular);
 		}
 	}
 	return (ft_add_colors(ph.s_color, ft_add_colors(ph.a_color, ph.d_color)));
@@ -212,7 +104,17 @@ t_color	ft_lighting(t_world *w, t_comps comps)
 
 t_color	ft_shade_hit(t_world *w, t_comps comps)
 {
-	return (ft_lighting(w, comps));
+	int		i;
+	t_color	final_color;
+	
+	final_color = g_black;
+	i = 0;
+	while (i < w->num_lights)
+	{
+		final_color = ft_add_colors(final_color, ft_lighting(w, w->lights[i], comps));
+		i++;
+	}
+	return (final_color);
 }
 
 t_color	ft_color_at(t_world *w, t_ray r)
