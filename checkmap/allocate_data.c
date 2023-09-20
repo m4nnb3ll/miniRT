@@ -6,7 +6,7 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:22:23 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/16 11:55:43 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/20 15:18:10 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	calculate_objs(t_data *data)
 	while (data->find[i].split)
 	{
 		split = &data->find[i].split[0];
-		if (split[0] && (!ft_strcmp(split[0], "pl") || !ft_strcmp(split[0], "sp") || !ft_strcmp(split[0], "cy")))
+		if (split[0] && (!ft_strcmp(split[0], "pl") || !ft_strcmp(split[0], "sp") || !ft_strcmp(split[0], "cy" ) || !ft_strcmp(split[0], "cn")))
 			count++;
 		i++;
 	}

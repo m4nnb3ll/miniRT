@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ppm.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 20:43:54 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/20 13:11:27 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/20 13:51:22 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	free_color(t_color **color)
 	free(color);
 }
 
-void	readppm(char *file, t_ppm *ppm)
+void	readppm(char *file, t_btex *ppm)
 {
 	char	*joiner;
 	char	*leak;

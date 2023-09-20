@@ -90,9 +90,9 @@ typedef struct s_plane {
 	t_btex	*btex; // bump map texture
 }	t_plane;
 
-typedef struct s_cone {
-	double	height;
-}	t_cone;
+// typedef struct s_cone {
+// 	double	height;
+// }	t_cone;
 
 typedef struct s_obj
 {
@@ -187,6 +187,14 @@ typedef struct s_cylinder
 	double	d; // diameter
 	double	h; // height
 }	t_cylinder;
+
+typedef struct s_cone
+{
+	t_tuple	center;
+	t_tuple	axis;// should be normalized
+	double	d; // diameter
+	double	h; // height
+}	t_cone;
 
 typedef struct s_find
 {
