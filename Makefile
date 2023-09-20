@@ -26,7 +26,8 @@ RAY_INTERSECT		:=	${addprefix ray_intersect/, ray.c intersect.c}
 LSTS				:=	${addprefix lsts/, objs.c xs.c}
 SCENE				:=	${addprefix scene/, scene.c camera.c}
 LIGHT_SHADING		:=	${addprefix light_shading/, lighting.c normals.c utils.c}
-PARSING				:=	${addprefix checkmap/, allocate_data.c checkmap.c helpers.c my_strtod.c split_string.c}
+PARSING				:=	${addprefix checkmap/, allocate_data.c checkmap.c helpers.c my_strtod.c cam_amb.c\
+									light_data.c sph_data.c others.c plane_data.c cy_data.c cone_data.c}
 PPM					:=	${addprefix ppm_file/, ppm.c}
 
 SRCS				:=	main.c \

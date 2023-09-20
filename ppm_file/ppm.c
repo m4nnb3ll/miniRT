@@ -6,7 +6,7 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 20:43:54 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/20 13:51:22 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/20 15:37:18 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_color(t_color **color)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (color[i])
@@ -48,35 +48,43 @@ void	readppm(char *file, t_btex *ppm)
 		free (line);
 	}
 	ppm->read = ft_split(joiner, '\n');
+	ppm->leaks = ppm->read;
 	free (joiner);
 }
 
-void	ppm_data(t_btex *ppm)
+void	init_data(t_btex *ppm)
 {
 	char	**tmp;
-	char 	**tmp1;
-	int		i = 0;
-	int		j = 0;
+	int		i;
 
-	tmp1 = ppm->read;
 	tmp = ft_split(ppm->read[1], 32);
 	ppm->width = ft_atoi(tmp[0]);
 	ppm->height = ft_atoi(tmp[1]);
 	ppm->pixels = ft_calloc(ppm->height, sizeof(t_color *));
 	ppm->read += 3;
+	i = 0;
 	while (i < ppm->height)
 	{
 		ppm->pixels[i] = ft_calloc(ppm->width, sizeof(t_color));
 		i++;
 	}
-	i = 0;
 	free_double(tmp);
-	tmp = NULL;
+}
+
+void	ppm_data(t_btex *ppm)
+{
+	char	**tmp;
+	char	**ptr;
+	int		i;
+	int		j;
+
+	init_data(ppm);
+	i = 0;
 	while (i < ppm->height)
 	{
 		j = 0;
 		tmp = ft_split(ppm->read[i], 32);
-		char **ptr = tmp;
+		ptr = tmp;
 		while (j < ppm->width)
 		{
 			ppm->pixels[i][j].r = translatecolor(my_strtod(tmp[0]));
@@ -88,13 +96,7 @@ void	ppm_data(t_btex *ppm)
 		free_double(ptr);
 		i++;
 	}
-	free_double(tmp1);
+	free_double(ppm->leaks);
 }
 
-
-
-// this how to use it just call
-// 	t_btex	ppm;
-// 	readppm("file.ppm", &ppm);
-// 	ppm_data(&ppm);
 // call free_color(ppm->color); after finishing its use

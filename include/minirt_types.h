@@ -80,6 +80,7 @@ typedef struct s_btex
 {
 	t_color	**pixels;
 	char	**read;
+	char	**leaks;
 	int		width;
 	int		height;
 } t_btex;

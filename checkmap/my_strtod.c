@@ -1,39 +1,58 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   my_strtod.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/20 15:41:33 by ogorfti           #+#    #+#             */
+/*   Updated: 2023/09/20 15:56:30 by ogorfti          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
-double my_strtod(char *str)
+int	ft_sign(char **str, double *res)
 {
-	double divisor;
-	double decimal;
-	double result;
-	int sign;
+	int	sign;
 
 	sign = 1;
-	if (*str == '-')
+	if (**str == '-')
 	{
 		sign = -1;
-		str++;
+		(*str)++;
 	}
-	else if (*str == '+')
-		str++;
+	else if (**str == '+')
+		(*str)++;
+	*res = 0.0;
+	return (sign);
+}
 
-	result = 0.0;
+double	my_strtod(char *str)
+{
+	double		div;
+	double		dec;
+	double		res;
+	int			sign;
+
+	sign = ft_sign(&str, &res);
 	while (ft_isdigit(*str))
 	{
-		result = result * 10.0 + (*str - '0');
+		res = res * 10.0 + (*str - '0');
 		str++;
 	}
 	if (*str == '.')
 	{
 		str++;
-		decimal = 0.0;
-		divisor = 10.0;
+		dec = 0.0;
+		div = 10.0;
 		while (ft_isdigit(*str))
 		{
-			decimal += (*str - '0') / divisor;
-			divisor *= 10.0;
+			dec += (*str - '0') / div;
+			div *= 10.0;
 			str++;
 		}
-		result += decimal;
+		res += dec;
 	}
-	return (sign * result);
+	return (sign * res);
 }

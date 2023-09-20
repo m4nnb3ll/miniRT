@@ -6,7 +6,7 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:22:23 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/20 15:18:10 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/20 16:11:59 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,32 +42,33 @@ void	allocate_map(char *file, t_data *data)
 
 void	split_data(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	// printf("size : %d\n", data->mapsize);
 	data->find = ft_calloc(sizeof(t_find), (data->mapsize + 1));
 	if (!data->find)
 		exit (1);
 	while (data->map[i])
 	{
-		data->find[i].split = split_string(data->map[i]);
+		data->find[i].split = ft_split(data->map[i], 32);
 		i++;
 	}
 }
 
 int	calculate_objs(t_data *data)
 {
-	char **split;
-	int count;
-	int i;
+	char	**split;
+	int		count;
+	int		i;
 
 	i = 0;
 	count = 0;
 	while (data->find[i].split)
 	{
 		split = &data->find[i].split[0];
-		if (split[0] && (!ft_strcmp(split[0], "pl") || !ft_strcmp(split[0], "sp") || !ft_strcmp(split[0], "cy" ) || !ft_strcmp(split[0], "cn")))
+		if (split[0] && (!ft_strcmp(split[0], "pl")
+				|| !ft_strcmp(split[0], "sp") || !ft_strcmp(split[0], "cy" )
+				|| !ft_strcmp(split[0], "cn")))
 			count++;
 		i++;
 	}
