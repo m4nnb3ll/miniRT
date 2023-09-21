@@ -88,6 +88,7 @@ typedef struct s_btex
 {
 	t_color	**pixels;
 	char	**read;
+	char	**leaks;
 	int		width;
 	int		height;
 }	t_btex;
@@ -99,9 +100,9 @@ typedef struct s_plane {
 	t_btex	*btex;
 }	t_plane;
 
-typedef struct s_cone {
-	double	height;
-}	t_cone;
+// typedef struct s_cone {
+// 	double	height;
+// }	t_cone;
 
 typedef struct s_obj
 {
@@ -207,6 +208,14 @@ typedef struct s_cylinder
 	double	d;
 	double	h;
 }	t_cylinder;
+
+typedef struct s_cone
+{
+	t_tuple	center;
+	t_tuple	axis;// should be normalized
+	double	d; // diameter
+	double	h; // height
+}	t_cone;
 
 typedef struct s_find
 {
