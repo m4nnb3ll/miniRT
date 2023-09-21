@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:12:38 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/20 15:13:42 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/21 11:14:16 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,17 @@ bool	ft_is_shadowed(t_world *w, t_light l, t_tuple over_pt)
 	t_tuple	lv;
 	double	distance;
 	t_xnode	*hit;
+	// TEST_BELOW
+	t_xnode	*world_xs;
 
 	lv = ft_sub_tuples(l.position, over_pt);
 	distance = ft_mag(lv);
 	lv = ft_normalize(lv);
-	hit = ft_hit(ft_intersect_world(w, ft_ray(over_pt, lv)));
+	world_xs = ft_intersect_world(w, ft_ray(over_pt, lv));
+	hit = ft_hit(world_xs); // GOTTA RETURN A NEW ONE
+	ft_free_xs(&world_xs);
 	if (hit && (hit->x - distance < EPSILON))
-		return (true);
+		return (free(hit), true);
 	return (false);
 }
 
@@ -99,12 +103,16 @@ t_color	ft_color_at(t_world *w, t_ray r)
 {
 	t_xnode	*hit;
 	t_comps	comps;
+	// TEST BELOW
+	t_xnode	*world_xs;
 
-	hit = ft_hit(ft_intersect_world(w, r));
+	world_xs = ft_intersect_world(w, r);
+	hit = ft_hit(world_xs);
+	ft_free_xs(&world_xs);
 	if (hit)
 	{
 		comps = ft_prepare_comps(r, hit);
-		return (ft_shade_hit(w, comps));
+		return (free(hit), ft_shade_hit(w, comps));
 	}
 	return (g_black);
 }

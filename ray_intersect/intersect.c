@@ -6,11 +6,30 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:08:09 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/20 16:09:34 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/21 11:15:21 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+void	ft_free_xs(t_xnode **xs_lst)
+{
+	t_xnode	*to_free;
+	t_xnode	*tmp_xs;
+	
+	if (!xs_lst || !*xs_lst)
+		return ;
+	tmp_xs = *xs_lst;
+	while (tmp_xs)
+	{
+		to_free = tmp_xs;
+		tmp_xs = tmp_xs -> next;
+		free(to_free);
+	}
+	*xs_lst = NULL;
+}
+
+// TEST ABOVE ^^^
 
 t_xnode	*ft_intersect_sphere(t_obj *o, t_ray r)
 {
