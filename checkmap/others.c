@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   others.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 20:29:03 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/20 20:41:13 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/21 12:45:55 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ int	check_name(char *str)
 void	init_count(t_count *count, int *i)
 {
 	*i = 0;
-	count->A = 0;
-	count->C = 0;
-	count->L = 0;
+	count->a = 0;
+	count->c = 0;
 	count->l = 0;
+	count->ls = 0;
 }
 
 void	check_count(t_data *data)
@@ -69,19 +69,19 @@ void	check_count(t_data *data)
 	{
 		split = &data->find[i].split[0];
 		if (split[0] && !ft_strcmp(split[0], "A"))
-			count.A++;
+			count.a++;
 		else if (split[0] && !ft_strcmp(split[0], "C"))
-			count.C++;
+			count.c++;
 		else if (split[0] && !ft_strcmp(split[0], "L"))
-			count.L++;
-		else if (split[0] && !ft_strcmp(split[0], "l"))
 			count.l++;
+		else if (split[0] && !ft_strcmp(split[0], "l"))
+			count.ls++;
 		else if (split[0] && ft_strcmp(split[0], "pl")
 			&& ft_strcmp(split[0], "sp") && ft_strcmp(split[0], "cy")
 			&& ft_strcmp(split[0], "cn"))
 			error_msg("Invalid input\n");
 		i++;
 	}
-	if (count.A != 1 || count.C != 1 || count.L != 1 || count.l > 1)
+	if (count.a != 1 || count.c != 1 || count.l != 1 || count.ls > 1)
 		error_msg("Invalid input\n");
 }

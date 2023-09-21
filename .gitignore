@@ -1,5 +1,4 @@
 miniRT
 *.o
 *.a
-*.ppm
 *.rt

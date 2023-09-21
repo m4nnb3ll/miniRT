@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:34:38 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/21 11:51:01 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/21 15:26:52 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	fill_data(t_world *world, t_data *data)
 	}
 }
 
-// 'world->objs' should be freed
 void	world_data(t_world *world, char *filename)
 {
 	t_data		data;

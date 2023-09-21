@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:12:33 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 11:27:21 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:04:49 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,84 +78,30 @@ t_ray	ft_ray_for_pixel(int x, int y, t_camera c)
 	return (r);
 }
 
-uint32_t	ft_merge_colors(int r, int g, int b, int a)
-{
-	if (ENDIANESS == 0)
-		return (a << 24 | b << 16 | g << 8 | r);
-	return (r << 24 | g << 16 | b << 8 | a);
-}
-
-// void	ft_render(t_window window, t_world *w, t_camera c)
-// {
-// 	t_color		color;
-// 	t_ray		r;
-// 	uint32_t	i;
-// 	uint32_t	j;
-
-// 	i = 0;
-// 	while (i < window.img->height)
-// 	{
-// 		j = 0;
-// 		while (j < window.img->width)
-// 		{
-// 			r = ft_ray_for_pixel(j, i, c);
-// 			color = ft_color_at(w, r);
-// 			mlx_put_pixel(window.img, j, i, ft_merge_colors(
-// 					ft_255channel(color.r),
-// 					ft_255channel(color.g),
-// 					ft_255channel(color.b), 0xFF
-// 					));
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// 	mlx_image_to_window(window.mlx, window.img, 0, 0);
-// 	mlx_loop(window.mlx);
-// }
-
-// BELOW TO TEST FOR LEAKS
-void	ft_free_objs_and_btex(t_world *w)
-{
-	for (int i = 0; i < w->num_objs; i++)
-	{
-		ft_free_color(w->objs[i].btex);
-		free(w->objs[i].props);
-	}
-	free(w->objs);
-}
 void	ft_render(t_window window, t_world *w, t_camera c)
 {
-	(void)window;
 	t_color		color;
 	t_ray		r;
 	uint32_t	i;
 	uint32_t	j;
 
 	i = 0;
-	while (i < SCREEN_HEIGHT)
+	while (i < window.img->height)
 	{
 		j = 0;
-		while (j < SCREEN_WIDTH)
+		while (j < window.img->width)
 		{
 			r = ft_ray_for_pixel(j, i, c);
 			color = ft_color_at(w, r);
-			int test = ft_merge_colors(
-					ft_255channel(color.r),
-					ft_255channel(color.g),
-					ft_255channel(color.b), 0xFF
-					);
-			(void)test;
-			// mlx_put_pixel(window.img, j, i, ft_merge_colors(
-			// 		ft_255channel(color.r),
-			// 		ft_255channel(color.g),
-			// 		ft_255channel(color.b), 0xFF
-			// 		));
+			mlx_put_pixel(window.img, j, i,
+				ft_merge_colors(ft_255channel(color.r), ft_255channel(color.g),
+					ft_255channel(color.b), 0xFF));
 			j++;
 		}
 		i++;
 	}
 	ft_free_objs_and_btex(w);
-	// mlx_image_to_window(window.mlx, window.img, 0, 0);
-	// mlx_loop(window.mlx);
-	// mlx_terminate(window.mlx);
+	mlx_image_to_window(window.mlx, window.img, 0, 0);
+	mlx_loop(window.mlx);
+	mlx_terminate(window.mlx);
 }

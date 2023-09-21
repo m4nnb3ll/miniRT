@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane_data.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 20:41:50 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/21 11:31:26 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/21 15:41:07 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	plane_data(char **split, t_obj *obj)
 				ft_translate(plane->pt.x, plane->pt.y, plane->pt.z),
 				ft_get_rotation_matrix(ft_vector(0, 0, 1), plane->normal)));
 	obj->btex = ft_calloc(1, sizeof(t_btex));
-	readppm("/Users/abelayad/Projects/miniRT/test_texture.ppm", obj->btex);
+	readppm("mosaic.ppm", obj->btex);
 	ppm_data(obj -> btex);
 	free_double(rgb);
 }

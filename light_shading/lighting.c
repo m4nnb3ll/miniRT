@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:12:38 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 11:14:16 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/21 15:42:42 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,17 @@ bool	ft_is_shadowed(t_world *w, t_light l, t_tuple over_pt)
 	t_tuple	lv;
 	double	distance;
 	t_xnode	*hit;
-	// TEST_BELOW
 	t_xnode	*world_xs;
 
 	lv = ft_sub_tuples(l.position, over_pt);
 	distance = ft_mag(lv);
 	lv = ft_normalize(lv);
 	world_xs = ft_intersect_world(w, ft_ray(over_pt, lv));
-	hit = ft_hit(world_xs); // GOTTA RETURN A NEW ONE
+	hit = ft_hit(world_xs);
 	ft_free_xs(&world_xs);
 	if (hit && (hit->x - distance < EPSILON))
 		return (free(hit), true);
-	return (false);
+	return (free(hit), false);
 }
 
 /*
@@ -62,6 +61,7 @@ t_color	ft_lighting(t_world *w, t_light l, t_comps comps)
 	t_material	m;
 
 	m = comps.o -> material;
+	l.color = ft_color_scl(l.color, l.brightness);
 	ph.e_color = ft_multi_colors(ft_get_obj_color(&comps), l.color);
 	ph.a_color = ft_multi_colors(
 			ph.e_color, ft_color_scl(w->ambient.color, w->ambient.ratio));
@@ -103,7 +103,6 @@ t_color	ft_color_at(t_world *w, t_ray r)
 {
 	t_xnode	*hit;
 	t_comps	comps;
-	// TEST BELOW
 	t_xnode	*world_xs;
 
 	world_xs = ft_intersect_world(w, r);
@@ -114,5 +113,5 @@ t_color	ft_color_at(t_world *w, t_ray r)
 		comps = ft_prepare_comps(r, hit);
 		return (free(hit), ft_shade_hit(w, comps));
 	}
-	return (g_black);
+	return (free(hit), g_black);
 }

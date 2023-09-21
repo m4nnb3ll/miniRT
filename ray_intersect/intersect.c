@@ -6,30 +6,11 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:08:09 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 11:15:21 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:08:48 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-void	ft_free_xs(t_xnode **xs_lst)
-{
-	t_xnode	*to_free;
-	t_xnode	*tmp_xs;
-	
-	if (!xs_lst || !*xs_lst)
-		return ;
-	tmp_xs = *xs_lst;
-	while (tmp_xs)
-	{
-		to_free = tmp_xs;
-		tmp_xs = tmp_xs -> next;
-		free(to_free);
-	}
-	*xs_lst = NULL;
-}
-
-// TEST ABOVE ^^^
 
 t_xnode	*ft_intersect_sphere(t_obj *o, t_ray r)
 {
@@ -83,12 +64,12 @@ t_xnode	*ft_intersect_cylinder(t_obj *o, t_ray r)
 	if (q.d >= 0)
 	{
 		t = (-q.b - sqrt(q.d)) / (2 * q.a);
-		if (ft_pt_bound_cy(o, r, t))
+		if (ft_pt_bound_cycone(o, r, t))
 			xs = ft_xnew(o, t);
 		if (q.d > 0)
 		{
 			t = (-q.b + sqrt(q.d)) / (2 * q.a);
-			if (ft_pt_bound_cy(o, r, t))
+			if (ft_pt_bound_cycone(o, r, t))
 				ft_xadd_back(&xs, ft_xnew(o, t));
 		}
 	}
@@ -106,9 +87,9 @@ t_xnode	*ft_intersect_cone(t_obj *o, t_ray r)
 	q.b = 2 * r.origin.x * r.direction.x
 		- 2 * r.origin.y * r.direction.y + 2 * r.origin.z * r.direction.z;
 	q.c = pow(r.origin.x, 2) - pow(r.origin.y, 2) + pow(r.origin.z, 2);
-	if (ft_fequals(q.a, 0) && ft_fequals(q.b, 0))
+	if (!q.a && !q.b)
 		return (ft_add_caps_cone(o, r, &xs));
-	if (ft_fequals(q.a, 0) && !ft_fequals(q.b, 0))
+	if (!q.a && q.b)
 	{
 		xs = ft_xnew(o, (-q.c) / (2 * q.b));
 		return (ft_add_caps_cone(o, r, &xs));

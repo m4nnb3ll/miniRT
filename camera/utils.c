@@ -1,27 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   canvas.h                                           :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/20 13:43:10 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 15:46:20 by abelayad         ###   ########.fr       */
+/*   Created: 2023/09/21 15:45:07 by abelayad          #+#    #+#             */
+/*   Updated: 2023/09/21 16:06:06 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CANVAS_H
-# define CANVAS_H
+#include "minirt.h"
 
-# include "minirt_types.h"
+uint32_t	ft_merge_colors(int r, int g, int b, int a)
+{
+	if (ENDIANESS == 0)
+		return (a << 24 | b << 16 | g << 8 | r);
+	return (r << 24 | g << 16 | b << 8 | a);
+}
 
-t_color		ft_color(double r, double g, double b);
-t_color		ft_add_colors(t_color a, t_color b);
-t_color		ft_sub_colors(t_color a, t_color b);
-t_color		ft_color_scl(t_color c, double scaler);
-t_color		ft_multi_colors(t_color a, t_color b);
-uint8_t		ft_255channel(double c);
-t_window	ft_img_ptr(void);
-void		ft_free_btex(t_btex *btex);
+void	ft_free_objs_and_btex(t_world *w)
+{
+	int	i;
 
-#endif
+	i = 0;
+	while (i < w->num_objs)
+	{
+		ft_free_btex(w->objs[i].btex);
+		free(w->objs[i].props);
+		i++;
+	}
+	free(w->objs);
+}
