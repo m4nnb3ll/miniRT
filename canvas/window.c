@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 12:52:34 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 15:48:45 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/21 17:28:01 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	handle_keys(mlx_key_data_t keydata, void *param)
 void	close_window(void *param)
 {
 	(void)param;
-	printf("Window closed\n");
 	exit(0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:44:28 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/20 16:21:10 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/21 17:33:37 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ t_material	ft_material(void);
 t_tuple		ft_reflectv(t_tuple in, t_tuple n);
 t_comps		ft_prepare_comps(t_ray r, t_xnode *hit);
 bool		ft_is_shadowed(t_world *w, t_light l, t_tuple over_pt);
-t_color		ft_checkers(t_obj *o, t_tuple pt);
 t_color		ft_lighting(t_world *w, t_light l, t_comps comps);
 t_color		ft_shade_hit(t_world *w, t_comps comps);
 t_color		ft_color_at(t_world *w, t_ray r);

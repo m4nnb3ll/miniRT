@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:46:27 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 16:07:19 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/21 17:27:11 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define MINIRT_TYPES_H
 
 # define EPSILON		0.00001
-# define SCREEN_WIDTH	1024
-# define SCREEN_HEIGHT	1024
+# define SCREEN_WIDTH	512
+# define SCREEN_HEIGHT	512
 # define PPM_MAGIC_NUM	"P3"
 # define PPM_MAX_COLOR	255
 # define PI				3.14159265358979
