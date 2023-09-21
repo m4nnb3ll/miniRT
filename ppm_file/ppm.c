@@ -6,24 +6,23 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 20:43:54 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/20 13:41:40 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/21 11:25:54 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	free_color(t_color **color)
+void	ft_free_color(t_btex *btex)
 {
 	int i;
 
+	if (!btex)
+		return ;
 	i = 0;
-	while (color[i])
-	{
-		free (color[i]);
-		color[i] = 0;
-		i++;
-	}
-	free(color);
+	while (i < btex->height)
+		free(btex->pixels[i++]);
+	free(btex->pixels);
+	free(btex);
 }
 
 void	readppm(char *file, t_btex *ppm)
@@ -59,7 +58,7 @@ void	ppm_data(t_btex *ppm)
 	int		j = 0;
 
 	tmp1 = ppm->read;
-	tmp = ft_split(ppm->read[1], 32);
+	tmp = ft_split(ppm->read[1], ' ');
 	ppm->width = ft_atoi(tmp[0]);
 	ppm->height = ft_atoi(tmp[1]);
 	ppm->pixels = ft_calloc(ppm->height, sizeof(t_color *));
@@ -97,4 +96,4 @@ void	ppm_data(t_btex *ppm)
 // 	t_btex	ppm;
 // 	readppm("file.ppm", &ppm);
 // 	ppm_data(&ppm);
-// call free_color(ppm->color); after finishing its use
+// call ft_free_color(ppm->color); after finishing its use

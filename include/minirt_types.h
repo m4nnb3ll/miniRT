@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:46:27 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/20 15:51:58 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/20 17:26:58 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define RESET_COLOR	"\033[0m"
 # define ENDIANESS		1
 
-# include "MLX42.h"
+// # include "MLX42.h" TESTING LEAKS
 
 typedef struct s_tuple
 {
@@ -229,11 +229,19 @@ typedef struct s_data
 	int		mapsize;
 }	t_data;
 
+// TESTING LEAKS
+// typedef struct s_window
+// {
+// 	mlx_t		*mlx;
+// 	mlx_image_t	*img;
+// }	t_window;
+
 typedef struct s_window
 {
-	mlx_t		*mlx;
-	mlx_image_t	*img;
+	void		*mlx;
+	void		*img;
 }	t_window;
+
 
 typedef struct s_world
 {

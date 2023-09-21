@@ -1,0 +1,80 @@
+#COLORS
+RED					:=	\033[0;31m
+GREEN				:=	\033[0;32m
+YELLOW				:=	\033[0;33m
+RESET_COLOR			:=	\033[0m
+
+NAME				:=	miniRT
+CC					:=	gcc
+CFLAGS				:=	-Wextra -Wall -Werror -O3 -g
+HEADERS				:=  -Iinclude -Ilibft/include
+
+# Libraries
+# LIBFT				:=	-lft
+LIBS				:= $(LIBFT) -ldl -pthread -lm
+
+# SRCS
+TUPLES				:=	${addprefix tuples/, tuple_ops.c tuples.c}
+CANVAS				:=	${addprefix canvas/, color.c window.c utils.c}
+MATRICES			:=	${addprefix matrices/, matrix_ops.c matrix_transformations.c quaternions.c utils.c}
+RAY_INTERSECT		:=	${addprefix ray_intersect/, ray.c intersect.c caps.c utils.c}
+LSTS				:=	${addprefix lsts/, xs.c}
+SCENE				:=	${addprefix camera/, camera.c}
+LIGHT_SHADING		:=	${addprefix light_shading/, lighting.c normals.c utils.c}
+PARSING				:=	${addprefix checkmap/, allocate_data.c checkmap.c helpers.c my_strtod.c split_string.c}
+PPM					:=	${addprefix ppm_file/, ppm.c}
+
+SRCS				:=	main.c \
+								$(TUPLES) \
+								$(CANVAS) \
+								$(MATRICES) \
+								$(RAY_INTERSECT) \
+								$(LSTS) \
+								$(SCENE) \
+								$(LIGHT_SHADING) \
+								$(PARSING) \
+								$(PPM) \
+
+
+OBJS_DIR			:=	Makefile_objects
+OBJS				:=	$(patsubst %.c, $(OBJS_DIR)/%.o, $(SRCS))
+
+$(OBJS_DIR)/%.o		:	%.c
+									@mkdir -p $(@D)
+									@$(CC) \
+									$(CFLAGS) \
+									-c $< -o $@ \
+									$(HEADERS) \
+									&& printf "Compiling: $(notdir $<)\n"
+
+all					:		$(NAME)
+
+$(LIBFT)			:
+									@make -C libft/
+									@cp libft/$(LIBFT) .
+									@make fclean -C libft/
+									@echo "$(GREEN)libft ✓$(RESET_COLOR)"
+
+$(NAME)				:		$(OBJS) $(LIBFT)
+# -fsanitize=address
+									@$(CC) $(HEADERS) $(OBJS) libft.a -lm -o $(NAME)
+# @$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -o $(NAME)
+									@echo "$(GREEN)All Done ✓$(RESET_COLOR)"
+
+clean				:
+									@rm -f $(OBJS)
+
+clean_all			:
+									@rm -f $(OBJS) $(LIBFT)
+
+fclean				:		clean
+									@rm -f $(NAME)
+
+fclean_all			:		clean_all
+									@rm -f $(NAME)
+
+re					:		clean all
+
+re_all				:		clean_all all
+
+.PHONY				:		all, clean, fclean, re

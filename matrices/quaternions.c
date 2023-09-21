@@ -6,11 +6,12 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:30:55 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/20 15:32:08 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/20 17:40:00 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "libft.h"
 
 t_tuple	ft_get_quat(t_tuple rot_axe, double radian)
 {

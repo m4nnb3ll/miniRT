@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:43:10 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/20 13:44:00 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/21 10:44:14 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,7 @@ t_color		ft_color_scl(t_color c, double scaler);
 t_color		ft_multi_colors(t_color a, t_color b);
 uint8_t		ft_255channel(double c);
 t_window	ft_img_ptr(void);
+// TEST BELOW
+void	ft_free_color(t_btex *btex);
 
 #endif
