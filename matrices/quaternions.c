@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quaternions.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/20 15:30:55 by abelayad          #+#    #+#             */
+/*   Updated: 2023/09/20 17:40:00 by abelayad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
+#include "libft.h"
 
 t_tuple	ft_get_quat(t_tuple rot_axe, double radian)
 {
@@ -11,46 +24,39 @@ t_tuple	ft_get_quat(t_tuple rot_axe, double radian)
 		rot_axe.x * sine,
 		rot_axe.y * sine,
 		rot_axe.z * sine
-		});
+	});
 }
 
 t_matrix	ft_quat_to_matrix(t_tuple q)
 {
 	return ((t_matrix){4, {
-		{
-			1 - 2 * (pow(q.z, 2) + pow(q.w, 2)),
-			2 * (q.y * q.z - q.x * q.w),
-			2 * (q.y * q.w + q.x * q.z),
-			0
-		},
-		{
-			2 * (q.y * q.z + q.x * q.w),
-			1 - 2 * (pow(q.y, 2) + pow(q.w, 2)),
-			2 * (q.z * q.w - q.x * q.y),
-			0
-		},
-		{
-			2 * (q.y * q.w - q.x * q.z),
-			2 * (q.z * q.w + q.x * q.y),
-			1 - 2 * (pow(q.y, 2) + pow(q.z, 2)),
-			0
-		},
-		{ 0, 0, 0, 1 }
-	}});
+			{
+				1 - 2 * (pow(q.z, 2) + pow(q.w, 2)),
+				2 * (q.y * q.z - q.x * q.w),
+				2 * (q.y * q.w + q.x * q.z),
+				0
+			},
+			{
+				2 * (q.y * q.z + q.x * q.w),
+				1 - 2 * (pow(q.y, 2) + pow(q.w, 2)),
+				2 * (q.z * q.w - q.x * q.y),
+				0
+			},
+			{
+				2 * (q.y * q.w - q.x * q.z),
+				2 * (q.z * q.w + q.x * q.y),
+				1 - 2 * (pow(q.y, 2) + pow(q.z, 2)),
+				0
+			},
+			{0, 0, 0, 1}
+		}});
 }
 
-// To put it somewhere else later
-bool	ft_fequals(double a, double b)
-{
-	if (fabs(a - b) < EPSILON)
-		return (true);
-	return (false);
-}
-
+// v1, v2 should both be normalized
 t_matrix	ft_get_rotation_matrix(t_tuple v1, t_tuple v2)
 {
-	// v1, v2 should both be normalized
-	double	dot, deg_r;
+	double	dot;
+	double	deg_r;
 	t_tuple	rot_axe;
 	t_tuple	q;
 

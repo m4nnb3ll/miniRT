@@ -51,10 +51,10 @@ void	ft_print_obj(t_obj *obj)
 	printf("the obj type is: %s\n", objs_strs[obj->type]);
 	// Transform Inverse
 	printf("The transform_inverse is:\n");
-	ft_print_matrix(obj->transform_inverse);
+	// ft_print_matrix(obj->transform_inverse);
 	// Material
 	printf("The material is:\n");
-	ft_print_material(obj->material);
+	// ft_print_material(obj->material);
 	printf("The props are: %p\n", obj->props);
 }
 
@@ -133,9 +133,11 @@ int main(/* int argc, char **argv */)
 	world_data(&w, "test.rt");
 	// w.objs[0].transform_inverse = ft_inverse(ft_rotate_y(PI/2));
 	w.camera = ft_camera(w.camera);
-	t_window window = ft_img_ptr();
+	// t_window window = ft_img_ptr();
+	t_window window;
+	window = (t_window){0, 0};
 	ft_render(window, &w, w.camera);
-	mlx_terminate(window.mlx);
+	// mlx_terminate(window.mlx);
 }
 // RENDERING GOES ABOVE ^^^
 

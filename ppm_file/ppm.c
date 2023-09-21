@@ -3,27 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ppm.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 20:43:54 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/20 15:37:18 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/21 11:51:24 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	free_color(t_color **color)
+void	ft_free_color(t_btex *btex)
 {
 	int	i;
 
+	if (!btex)
+		return ;
 	i = 0;
-	while (color[i])
-	{
-		free (color[i]);
-		color[i] = 0;
-		i++;
-	}
-	free(color);
+	while (i < btex->height)
+		free(btex->pixels[i++]);
+	free(btex->pixels);
+	free(btex);
 }
 
 void	readppm(char *file, t_btex *ppm)
@@ -57,7 +56,7 @@ void	init_data(t_btex *ppm)
 	char	**tmp;
 	int		i;
 
-	tmp = ft_split(ppm->read[1], 32);
+	tmp = ft_split(ppm->read[1], ' ');
 	ppm->width = ft_atoi(tmp[0]);
 	ppm->height = ft_atoi(tmp[1]);
 	ppm->pixels = ft_calloc(ppm->height, sizeof(t_color *));

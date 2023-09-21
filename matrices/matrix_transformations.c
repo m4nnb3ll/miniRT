@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   matrix_transformations.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/20 15:30:40 by abelayad          #+#    #+#             */
+/*   Updated: 2023/09/20 15:30:41 by abelayad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 t_matrix	ft_translate(double x, double y, double z)
@@ -57,19 +69,5 @@ t_matrix	ft_rotate_z(double rad)
 			{0, 0, 1, 0},
 			{0, 0, 0, 1}
 		}
-	});
-}
-
-t_tuple	ft_transform_tuple(t_matrix m, t_tuple t)
-{
-	return ((t_tuple){
-		m.val[0][0] * t.x + m.val[0][1] * t.y +
-		m.val[0][2] * t.z + m.val[0][3] * t.w,
-		m.val[1][0] * t.x + m.val[1][1] * t.y +
-		m.val[1][2] * t.z + m.val[1][3] * t.w,
-		m.val[2][0] * t.x + m.val[2][1] * t.y +
-		m.val[2][2] * t.z + m.val[2][3] * t.w,
-		m.val[3][0] * t.x + m.val[3][1] * t.y +
-		m.val[3][2] * t.z + m.val[3][3] * t.w
 	});
 }

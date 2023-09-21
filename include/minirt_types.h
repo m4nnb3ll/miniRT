@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt_types.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/20 13:46:27 by abelayad          #+#    #+#             */
+/*   Updated: 2023/09/20 17:26:58 by abelayad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINIRT_TYPES_H
 # define MINIRT_TYPES_H
 
@@ -11,13 +23,9 @@
 # define GREEN			"\033[0;32m"
 # define YELLOW			"\033[0;33m"
 # define RESET_COLOR	"\033[0m"
-# define TRUE_S			GREEN"TRUE"RESET_COLOR
-# define FALSE_S		RED"FALSE"RESET_COLOR
 # define ENDIANESS		1
 
-#include "MLX42.h"
-
-// STOPPED HERE
+// # include "MLX42.h" TESTING LEAKS
 
 typedef struct s_tuple
 {
@@ -48,7 +56,7 @@ typedef struct s_canvas {
 typedef struct s_matrix
 {
 	int			size;
-	double	val[4][4];
+	double		val[4][4];
 }	t_matrix;
 
 extern const t_matrix	g_identity_matrix;
@@ -83,12 +91,13 @@ typedef struct s_btex
 	char	**leaks;
 	int		width;
 	int		height;
-} t_btex;
+}	t_btex;
 
+// btex: bump map texture
 typedef struct s_plane {
 	t_tuple	normal;
 	t_tuple	pt;
-	t_btex	*btex; // bump map texture
+	t_btex	*btex;
 }	t_plane;
 
 // typedef struct s_cone {
@@ -108,8 +117,8 @@ typedef struct s_obj
 
 typedef struct s_xnode
 {
-	t_obj	*o;
-	double		x;
+	t_obj			*o;
+	double			x;
 	struct s_xnode	*next;
 }	t_xnode;
 
@@ -122,14 +131,17 @@ typedef struct s_quadratics
 	double	d;
 }	t_quadratics;
 
+// ldn: light_dot_normal
+// rde: reflect_dot_eye
+
 typedef struct s_phong
 {
 	t_color	e_color;
 	t_color	a_color;
 	t_color	d_color;
 	t_color	s_color;
-	double	ldn; // light_dot_normal
-	double	rde; // reflect_dot_eye
+	double	ldn;
+	double	rde;
 	double	spec_factor;
 	t_tuple	lv;
 	t_tuple	rv;
@@ -137,7 +149,7 @@ typedef struct s_phong
 
 typedef struct s_comps
 {
-	t_obj	*o;
+	t_obj		*o;
 	double		x;
 	t_tuple		pt;
 	t_tuple		over_pt;
@@ -150,7 +162,7 @@ typedef struct s_comps
 typedef struct s_camera
 {
 	t_tuple		pt;
-	t_tuple		forward_v;// should be normalized
+	t_tuple		forward_v;
 	double		fov;
 	int			screen_w;
 	int			screen_h;
@@ -165,7 +177,7 @@ typedef struct s_camera
 typedef struct s_ambient
 {
 	double	ratio;
-	t_color	color;// needs to be converted to range [0-1]
+	t_color	color;
 }	t_ambient;
 
 typedef struct s_light
@@ -175,18 +187,26 @@ typedef struct s_light
 	t_color	color;
 }	t_light;
 
+/*
+	pt: position
+	d: diameter
+*/
 typedef struct s_sphere
 {
-	t_tuple	pt;//position
-	float	d;//diameter
+	t_tuple	pt;
+	float	d;
 }	t_sphere;
 
+/*
+	d: diameter
+	h: height
+*/
 typedef struct s_cylinder
 {
 	t_tuple	center;
-	t_tuple	axis;// should be normalized
-	double	d; // diameter
-	double	h; // height
+	t_tuple	axis;
+	double	d;
+	double	h;
 }	t_cylinder;
 
 typedef struct s_cone
@@ -199,15 +219,16 @@ typedef struct s_cone
 
 typedef struct s_find
 {
-	char **split;
+	char	**split;
 }	t_find;
 
+// ls: small l
 typedef struct s_count
 {
-	int	A;
-	int C;
-	int L;
-	int l;
+	int	a;
+	int	c;
+	int	l;
+	int	ls;
 }	t_count;
 
 typedef struct s_data
@@ -217,10 +238,17 @@ typedef struct s_data
 	int		mapsize;
 }	t_data;
 
+// TESTING LEAKS
+// typedef struct s_window
+// {
+// 	mlx_t		*mlx;
+// 	mlx_image_t	*img;
+// }	t_window;
+
 typedef struct s_window
 {
-	mlx_t		*mlx;
-	mlx_image_t	*img;
+	void		*mlx;
+	void		*img;
 }	t_window;
 
 
@@ -230,7 +258,7 @@ typedef struct s_world
 	t_camera	camera;
 	t_light		lights[2];
 	t_obj		*objs;
-	int			num_objs; // number of objects
+	int			num_objs;
 	int			num_lights;
 }	t_world;
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   normals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/20 15:12:40 by abelayad          #+#    #+#             */
+/*   Updated: 2023/09/20 15:14:29 by abelayad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 t_tuple	ft_get_pl_normal(t_obj *pl, t_tuple op)
@@ -7,9 +19,7 @@ t_tuple	ft_get_pl_normal(t_obj *pl, t_tuple op)
 
 	uv = ft_planar_map(op);
 	c = ft_uv_pattern_at(pl->btex, uv.x, uv.y);
-	// if (false)
 	return (ft_normalize(ft_vector(2 * c.r - 1, 2 * c.g - 1, 2 * c.b - 1)));
-	// return (ft_vector(0, 0, 1));
 }
 
 t_tuple	ft_get_cy_normal(t_obj *cy, t_tuple op)
@@ -61,7 +71,8 @@ t_tuple	ft_obj_normal(t_obj *o, t_tuple wp)
 
 t_tuple	ft_normal_at(t_obj *o, t_tuple wp)
 {
-	t_tuple		on, wn;
+	t_tuple	on;
+	t_tuple	wn;
 
 	on = ft_normalize(ft_obj_normal(o, wp));
 	wn = ft_transform_tuple(ft_transpose(o -> transform_inverse), on);

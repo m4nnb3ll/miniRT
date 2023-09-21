@@ -1,38 +1,25 @@
-#include "minirt.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tuples.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/20 16:18:14 by abelayad          #+#    #+#             */
+/*   Updated: 2023/09/20 16:18:53 by abelayad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	ft_print_tuple(t_tuple a)
-{
-	printf("%f %f %f %f\n", a.x, a.y, a.z, a.w);
-}
+#include "minirt.h"
 
 t_tuple	ft_point(double x, double y, double z)
 {
-	return ((t_tuple){ x, y, z, 1 });
+	return ((t_tuple){x, y, z, 1});
 }
 
 t_tuple	ft_vector(double x, double y, double z)
 {
-	return ((t_tuple){ x, y, z, 0 });
-}
-
-t_tuple	ft_add_tuples(t_tuple a, t_tuple b)
-{
-	return ((t_tuple){
-		a.x + b.x,
-		a.y + b.y,
-		a.z + b.z,
-		a.w + b.w
-	});
-}
-
-t_tuple	ft_sub_tuples(t_tuple a, t_tuple b)
-{
-	return ((t_tuple){
-		a.x - b.x,
-		a.y - b.y,
-		a.z - b.z,
-		a.w - b.w
-	});
+	return ((t_tuple){x, y, z, 0});
 }
 
 t_tuple	ft_negv(t_tuple a)
@@ -43,32 +30,6 @@ t_tuple	ft_negv(t_tuple a)
 		-a.z,
 		0
 	});
-}
-
-t_tuple	ft_sclv(t_tuple a, double sclr)
-{
-	return ((t_tuple){
-		a.x * sclr,
-		a.y * sclr,
-		a.z * sclr,
-		0
-	});
-}
-
-double	ft_dot(t_tuple a, t_tuple b)
-{
-	return (
-		a.x * b.x + a.y * b.y + a.z * b.z
-	);
-}
-
-t_tuple	ft_cross(t_tuple a, t_tuple b)
-{
-	return (ft_vector(
-		a.y * b.z - a.z * b.y,
-		a.z * b.x - a.x * b.z,
-		a.x * b.y - a.y * b.x
-	));
 }
 
 double	ft_mag(t_tuple v)
