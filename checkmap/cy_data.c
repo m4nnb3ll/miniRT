@@ -6,17 +6,15 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 20:46:30 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/20 20:46:53 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/21 11:21:32 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	cylinder_data(char **split, t_obj *obj)
+char	**fill_cylinder(char **split, t_obj *obj,
+			t_tuple *coords_tuple, t_tuple *axis_tuple)
 {
-	t_cylinder	*cylinder;
-	t_tuple		coords_tuple;
-	t_tuple		axis_tuple;
 	char		**coords;
 	char		**axis;
 	char		**rgb;
@@ -27,13 +25,26 @@ void	cylinder_data(char **split, t_obj *obj)
 	coords = ft_split(split[1], ',');
 	axis = ft_split(split[2], ',');
 	rgb = ft_split(split[5], ',');
-	coords_tuple = ft_point(my_strtod(coords[0]),
+	*coords_tuple = ft_point(my_strtod(coords[0]),
 			my_strtod(coords[1]), my_strtod(coords[2]));
-	axis_tuple = ft_vector(my_strtod(axis[0]),
+	*axis_tuple = ft_vector(my_strtod(axis[0]),
 			my_strtod(axis[1]), my_strtod(axis[2]));
 	if (nbr_info(rgb) != 3 || nbr_info(coords) != 3 || nbr_info(axis) != 3
-		|| check_range(axis_tuple) || ft_mag(axis_tuple) != 1)
+		|| check_range(*axis_tuple) || ft_mag(*axis_tuple) != 1)
 		error_msg("Error: Incomplete cylinder input\n");
+	free_double(axis);
+	free_double(coords);
+	return (rgb);
+}
+
+void	cylinder_data(char **split, t_obj *obj)
+{
+	t_cylinder	*cylinder;
+	t_tuple		coords_tuple;
+	t_tuple		axis_tuple;
+	char		**rgb;
+
+	rgb = fill_cylinder(split, obj, &coords_tuple, &axis_tuple);
 	cylinder = ft_calloc(sizeof(t_cylinder), 1);
 	obj->props = cylinder;
 	obj->material = ft_material();
@@ -53,6 +64,4 @@ void	cylinder_data(char **split, t_obj *obj)
 						ft_vector(0, 1, 0), cylinder->axis), 
 					ft_scale(cylinder->d, cylinder->h, cylinder->d))));
 	free_double(rgb);
-	free_double(axis);
-	free_double(coords);
 }

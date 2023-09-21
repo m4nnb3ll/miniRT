@@ -6,7 +6,7 @@
 /*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:34:38 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/20 22:17:15 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/21 11:29:49 by ogorfti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,6 @@ void	fill_data(t_world *world, t_data *data)
 }
 
 // 'world->objs' should be freed
-// printf("---  %.2f\n", world->objs[1].material.color.r * 255);
-// printf("---  %.2f\n", world->objs[1].material.color.g * 255);
-// printf("---  %.2f\n", world->objs[1].material.color.b * 255);
 void	world_data(t_world *world, char *filename)
 {
 	t_data		data;
