@@ -6,13 +6,13 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 20:43:54 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/21 11:51:24 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:08:21 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	ft_free_color(t_btex *btex)
+void	ft_free_btex(t_btex *btex)
 {
 	int	i;
 
@@ -97,5 +97,3 @@ void	ppm_data(t_btex *ppm)
 	}
 	free_double(ppm->leaks);
 }
-
-// call free_color(ppm->color); after finishing its use

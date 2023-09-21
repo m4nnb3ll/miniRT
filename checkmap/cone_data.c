@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cone_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 20:45:30 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/21 11:02:01 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/21 13:19:06 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,17 @@ char	**set_cone_data(char **split,
 
 void	cone_data(char **split, t_obj *obj)
 {
+	t_cone		*cone;
 	t_tuple		coords_tuple;
 	t_tuple		axis_tuple;
-	t_cone		*cone;
 	char		**rgb;
 
 	rgb = set_cone_data(split, obj, &coords_tuple, &axis_tuple);
 	cone = ft_calloc(sizeof(t_cone), 1);
-	cone->d = my_strtod(split[3]);
-	cone->h = my_strtod(split[4]);
 	obj->props = cone;
 	obj->material = ft_material();
+	cone->d = my_strtod(split[3]);
+	cone->h = my_strtod(split[4]);
 	obj->material.color = (t_color){
 		translatecolor(my_strtod(rgb[0])),
 		translatecolor(my_strtod(rgb[1])),

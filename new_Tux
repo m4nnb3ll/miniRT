@@ -10,7 +10,7 @@ CFLAGS				:=	-Wextra -Wall -Werror -O3 -g
 HEADERS				:=  -Iinclude -Ilibft/include
 
 # Libraries
-# LIBFT				:=	-lft
+LIBFT				:=	libft.a
 LIBS				:= $(LIBFT) -ldl -pthread -lm
 
 # SRCS
@@ -21,7 +21,8 @@ RAY_INTERSECT		:=	${addprefix ray_intersect/, ray.c intersect.c caps.c utils.c}
 LSTS				:=	${addprefix lsts/, xs.c}
 SCENE				:=	${addprefix camera/, camera.c}
 LIGHT_SHADING		:=	${addprefix light_shading/, lighting.c normals.c utils.c}
-PARSING				:=	${addprefix checkmap/, allocate_data.c checkmap.c helpers.c my_strtod.c split_string.c}
+PARSING				:=	${addprefix checkmap/, allocate_data.c checkmap.c helpers.c my_strtod.c cam_amb.c\
+									light_data.c sph_data.c others.c plane_data.c cy_data.c cone_data.c}
 PPM					:=	${addprefix ppm_file/, ppm.c}
 
 SRCS				:=	main.c \
@@ -51,13 +52,13 @@ all					:		$(NAME)
 
 $(LIBFT)			:
 									@make -C libft/
-									@cp libft/$(LIBFT) .
+									@cp libft/libft.a .
 									@make fclean -C libft/
 									@echo "$(GREEN)libft ✓$(RESET_COLOR)"
 
 $(NAME)				:		$(OBJS) $(LIBFT)
 # -fsanitize=address
-									@$(CC) $(HEADERS) $(OBJS) libft.a -lm -o $(NAME)
+									@$(CC) $(HEADERS) $(OBJS) $(LIBFT) -lm -o $(NAME)
 # @$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -o $(NAME)
 									@echo "$(GREEN)All Done ✓$(RESET_COLOR)"
 
