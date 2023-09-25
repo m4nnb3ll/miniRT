@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 20:41:50 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/21 15:41:07 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/25 13:03:24 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ char	**fill_plane(char **split,
 	return (rgb);
 }
 
-// readppm("ppm_file/file.ppm", obj -> btex);
 void	plane_data(char **split, t_obj *obj)
 {
 	t_tuple		coords_tuple;
@@ -61,8 +60,6 @@ void	plane_data(char **split, t_obj *obj)
 	obj->transform_inverse = ft_inverse(ft_multi_matrices(
 				ft_translate(plane->pt.x, plane->pt.y, plane->pt.z),
 				ft_get_rotation_matrix(ft_vector(0, 0, 1), plane->normal)));
-	obj->btex = ft_calloc(1, sizeof(t_btex));
-	readppm("mosaic.ppm", obj->btex);
-	ppm_data(obj -> btex);
+	obj->btex = ft_png_img_to_btex(ft_read_png_file("normal_texture.png"));
 	free_double(rgb);
 }

@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:44:28 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 17:33:37 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/25 12:27:05 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_tuple		ft_get_cy_normal(t_obj *cy, t_tuple op);
 t_tuple		ft_get_cn_normal(t_obj *cone, t_tuple op);
 t_tuple		ft_obj_normal(t_obj *o, t_tuple wp);
 t_tuple		ft_normal_at(t_obj *o, t_tuple wp);
-t_color		ft_uv_pattern_at(t_btex *texture, double u, double v);
+t_color		ft_uv_pattern_at(t_btex texture, double u, double v);
 t_tuple		ft_planar_map(t_tuple op);
 t_tuple		ft_spherical_map(t_tuple op);
 t_material	ft_material(void);

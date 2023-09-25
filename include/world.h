@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:27:14 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/21 11:54:17 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/25 13:03:33 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,5 @@ void		cylinder_data(char **split, t_obj *obj);
 void		sphere_data(char **split, t_obj *obj);
 void		plane_data(char **split, t_obj *obj);
 void		cone_data(char **split, t_obj *obj);
-void		readppm(char *file, t_btex *ppm);
-void		ppm_data(t_btex *ppm);
 
 #endif

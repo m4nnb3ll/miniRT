@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:12:33 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 16:04:49 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/25 12:01:34 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,30 +78,26 @@ t_ray	ft_ray_for_pixel(int x, int y, t_camera c)
 	return (r);
 }
 
-void	ft_render(t_window window, t_world *w, t_camera c)
+void	ft_render(t_png_img img, t_world *w, t_camera c)
 {
-	t_color		color;
-	t_ray		r;
-	uint32_t	i;
-	uint32_t	j;
+	t_color	color;
+	t_ray	r;
+	int		i;
+	int		j;
 
 	i = 0;
-	while (i < window.img->height)
+	while (i < img.height)
 	{
 		j = 0;
-		while (j < window.img->width)
+		while (j < img.width)
 		{
 			r = ft_ray_for_pixel(j, i, c);
 			color = ft_color_at(w, r);
-			mlx_put_pixel(window.img, j, i,
-				ft_merge_colors(ft_255channel(color.r), ft_255channel(color.g),
-					ft_255channel(color.b), 0xFF));
+			ft_png_put_pixel(img, j, i, color);
 			j++;
 		}
 		i++;
 	}
 	ft_free_objs_and_btex(w);
-	mlx_image_to_window(window.mlx, window.img, 0, 0);
-	mlx_loop(window.mlx);
-	mlx_terminate(window.mlx);
+	ft_write_png_file("scene.png", img);
 }

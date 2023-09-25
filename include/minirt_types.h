@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:46:27 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 17:27:11 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/25 13:03:28 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 # define MINIRT_TYPES_H
 
 # define EPSILON		0.00001
-# define SCREEN_WIDTH	512
-# define SCREEN_HEIGHT	512
-# define PPM_MAGIC_NUM	"P3"
-# define PPM_MAX_COLOR	255
+# define SCREEN_WIDTH	1024
+# define SCREEN_HEIGHT	1024
 # define PI				3.14159265358979
 # define RED			"\033[0;31m"
 # define GREEN			"\033[0;32m"
@@ -25,7 +23,7 @@
 # define RESET_COLOR	"\033[0m"
 # define ENDIANESS		1
 
-# include "MLX42.h"
+# include <png.h>
 
 typedef struct s_tuple
 {
@@ -86,11 +84,9 @@ typedef struct s_material
 
 typedef struct s_btex
 {
-	t_color	**pixels;
-	char	**read;
-	char	**leaks;
 	int		width;
 	int		height;
+	t_color	**pixels;
 }	t_btex;
 
 // btex: bump map texture
@@ -107,7 +103,7 @@ typedef struct s_obj
 	t_material			material;
 	void				*props;
 	bool				checkered;
-	t_btex				*btex;
+	t_btex				btex;
 	struct s_obj		*next;
 }	t_obj;
 
@@ -234,12 +230,6 @@ typedef struct s_data
 	int		mapsize;
 }	t_data;
 
-typedef struct s_window
-{
-	mlx_t		*mlx;
-	mlx_image_t	*img;
-}	t_window;
-
 typedef struct s_world
 {
 	t_ambient	ambient;
@@ -249,5 +239,12 @@ typedef struct s_world
 	int			num_objs;
 	int			num_lights;
 }	t_world;
+
+typedef struct s_png_img
+{
+	int			width;
+	int			height;
+	png_bytep	*row_pointers;
+}	t_png_img;
 
 #endif
