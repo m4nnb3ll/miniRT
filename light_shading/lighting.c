@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:12:38 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 15:42:42 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/27 10:35:45 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ bool	ft_is_shadowed(t_world *w, t_light l, t_tuple over_pt)
 	d_color(diffuse);
 	s_color(specular);
 */
+// STOPPED TROUBLESHOOTING HERE
 t_color	ft_lighting(t_world *w, t_light l, t_comps comps)
 {
 	t_phong		ph;

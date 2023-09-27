@@ -3,23 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:02:55 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/20 20:31:21 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/26 20:32:13 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	ft_strcmp(char *s1, char *s2)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	int	i;
+	size_t	s1_len;
+	size_t	s2_len;
 
-	i = 0;
-	while (s1[i] && s2[i] && s1[i] == s2[i])
-		i++;
-	return (s1[i] - s2[i]);
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	if (s1_len > s2_len)
+		return (ft_strncmp(s1, s2, s1_len));
+	else
+		return (ft_strncmp(s1, s2, s2_len));
 }
 
 void	error_msg(char *str)

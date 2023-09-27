@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:12:44 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 17:34:04 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/26 22:31:43 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,12 @@ t_color	ft_checkers(t_obj *o, t_tuple pt)
 {
 	t_tuple	op;
 
+	// if (!o -> checkered)
+	// 	return (o->material.color);
 	op = ft_transform_tuple(o->transform_inverse, pt);
 	if ((int)(fabs(floor(op.x)) + fabs(floor(op.y))) % 2 == 0)
 		return (g_black);
-	return (o->material.color);
+	return (g_white);
 }
 
 t_color	ft_get_obj_color(t_comps *comps)

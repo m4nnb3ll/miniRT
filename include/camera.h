@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:57:19 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/25 11:59:26 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/25 13:22:44 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@ t_ray		ft_ray_for_pixel(int x, int y, t_camera c);
 void		ft_render(t_png_img img, t_world *w, t_camera c);
 t_xnode		*ft_intersect_world(t_world *w, t_ray r);
 uint32_t	ft_merge_colors(int r, int g, int b, int a);
-void		ft_free_objs_and_btex(t_world *w);
+void		ft_free_objs_and_tex(t_world *w);
 
 #endif

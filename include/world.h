@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:27:14 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/25 13:03:33 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/26 20:48:18 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 double		my_strtod(char *str);
 int			nbr_info(char **str);
-int			ft_strcmp(char *s1, char *s2);
+int			ft_strcmp(const char *s1, const char *s2);
 int			check_range(t_tuple tuple);
 double		translatecolor(double color);
 void		error_msg(char *str);

@@ -1,35 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt.h                                           :+:      :+:    :+:   */
+/*   ft_parse.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/20 13:59:57 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/25 16:36:33 by abelayad         ###   ########.fr       */
+/*   Created: 2023/09/25 15:44:36 by abelayad          #+#    #+#             */
+/*   Updated: 2023/09/25 15:51:51 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
+#ifndef FT_PARSE_H
+# define FT_PARSE_H
 
-# include <stdbool.h>
-# include <stdio.h>
-# include <fcntl.h>
-# include <math.h>
-# include <png.h>
-# include <ctype.h>
-# include <libft.h>
 # include "minirt_types.h"
-# include "tuples.h"
-# include "canvas.h"
-# include "matrices.h"
-# include "ray_intersect.h"
-# include "lsts.h"
-# include "camera.h"
-# include "light_shading.h"
-# include "world.h"
-# include "ft_png.h"
-# include "ft_parse.h"
+
+enum e_el_type	ft_get_el_type(char *s);
+void			ft_parse_rt_file(char *filename);
 
 #endif

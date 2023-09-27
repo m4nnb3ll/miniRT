@@ -6,19 +6,21 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:12:33 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/25 12:01:34 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/27 10:27:13 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_matrix	ft_view_transform_inverse(t_tuple from, t_tuple forward)
+t_matrix	ft_view_transform_inverse(t_tuple from, t_tuple to)
 {
+	t_tuple		forward;
 	t_tuple		up;
 	t_tuple		left;
 	double		fdu;
 	t_matrix	orientation;
 
+	forward = ft_normalize(ft_sub_tuples(to, from));
 	up = ft_vector(0, 1, 0);
 	fdu = ft_dot(forward, up);
 	if (fdu == 1 || fdu == -1)
@@ -60,7 +62,7 @@ t_camera	ft_camera(t_camera raw_camera)
 		c.half_c_w = c.half_c_h * aspect;
 	}
 	c.psize = c.half_c_w * 2 / SCREEN_WIDTH;
-	c.view_transform_inverse = ft_view_transform_inverse(c.pt, c.forward_v);
+	c.view_transform_inverse = ft_view_transform_inverse(c.from, c.to);
 	return (c);
 }
 
@@ -98,6 +100,6 @@ void	ft_render(t_png_img img, t_world *w, t_camera c)
 		}
 		i++;
 	}
-	ft_free_objs_and_btex(w);
+	ft_free_objs_and_tex(w);
 	ft_write_png_file("scene.png", img);
 }

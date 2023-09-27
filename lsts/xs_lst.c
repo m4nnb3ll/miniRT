@@ -1,27 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   canvas.h                                           :+:      :+:    :+:   */
+/*   xs.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/20 13:43:10 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/25 13:23:20 by abelayad         ###   ########.fr       */
+/*   Created: 2023/09/20 15:15:26 by abelayad          #+#    #+#             */
+/*   Updated: 2023/09/25 15:41:42 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CANVAS_H
-# define CANVAS_H
+#include "minirt.h"
 
-# include "minirt_types.h"
+t_xnode	*ft_xnew(t_obj *o, double x)
+{
+	t_xnode	*new;
 
-t_color		ft_color(double r, double g, double b);
-t_color		ft_add_colors(t_color a, t_color b);
-t_color		ft_sub_colors(t_color a, t_color b);
-t_color		ft_color_scl(t_color c, double scaler);
-t_color		ft_multi_colors(t_color a, t_color b);
-uint8_t		ft_255channel(double c);
-// t_window	ft_img_ptr(void);
-void		ft_free_tex(t_tex tex);
+	new = ft_calloc(1, sizeof(t_xnode));
+	if (!new)
+		return (NULL);
+	new -> o = o;
+	new -> x = x;
+	return (new);
+}
 
-#endif
+void	ft_xadd_back(t_xnode **xlst, t_xnode *n)
+{
+	t_xnode	*tmp;
+
+	if (!xlst || !n)
+		return ;
+	if (!*xlst)
+		*xlst = n;
+	else
+	{
+		tmp = *xlst;
+		while (tmp -> next)
+			tmp = tmp -> next;
+		tmp -> next = n;
+	}
+}

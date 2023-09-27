@@ -1,34 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   light_lst.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/21 15:45:07 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/25 13:24:03 by abelayad         ###   ########.fr       */
+/*   Created: 2023/09/20 15:15:26 by abelayad          #+#    #+#             */
+/*   Updated: 2023/09/26 17:26:52 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-uint32_t	ft_merge_colors(int r, int g, int b, int a)
+t_light	*ft_lightnew(t_tuple position, t_color color)
 {
-	if (ENDIANESS == 0)
-		return (a << 24 | b << 16 | g << 8 | r);
-	return (r << 24 | g << 16 | b << 8 | a);
+	t_light	*new;
+
+	new = ft_calloc(1, sizeof(t_light));
+	if (!new)
+		return (NULL);
+	new -> position = position;
+	new -> color = color;
+	return (new);
 }
 
-void	ft_free_objs_and_tex(t_world *w)
+void	ft_lightadd_back(t_light **lightlst, t_light *n)
 {
-	int	i;
+	t_light	*tmp;
 
-	i = 0;
-	while (i < w->num_objs)
+	if (!lightlst || !n)
+		return ;
+	if (!*lightlst)
+		*lightlst = n;
+	else
 	{
-		ft_free_tex(w->objs[i].tex);
-		free(w->objs[i].props);
-		i++;
+		tmp = *lightlst;
+		while (tmp -> next)
+			tmp = tmp -> next;
+		tmp -> next = n;
 	}
-	free(w->objs);
 }

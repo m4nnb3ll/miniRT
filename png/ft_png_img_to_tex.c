@@ -1,50 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_png_img_to_btex.c                               :+:      :+:    :+:   */
+/*   ft_png_img_to_tex.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:08:07 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/25 12:49:30 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/25 13:18:47 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	ft_free_btex(t_btex btex)
+void	ft_free_tex(t_tex tex)
 {
 	int	i;
 
-	if (!btex.pixels)
+	if (!tex.pixels)
 		return ;
 	i = 0;
-	while (i < btex.height)
-		free(btex.pixels[i++]);
-	free(btex.pixels);
+	while (i < tex.height)
+		free(tex.pixels[i++]);
+	free(tex.pixels);
 }
 
-t_btex	ft_png_img_to_btex(t_png_img img)
+t_tex	ft_png_img_to_tex(t_png_img img)
 {
-	t_btex	btex;
+	t_tex	tex;
 
-	btex.pixels = (t_color **)ft_calloc(img.height, sizeof(t_color *));
-	if (!btex.pixels)
-		return ((t_btex){0, 0, NULL});
+	tex.pixels = (t_color **)ft_calloc(img.height, sizeof(t_color *));
+	if (!tex.pixels)
+		return ((t_tex){0, 0, NULL});
 	for (int i = 0; i < img.height; i++)
 	{
-		btex.pixels[i] = (t_color *)ft_calloc(img.width, sizeof(t_color));
-		if (!btex.pixels[i])
-			return ((t_btex){0, 0, NULL});
+		tex.pixels[i] = (t_color *)ft_calloc(img.width, sizeof(t_color));
+		if (!tex.pixels[i])
+			return ((t_tex){0, 0, NULL});
 	}
 	for (int i = 0; i < img.height; i++)
 	{
 		for (int j = 0; j < img.width; j++)
 		{
-			btex.pixels[i][j].r = img.row_pointers[i][j * 4 + 0];
-			btex.pixels[i][j].g = img.row_pointers[i][j * 4 + 1];
-			btex.pixels[i][j].b = img.row_pointers[i][j * 4 + 2];
+			tex.pixels[i][j].r = img.row_pointers[i][j * 4 + 0];
+			tex.pixels[i][j].g = img.row_pointers[i][j * 4 + 1];
+			tex.pixels[i][j].b = img.row_pointers[i][j * 4 + 2];
 		}
 	}
-	return ((t_btex){img.width, img.height, btex.pixels});
+	return ((t_tex){img.width, img.height, tex.pixels});
 }

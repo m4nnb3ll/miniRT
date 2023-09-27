@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 11:36:08 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/25 12:49:42 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/25 13:23:24 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ bool		ft_png_write_file_check(
 bool		ft_write_png_file(char *filename, t_png_img png_img);
 void		ft_png_put_pixel(t_png_img img, int x, int y, t_color color);
 t_png_img	ft_allocate_png_img(int width, int height);
-t_btex		ft_png_img_to_btex(t_png_img img);
-void		ft_free_btex(t_btex btex);
+t_tex		ft_png_img_to_tex(t_png_img img);
+void		ft_free_tex(t_tex tex);
 
 #endif

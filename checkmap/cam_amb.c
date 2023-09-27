@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 21:02:08 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/21 21:44:19 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/26 16:09:51 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@ void	camera_data(char **split, t_camera *camera)
 	coords = ft_split(split[1], ',');
 	if (nbr_info(coords) != 3 || nbr_info(vector) != 3)
 		error_msg("Error: Incomplete camera input\n");
-	camera->pt = ft_point(
+	camera->from = ft_point(
 			my_strtod(coords[0]), my_strtod(coords[1]), my_strtod(coords[2]));
 	fov = ft_vector(
 			my_strtod(vector[0]), my_strtod(vector[1]), my_strtod(vector[2]));
 	if (!ft_fequals(ft_mag(fov), 1))
 		error_msg("Error: Incomplete camera input --\n");
 	else
-		camera->forward_v = fov;
+		camera->to = fov;
 	free_double(coords);
 	free_double(vector);
 }

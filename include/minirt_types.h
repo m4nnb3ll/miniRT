@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:46:27 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/25 13:03:28 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/26 22:45:15 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,29 +82,28 @@ typedef struct s_material
 	double	shininess;
 }	t_material;
 
-typedef struct s_btex
+typedef struct s_tex
 {
 	int		width;
 	int		height;
 	t_color	**pixels;
-}	t_btex;
+}	t_tex;
 
-// btex: bump map texture
 typedef struct s_plane {
 	t_tuple	normal;
 	t_tuple	pt;
-	t_btex	*btex;
 }	t_plane;
 
 typedef struct s_obj
 {
-	enum e_obj_type		type;
-	t_matrix			transform_inverse;
-	t_material			material;
-	void				*props;
-	bool				checkered;
-	t_btex				btex;
-	struct s_obj		*next;
+	enum e_obj_type	type;
+	t_matrix		transform_inverse;
+	t_material		material;
+	bool			checkered;
+	t_tex			tex;
+	t_tex			btex;
+	void			*props;
+	struct s_obj	*next;
 }	t_obj;
 
 typedef struct s_xnode
@@ -153,8 +152,8 @@ typedef struct s_comps
 
 typedef struct s_camera
 {
-	t_tuple		pt;
-	t_tuple		forward_v;
+	t_tuple		from;
+	t_tuple		to;
 	double		fov;
 	int			screen_w;
 	int			screen_h;
@@ -177,6 +176,7 @@ typedef struct s_light
 	t_tuple	position;
 	float	brightness;
 	t_color	color;
+	struct s_light	*next;
 }	t_light;
 
 /*
@@ -186,7 +186,7 @@ typedef struct s_light
 typedef struct s_sphere
 {
 	t_tuple	pt;
-	float	d;
+	double	d;
 }	t_sphere;
 
 /*
@@ -240,11 +240,30 @@ typedef struct s_world
 	int			num_lights;
 }	t_world;
 
+typedef struct s_world_tst
+{
+	t_camera	camera;
+	t_light		*light_lst;
+	t_obj		*obj_lst;
+}	t_world_tst;
+
+
 typedef struct s_png_img
 {
 	int			width;
 	int			height;
 	png_bytep	*row_pointers;
 }	t_png_img;
+
+enum	e_el_type
+{
+	EL_TYPE_C,
+	EL_TYPE_L,
+	EL_TYPE_SP,
+	EL_TYPE_PL,
+	EL_TYPE_CY,
+	EL_TYPE_CN,
+	EL_TYPE_ERR
+};
 
 #endif
