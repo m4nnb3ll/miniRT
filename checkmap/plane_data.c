@@ -6,14 +6,14 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 20:41:50 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/25 13:03:24 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/28 21:40:53 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
 char	**fill_plane(char **split,
-			t_obj *obj, t_tuple *axis_tuple, t_tuple *coords_tuple)
+			t_objnode *obj, t_tuple *axis_tuple, t_tuple *coords_tuple)
 {
 	char		**coords;
 	char		**axis;
@@ -37,7 +37,7 @@ char	**fill_plane(char **split,
 	return (rgb);
 }
 
-void	plane_data(char **split, t_obj *obj)
+void	plane_data(char **split, t_objnode *obj)
 {
 	t_tuple		coords_tuple;
 	t_tuple		axis_tuple;
@@ -52,6 +52,8 @@ void	plane_data(char **split, t_obj *obj)
 		translatecolor(my_strtod(rgb[0])),
 		translatecolor(my_strtod(rgb[1])),
 		translatecolor(my_strtod(rgb[2]))};
+	obj->material.transparency = 0;
+	obj->material.reflective = 0;
 	plane->pt = (t_tuple){
 		coords_tuple.x, coords_tuple.y, coords_tuple.z, coords_tuple.w};
 	plane->normal = (t_tuple){

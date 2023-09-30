@@ -6,13 +6,13 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:34:38 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/21 15:26:52 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/28 11:54:35 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	objs_data(char **split, t_obj *obj)
+void	objs_data(char **split, t_objnode *obj)
 {
 	if (ft_strcmp(split[0], "cy") == 0)
 		cylinder_data(split, obj);
@@ -31,7 +31,7 @@ void	init_world(t_data *data, t_world *world, int *i, int *j)
 	check_count(data);
 	world->num_lights = 0; 
 	world->num_objs = calculate_objs(data);
-	world->objs = ft_calloc(sizeof(t_obj), world->num_objs);
+	world->objs = ft_calloc(sizeof(t_objnode), world->num_objs);
 }
 
 void	fill_data(t_world *world, t_data *data)

@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:12:33 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/25 12:01:34 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/27 16:47:41 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	ft_render(t_png_img img, t_world *w, t_camera c)
 		while (j < img.width)
 		{
 			r = ft_ray_for_pixel(j, i, c);
-			color = ft_color_at(w, r);
+			color = ft_color_at(w, r, REFLECT_DEPTH);
 			ft_png_put_pixel(img, j, i, color);
 			j++;
 		}

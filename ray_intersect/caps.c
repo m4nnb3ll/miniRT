@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:07:55 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 12:45:00 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/28 11:54:35 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ bool	ft_check_cap_cone(t_ray r, double t)
 	return (pow(x, 2) + pow(z, 2) <= pow(y, 2));
 }
 
-t_xnode	*ft_add_caps_cy(t_obj *cy, t_ray r, t_xnode **xs)
+t_xnode	*ft_add_caps_cy(t_objnode *cy, t_ray r, t_xnode **xs)
 {
 	double	t;
 	double	half_height;
@@ -51,7 +51,7 @@ t_xnode	*ft_add_caps_cy(t_obj *cy, t_ray r, t_xnode **xs)
 	return (*xs);
 }
 
-t_xnode	*ft_add_caps_cone(t_obj *cy, t_ray r, t_xnode **xs)
+t_xnode	*ft_add_caps_cone(t_objnode *cy, t_ray r, t_xnode **xs)
 {
 	double	t;
 	double	half_height;

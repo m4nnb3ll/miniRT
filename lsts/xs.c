@@ -6,13 +6,13 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:15:26 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/20 15:15:30 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/28 11:54:35 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_xnode	*ft_xnew(t_obj *o, double x)
+t_xnode	*ft_xnew(t_objnode *o, double x)
 {
 	t_xnode	*new;
 

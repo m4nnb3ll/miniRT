@@ -6,14 +6,14 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:10:41 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 16:09:18 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/28 11:54:35 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
 // .5 is the height/2
-bool	ft_pt_bound_cycone(t_obj *o, t_ray r, double t)
+bool	ft_pt_bound_cycone(t_objnode *o, t_ray r, double t)
 {
 	(void)o;
 	if (fabs(r.origin.y + t * r.direction.y) < .5)
@@ -39,7 +39,7 @@ t_xnode	*ft_hit(t_xnode *xlst)
 	return (ft_xnew(hit->o, hit->x));
 }
 
-void	ft_intersect_cone_xs(t_xnode **xs, t_quadratics q, t_obj *o, t_ray r)
+void	ft_intersect_cone_xs(t_xnode **xs, t_quadratics q, t_objnode *o, t_ray r)
 {
 	double	t;
 

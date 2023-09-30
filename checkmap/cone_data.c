@@ -6,14 +6,14 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 20:45:30 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/21 13:19:06 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/28 11:54:35 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
 char	**set_cone_data(char **split,
-			t_obj *obj, t_tuple *coords_tuple, t_tuple *axis_tuple)
+			t_objnode *obj, t_tuple *coords_tuple, t_tuple *axis_tuple)
 {
 	char		**coords;
 	char		**axis;
@@ -37,7 +37,7 @@ char	**set_cone_data(char **split,
 	return (rgb);
 }
 
-void	cone_data(char **split, t_obj *obj)
+void	cone_data(char **split, t_objnode *obj)
 {
 	t_cone		*cone;
 	t_tuple		coords_tuple;

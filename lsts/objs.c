@@ -1,27 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   canvas.h                                           :+:      :+:    :+:   */
+/*   objs.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/20 13:43:10 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/30 10:42:36 by abelayad         ###   ########.fr       */
+/*   Created: 2023/09/20 15:15:26 by abelayad          #+#    #+#             */
+/*   Updated: 2023/09/28 12:41:44 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CANVAS_H
-# define CANVAS_H
+#include "minirt.h"
 
-# include "minirt_types.h"
+t_objnode	*ft_objnew(void)
+{
+	t_objnode	*new;
 
-t_color		ft_color(double r, double g, double b);
-t_color		ft_add_colors(t_color a, t_color b);
-t_color		ft_sub_colors(t_color a, t_color b);
-t_color		ft_color_scl(t_color c, double scaler);
-t_color		ft_multi_colors(t_color a, t_color b);
-uint8_t		ft_255channel(double c);
-// t_window	ft_img_ptr(void);
-void		ft_free_btex(t_btex btex);
+	new = ft_calloc(1, sizeof(t_objnode));
+	if (!new)
+		return (NULL);
+	return (new);
+}
 
-#endif
+void	ft_objadd_back(t_objnode **objlst, t_objnode *n)
+{
+	t_objnode	*tmp;
+
+	if (!objlst || !n)
+		return ;
+	if (!*objlst)
+		*objlst = n;
+	else
+	{
+		tmp = *objlst;
+		while (tmp -> next)
+			tmp = tmp -> next;
+		tmp -> next = n;
+	}
+}

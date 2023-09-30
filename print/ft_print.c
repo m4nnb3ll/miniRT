@@ -1,27 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   canvas.h                                           :+:      :+:    :+:   */
+/*   ft_print.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/20 13:43:10 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/30 10:42:36 by abelayad         ###   ########.fr       */
+/*   Created: 2023/09/27 11:36:03 by abelayad          #+#    #+#             */
+/*   Updated: 2023/09/27 13:28:48 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CANVAS_H
-# define CANVAS_H
+#include "minirt.h"
 
-# include "minirt_types.h"
+void	ft_print_tuple(t_tuple t)
+{
+	printf("%f %f %f %f\n", t.x, t.y, t.z, t.w);
+}
 
-t_color		ft_color(double r, double g, double b);
-t_color		ft_add_colors(t_color a, t_color b);
-t_color		ft_sub_colors(t_color a, t_color b);
-t_color		ft_color_scl(t_color c, double scaler);
-t_color		ft_multi_colors(t_color a, t_color b);
-uint8_t		ft_255channel(double c);
-// t_window	ft_img_ptr(void);
-void		ft_free_btex(t_btex btex);
+void	ft_print_color(t_color c)
+{
+	printf("%f %f %f\n", c.r, c.g, c.b);
+}
 
-#endif
+void	ft_print_ray(t_ray r)
+{
+	printf("origin: ");
+	ft_print_tuple(r.origin);
+	printf("direction: ");
+	ft_print_tuple(r.direction);
+}
+
+void	ft_print_xs(t_xnode *xs)
+{
+	while (xs)
+	{
+		printf("%f\n", xs->x);
+		xs = xs -> next;
+	}
+}

@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:46:27 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/25 13:03:28 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/28 21:29:56 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,13 @@
 # define YELLOW			"\033[0;33m"
 # define RESET_COLOR	"\033[0m"
 # define ENDIANESS		1
+# define REFLECT_DEPTH	3
+// Material refract indices
+# define VACUUM		1
+# define AIR		1.00029
+# define WATER		1.333
+# define GLASS		1.52
+# define DIAMOND	2.417
 
 # include <png.h>
 
@@ -80,6 +87,9 @@ typedef struct s_material
 	double	diffuse;
 	double	specular;
 	double	shininess;
+	double	reflective; // [0.0-1.0]
+	double	transparency;
+	double	ri;// refractive index
 }	t_material;
 
 typedef struct s_btex
@@ -96,20 +106,20 @@ typedef struct s_plane {
 	t_btex	*btex;
 }	t_plane;
 
-typedef struct s_obj
+typedef struct s_objnode
 {
 	enum e_obj_type		type;
 	t_matrix			transform_inverse;
 	t_material			material;
 	void				*props;
-	bool				checkered;
+	bool				checkered;// false by default
 	t_btex				btex;
-	struct s_obj		*next;
-}	t_obj;
+	struct s_objnode		*next;
+}	t_objnode;
 
 typedef struct s_xnode
 {
-	t_obj			*o;
+	t_objnode			*o;
 	double			x;
 	struct s_xnode	*next;
 }	t_xnode;
@@ -141,14 +151,17 @@ typedef struct s_phong
 
 typedef struct s_comps
 {
-	t_obj		*o;
+	t_objnode		*o;
 	double		x;
 	t_tuple		pt;
 	t_tuple		over_pt;
+	t_tuple		under_pt;
 	t_tuple		ev;
 	t_tuple		nv;
+	t_tuple		rv;
 	bool		inside;
 	bool		is_shadowed;
+	double		ns[2];
 }	t_comps;
 
 typedef struct s_camera
@@ -235,7 +248,7 @@ typedef struct s_world
 	t_ambient	ambient;
 	t_camera	camera;
 	t_light		lights[2];
-	t_obj		*objs;
+	t_objnode		*objs;
 	int			num_objs;
 	int			num_lights;
 }	t_world;
@@ -246,5 +259,11 @@ typedef struct s_png_img
 	int			height;
 	png_bytep	*row_pointers;
 }	t_png_img;
+
+typedef struct s_contnode
+{
+	t_objnode			*o;
+	struct s_contnode	*next;
+}	t_contnode;
 
 #endif

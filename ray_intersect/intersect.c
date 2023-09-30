@@ -6,13 +6,13 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:08:09 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 16:08:48 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/28 17:38:20 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_xnode	*ft_intersect_sphere(t_obj *o, t_ray r)
+t_xnode	*ft_intersect_sphere(t_objnode *o, t_ray r)
 {
 	t_quadratics	q;
 	t_tuple			o_c;
@@ -34,10 +34,11 @@ t_xnode	*ft_intersect_sphere(t_obj *o, t_ray r)
 	return (xs);
 }
 
-t_xnode	*ft_intersect_plane(t_obj *o, t_ray r)
+t_xnode	*ft_intersect_plane(t_objnode *o, t_ray r)
 {
 	double	t;
 
+	// printf("I get inside intersect plane\n");
 	r = ft_transform_ray(o -> transform_inverse, r);
 	if (fabs(r.direction.z) < EPSILON)
 		return (NULL);
@@ -47,7 +48,7 @@ t_xnode	*ft_intersect_plane(t_obj *o, t_ray r)
 	return (NULL);
 }
 
-t_xnode	*ft_intersect_cylinder(t_obj *o, t_ray r)
+t_xnode	*ft_intersect_cylinder(t_objnode *o, t_ray r)
 {
 	t_quadratics	q;
 	t_xnode			*xs;
@@ -76,7 +77,7 @@ t_xnode	*ft_intersect_cylinder(t_obj *o, t_ray r)
 	return (ft_add_caps_cy(o, r, &xs));
 }
 
-t_xnode	*ft_intersect_cone(t_obj *o, t_ray r)
+t_xnode	*ft_intersect_cone(t_objnode *o, t_ray r)
 {
 	t_quadratics	q;
 	t_xnode			*xs;
@@ -105,6 +106,15 @@ t_xnode	*ft_intersect_world(t_world *w, t_ray r)
 	int			i;
 	t_xnode		*xs;
 
+	char	*obj_types[] = {
+		"OT_SPHERE",
+		"OT_PLANE",
+		"OT_CYLINDER",
+		"OT_CONE"
+	};
+	(void)obj_types;
+
+
 	xs = NULL;
 	i = 0;
 	while (i < w -> num_objs)
@@ -116,7 +126,10 @@ t_xnode	*ft_intersect_world(t_world *w, t_ray r)
 		else if (w->objs[i].type == OT_CONE)
 			ft_xadd_back(&xs, ft_intersect_cone(&w->objs[i++], r));
 		else
+		{
+			// printf("The transparency is: %f\n", w->objs[i].material.transparency);
 			ft_xadd_back(&xs, ft_intersect_sphere(&w->objs[i++], r));
+		}
 	}
-	return (xs);
+	return (ft_sort_xs(xs));
 }

@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:59:57 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/25 11:53:13 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/09/27 12:39:08 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@
 # include "light_shading.h"
 # include "world.h"
 # include "ft_png.h"
+# include "ft_print.h"
 
 #endif

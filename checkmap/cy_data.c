@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cy_data.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ogorfti <ogorfti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 20:46:30 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/21 11:21:32 by ogorfti          ###   ########.fr       */
+/*   Updated: 2023/09/28 17:04:03 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-char	**fill_cylinder(char **split, t_obj *obj,
+char	**fill_cylinder(char **split, t_objnode *obj,
 			t_tuple *coords_tuple, t_tuple *axis_tuple)
 {
 	char		**coords;
@@ -37,7 +37,7 @@ char	**fill_cylinder(char **split, t_obj *obj,
 	return (rgb);
 }
 
-void	cylinder_data(char **split, t_obj *obj)
+void	cylinder_data(char **split, t_objnode *obj)
 {
 	t_cylinder	*cylinder;
 	t_tuple		coords_tuple;
@@ -54,6 +54,8 @@ void	cylinder_data(char **split, t_obj *obj)
 		translatecolor(my_strtod(rgb[0])),
 		translatecolor(my_strtod(rgb[1])),
 		translatecolor(my_strtod(rgb[2]))};
+	obj->material.reflective = 0;
+	obj->material.transparency = 0;
 	cylinder->axis = (t_tuple){
 		axis_tuple.x, axis_tuple.y, axis_tuple.z, axis_tuple.w};
 	cylinder->center = (t_tuple){
