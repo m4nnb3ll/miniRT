@@ -11,7 +11,7 @@ HEADERS				:=	-Ilibft/include -Iinclude -I$(HOME)/libpng/include
 
 # Libraries
 LIBFT				:=	libft.a
-LIBPNG				:=	-L ~/libpng/lib -lpng
+LIBPNG				:=	-lpng #-L ~/libpng/lib
 LIBS				:=	$(LIBPNG) $(LIBFT) -ldl -lm -pthread
 
 # SRCS
@@ -60,8 +60,8 @@ $(LIBFT)			:
 									@echo "$(GREEN)libft ✓$(RESET_COLOR)"
 
 $(NAME)				:		$(OBJS) $(LIBFT) 
-									@$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -fsanitize=address -o $(NAME)
-# @$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -o $(NAME)
+#@$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -fsanitize=address -o $(NAME)
+									@$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -o $(NAME)
 									@echo "$(GREEN)All Done ✓$(RESET_COLOR)"
 
 clean				:

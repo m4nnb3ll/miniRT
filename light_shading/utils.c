@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:12:44 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/30 11:12:50 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/24 15:20:25 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct s_material
 
 t_material	ft_material(void)
 {
-	return ((t_material){g_white, .1, .7, .2, 200, 0, 1, GLASS});
+	return ((t_material){g_white, .1, .7, .2, 200, 0, 0, GLASS});
 }
 
 t_tuple	ft_reflectv(t_tuple in, t_tuple n)

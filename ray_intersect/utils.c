@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:10:41 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/28 11:54:35 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/24 15:15:52 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_xnode	*ft_hit(t_xnode *xlst)
 	}
 	if (!hit)
 		return (NULL);
-	return (ft_xnew(hit->o, hit->x));
+	return (hit);
 }
 
 void	ft_intersect_cone_xs(t_xnode **xs, t_quadratics q, t_objnode *o, t_ray r)

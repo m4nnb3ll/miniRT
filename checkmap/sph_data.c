@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 20:06:26 by ogorfti           #+#    #+#             */
-/*   Updated: 2023/09/30 11:57:37 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/24 15:18:09 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	set_sphere_data(t_objnode *obj, char **rgb, char **coords, char **split)
 		translatecolor(my_strtod(rgb[2]))};
 	if (obj->material.color.r == 0 && obj->material.color.g == 0 && obj->material.color.b == 0)
 	{
-		obj->material.reflective = .5;
-		obj->material.transparency = .5;
+		obj->material.reflective = 0;
+		obj->material.transparency = .69;
 		obj->material.ri = GLASS;
 	}
 	else

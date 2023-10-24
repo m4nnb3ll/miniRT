@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 16:09:43 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/30 11:40:04 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/24 15:50:49 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,23 @@ void	ft_print_container(t_contnode *head)
 	}
 }
 
+void	ft_clear_containers(t_contnode	**contlst)
+{
+	t_contnode	*tmp;
+	t_contnode	*next;
+
+	if (!contlst || !*contlst)
+		return ;
+	tmp = *contlst;
+	while (tmp)
+	{
+		next = tmp -> next;
+		free(tmp);
+		tmp = next;
+	}
+	*contlst = NULL;
+}
+
 void	ft_get_ns(t_xnode *hit, t_xnode *xs, t_comps *comps)
 {
 	t_contnode	*contlst;
@@ -181,6 +198,7 @@ void	ft_get_ns(t_xnode *hit, t_xnode *xs, t_comps *comps)
 		}
 		xs = xs -> next;
 	}
+	ft_clear_containers(&contlst);
 }
 
 // int	main(void)

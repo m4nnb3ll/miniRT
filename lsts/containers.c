@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:15:26 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/28 15:12:17 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/24 15:48:04 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	ft_remove_container(t_contnode **head, t_objnode *o)
 	{
 		*head = prev -> next;
 		free(prev);
+		*head = NULL;
 		return ;
 	}
 	tmp = *head;
