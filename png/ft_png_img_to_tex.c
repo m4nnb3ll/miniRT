@@ -41,9 +41,9 @@ t_tex	ft_png_img_to_tex(t_png_img img)
 	{
 		for (int j = 0; j < img.width; j++)
 		{
-			tex.pixels[i][j].r = img.row_pointers[i][j * 4 + 0];
-			tex.pixels[i][j].g = img.row_pointers[i][j * 4 + 1];
-			tex.pixels[i][j].b = img.row_pointers[i][j * 4 + 2];
+			tex.pixels[i][j].r = img.row_pointers[i][j * 4 + 0] / 255.0;
+			tex.pixels[i][j].g = img.row_pointers[i][j * 4 + 1] / 255.0;
+			tex.pixels[i][j].b = img.row_pointers[i][j * 4 + 2] / 255.0;
 		}
 	}
 	return ((t_tex){img.width, img.height, tex.pixels});

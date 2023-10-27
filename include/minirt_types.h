@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:46:27 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/26 22:45:15 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/26 17:59:17 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ typedef struct s_camera
 	double		half_c_w;
 	double		half_c_h;
 	t_matrix	view_transform_inverse;
+	bool		set;//to check later
 }	t_camera;
 
 /*---------DATACHECK-----------*/
@@ -230,22 +231,22 @@ typedef struct s_data
 	int		mapsize;
 }	t_data;
 
-typedef struct s_world
-{
-	t_ambient	ambient;
-	t_camera	camera;
-	t_light		lights[2];
-	t_obj		*objs;
-	int			num_objs;
-	int			num_lights;
-}	t_world;
+// typedef struct s_world
+// {
+// 	t_ambient	ambient;
+// 	t_camera	camera;
+// 	t_light		lights[2];
+// 	t_obj		*objs;
+// 	int			num_objs;
+// 	int			num_lights;
+// }	t_world;
 
 typedef struct s_world_tst
 {
 	t_camera	camera;
 	t_light		*light_lst;
 	t_obj		*obj_lst;
-}	t_world_tst;
+}	t_world;//t_world_tst
 
 
 typedef struct s_png_img

@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 11:33:32 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/26 21:32:20 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/25 11:33:35 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ bool	ft_png_read_file_check(
 			char *filename, FILE **fp, png_structp *png, png_infop *info)
 {
 	*fp = fopen(filename, "rb");
+	printf("I got to read >>%s<<\n", filename);
 	if (!*fp)
 		return (dprintf(2, "Error opening the file for reading\n"), false);
 	*png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);

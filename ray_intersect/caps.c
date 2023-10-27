@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:07:55 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 12:45:00 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/25 19:11:38 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool	ft_check_cap_cy(t_ray r, double t)
 
 	x = r.origin.x + t * r.direction.x;
 	z = r.origin.z + t * r.direction.z;
-	return (pow(x, 2) + pow(z, 2) <= 1);
+	return (pow(x, 2) + pow(z, 2) <= .25);
 }
 
 bool	ft_check_cap_cone(t_ray r, double t)

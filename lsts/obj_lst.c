@@ -6,23 +6,21 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:15:26 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/26 22:26:18 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/26 19:39:08 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_obj	*ft_objnew(t_material m, bool checkered, t_tex tex, t_tex btex)
+t_obj	*ft_objnew(enum e_obj_type ot)
 {
 	t_obj	*new;
 
 	new = ft_calloc(1, sizeof(t_obj));
 	if (!new)
 		return (NULL);
-	new -> material = m;
-	new -> checkered = checkered;
-	new -> tex = tex;
-	new -> btex = btex;
+	new -> type = ot;
+	new -> material = ft_material();
 	return (new);
 }
 

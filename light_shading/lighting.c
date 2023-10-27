@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:12:38 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/27 10:35:45 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/27 10:54:27 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ t_comps	ft_prepare_comps(t_ray r, t_xnode *hit)
 	comps.pt = ft_pos_on_ray(r, hit -> x);
 	comps.ev = ft_negv(r.direction);
 	comps.nv = ft_normal_at(hit -> o, comps.pt);
+	// if (hit -> o -> tex.height)
+	// 	comps.o->material.color = ft_tex_color_at(hit -> o, comps.pt);
 	comps.inside = false;
 	if (comps.o->type != OT_PLANE && ft_dot(comps.ev, comps.nv) < 0)
 	{
@@ -38,6 +40,11 @@ bool	ft_is_shadowed(t_world *w, t_light l, t_tuple over_pt)
 	t_xnode	*hit;
 	t_xnode	*world_xs;
 
+	// return (false);//temp
+
+	// printf("The light is:\n");
+	// ft_print_light(l);
+	// exit(42);
 	lv = ft_sub_tuples(l.position, over_pt);
 	distance = ft_mag(lv);
 	lv = ft_normalize(lv);
@@ -55,17 +62,42 @@ bool	ft_is_shadowed(t_world *w, t_light l, t_tuple over_pt)
 	d_color(diffuse);
 	s_color(specular);
 */
-// STOPPED TROUBLESHOOTING HERE
+
+
+/*
+		t_tuple	position;
+	float	brightness;
+	t_color	color;
+	struct s_light	*next;
+	*/
+	
+// void	ft_print_light(t_light l)
+// {
+// 	printf("------------------------The light is------------------------\n");
+// 	printf("pos: ");
+// 	ft_print_tuple(l.position);
+// 	printf("brightness: %f\n", l.brightness);
+// 	printf("color: ");
+// 	ft_print_color(l.color);
+// 	printf("------------------------END OF LIGHT------------------------\n\n");
+// }
+
 t_color	ft_lighting(t_world *w, t_light l, t_comps comps)
 {
 	t_phong		ph;
 	t_material	m;
 
+
+	// printf("The light is:\n");
+	// ft_print_light(l);
+	// exit(42);
+// I will try to initialize vars here
+	ft_bzero(&ph, sizeof(t_phong));
+	ft_bzero(&m, sizeof(t_material));
+	// ft_print_light(l);
 	m = comps.o -> material;
-	l.color = ft_color_scl(l.color, l.brightness);
 	ph.e_color = ft_multi_colors(ft_get_obj_color(&comps), l.color);
-	ph.a_color = ft_multi_colors(
-			ph.e_color, ft_color_scl(w->ambient.color, w->ambient.ratio));
+	ph.a_color = ft_color_scl(ph.e_color, m.ambient);
 	if (ft_is_shadowed(w, l, comps.over_pt))
 		return (ph.a_color);
 	ph.lv = ft_normalize(ft_sub_tuples(l.position, comps.pt));
@@ -74,6 +106,8 @@ t_color	ft_lighting(t_world *w, t_light l, t_comps comps)
 		return (ph.a_color);
 	else
 	{
+		// printf("The efficien color is:\n");
+		// ft_print_color(ph.e_color);
 		ph.d_color = ft_color_scl(ph.e_color, m.diffuse * ph.ldn);
 		ph.rv = ft_reflectv(ft_negv(ph.lv), comps.nv);
 		ph.rde = ft_dot(ph.rv, comps.ev);
@@ -81,21 +115,27 @@ t_color	ft_lighting(t_world *w, t_light l, t_comps comps)
 		ph.s_color = ft_color_scl(ft_color_scl(
 					l.color, ph.spec_factor * m.specular), (ph.rde > 0));
 	}
+
+	// printf("The colors are:\n");
+	// ft_print_color(ph.s_color);
+	// ft_print_color(ph.a_color);
+	// ft_print_color(ph.d_color);
+	// exit(42);
 	return (ft_add_colors(ph.s_color, ft_add_colors(ph.a_color, ph.d_color)));
 }
 
 t_color	ft_shade_hit(t_world *w, t_comps comps)
 {
-	int		i;
+	t_light *tmp_light;
 	t_color	final_color;
 
 	final_color = g_black;
-	i = 0;
-	while (i < w->num_lights)
+	tmp_light = w->light_lst;
+	while (tmp_light)
 	{
 		final_color = ft_add_colors(
-				final_color, ft_lighting(w, w->lights[i], comps));
-		i++;
+				final_color, ft_lighting(w, *tmp_light, comps));
+		tmp_light = tmp_light -> next;
 	}
 	return (final_color);
 }

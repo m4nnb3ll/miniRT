@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:59:57 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/25 16:36:33 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/26 18:35:39 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@
 # include "world.h"
 # include "ft_png.h"
 # include "ft_parse.h"
+# include "ft_printers.h"
 
 #endif

@@ -16,9 +16,9 @@ LIBS				:=	$(LIBPNG) $(LIBFT) -ldl -lm -pthread
 # SRCS
 CAMERA				:=	${addprefix camera/, camera.c utils.c}
 CANVAS				:=	${addprefix canvas/, color.c utils.c}
-PARSING0			:=	${addprefix checkmap/, allocate_data.c checkmap.c helpers.c my_strtod.c cam_amb.c\
-									light_data.c sph_data.c others.c plane_data.c cy_data.c cone_data.c}
-PARSING				:=	${addprefix parsing/, ft_parse.c}
+# PARSING0			:=	${addprefix checkmap/, allocate_data.c checkmap.c helpers.c my_strtod.c cam_amb.c\
+# 									light_data.c sph_data.c others.c plane_data.c cy_data.c cone_data.c}
+PARSING				:=	${addprefix parsing/, ft_parse.c utils.c}
 LIGHT_SHADING		:=	${addprefix light_shading/, lighting.c normals.c utils.c}
 LSTS				:=	${addprefix lsts/, light_lst.c xs_lst.c obj_lst.c}
 MATRICES			:=	${addprefix matrices/, matrix_ops.c matrix_transformations.c quaternions.c utils.c}
@@ -30,7 +30,6 @@ SRCS				:=	main.c \
 								$(CAMERA) \
 								$(CANVAS) \
 								$(PARSING) \
-								$(PARSING0) \
 								$(LIGHT_SHADING) \
 								$(LSTS) \
 								$(MATRICES) \
