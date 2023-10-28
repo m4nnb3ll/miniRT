@@ -6,14 +6,14 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 16:09:43 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/24 15:50:49 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/28 18:51:31 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
 // u & v [0-1.0]
-t_color	ft_uv_pattern_at(t_btex texture, double u, double v)
+t_color	ft_uv_pattern_at(t_tex texture, double u, double v)
 {
 	int	x;
 	int	y;
@@ -35,31 +35,31 @@ t_tuple	ft_planar_map(t_tuple op)
 }
 
 
-t_world	ft_default_world(void)
-{
-	t_world	w;
+// t_world	ft_default_world(void)
+// {
+// 	t_world	w;
 
-	ft_bzero(&w, sizeof(t_world));
-	w.num_objs = 2;
-	w.num_lights = 1;
-	w.lights[0].position = ft_point(-10, 10, -10);
-	w.lights[0].color = ft_color(1, 1, 1);
-	w.objs = ft_calloc(w.num_objs, sizeof(t_objnode));
-	// SPHERE A
-	w.objs[0].type = OT_SPHERE;
-	w.objs[0].transform_inverse = g_identity_matrix;
-	w.objs[0].material = ft_material();
-	w.objs[0].material.ambient = 1;
-	w.objs[0].material.color = ft_color(.8, 1, .6);
-	w.objs[0].material.transparency = 0;
-	w.objs[0].material.reflective = 0;
-	w.objs[0].checkered = true;
-	// SPHERE B
-	w.objs[1].type = OT_SPHERE;
-	w.objs[1].material = ft_material();
-	w.objs[1].transform_inverse = ft_inverse(ft_scale(0.5, 0.5, 0.5));
-	return (w);
-}
+// 	ft_bzero(&w, sizeof(t_world));
+// 	w.num_objs = 2;
+// 	w.num_lights = 1;
+// 	w.lights[0].position = ft_point(-10, 10, -10);
+// 	w.lights[0].color = ft_color(1, 1, 1);
+// 	w.objs = ft_calloc(w.num_objs, sizeof(t_obj));
+// 	// SPHERE A
+// 	w.objs[0].type = OT_SPHERE;
+// 	w.objs[0].transform_inverse = g_identity_matrix;
+// 	w.objs[0].material = ft_material();
+// 	w.objs[0].material.ambient = 1;
+// 	w.objs[0].material.color = ft_color(.8, 1, .6);
+// 	w.objs[0].material.transparency = 0;
+// 	w.objs[0].material.reflective = 0;
+// 	w.objs[0].checkered = true;
+// 	// SPHERE B
+// 	w.objs[1].type = OT_SPHERE;
+// 	w.objs[1].material = ft_material();
+// 	w.objs[1].transform_inverse = ft_inverse(ft_scale(0.5, 0.5, 0.5));
+// 	return (w);
+// }
 /*
 w.objs[0].type = OT_PLANE;
 	w.objs[0].material = ft_material();
@@ -277,7 +277,7 @@ t_color	ft_refracted_color(t_world *w, t_comps comps, int remaining)
 // 	t_ray		r;
 // 	t_xnode		*xs;
 // 	t_comps		comps;
-// 	t_objnode	obj;
+// 	t_obj	obj;
 
 // 	r = ft_ray(ft_point(0, 0, -5), ft_vector(0, 0, 1));
 // 	// SPHERE A
@@ -319,11 +319,14 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return (printf("Please provide a scene file!\n"), -42);
-	world_data(&w, argv[1]);
-	w.camera = ft_camera(w.camera);
+	// world_data(&w, argv[1]);
+	// w.camera = ft_camera(w.camera);
 	// window = ft_img_ptr();
 	img = ft_allocate_png_img(SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (!img.row_pointers)
 		return (printf("Error allocating the image\n"), -42);
+	w = ft_parse_rt_file(argv[1]);
+	printf("The worldss light is at: ");
+	ft_print_tuple(w.light_lst->position);
 	ft_render(img, &w, w.camera);
 }

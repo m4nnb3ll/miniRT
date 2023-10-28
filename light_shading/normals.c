@@ -6,26 +6,61 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:12:40 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/28 21:39:35 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/28 20:21:57 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_tuple	ft_get_pl_normal(t_objnode *pl, t_tuple op)
-{
-	(void)pl;
-	(void)op;
-	// t_tuple	uv;
-	// t_color	c;
 
-	// uv = ft_planar_map(op);
-	// c = ft_uv_pattern_at(pl->btex, uv.x, uv.y);
-	// return (ft_normalize(ft_vector(2 * c.r - 1, 2 * c.g - 1, 2 * c.b - 1)));
-	return (ft_vector(0, 0, 1));
+t_tuple	ft_get_sp_normal(t_obj *sp, t_tuple op)
+{
+	t_tuple	uv;
+	t_color	c;
+	t_tuple		normal, tang, binorm;
+	t_matrix	tbn;
+
+	normal = ft_sub_tuples(op, ft_point(0, 0, 0));
+	if (!sp -> btex.pixels) return (normal);
+	// Calculate tangent and binormal vectors
+	uv = ft_spherical_map(op);
+	double theta = uv.x * (2 * PI);
+	tang = ft_normalize(ft_vector(-sin(theta), 0, cos(theta)));
+	binorm = ft_normalize(ft_cross(normal, tang));
+
+	// Construct TBN matrix
+	tbn =	((t_matrix){4, {
+			{ tang.x, binorm.x, normal.x, 0 },
+			{ tang.y, binorm.y, normal.y, 0 },
+			{ tang.z, binorm.z, normal.z, 0 },
+			{0, 0, 0, 1}
+		}});
+
+	// Transform texture coordinates into tangent space
+	c = ft_uv_pattern_at(sp->btex, uv.x, uv.y);
+	uv = ft_normalize(ft_vector(2 * c.r - 1, 2 * c.g - 1, 2 * c.b - 1));
+	uv = ft_transform_tuple(tbn, uv);
+
+	return (ft_normalize(uv));
 }
 
-t_tuple	ft_get_cy_normal(t_objnode *cy, t_tuple op)
+
+t_tuple	ft_get_pl_normal(t_obj *pl, t_tuple op)
+{
+	t_tuple	uv;
+	t_color	c;
+
+	if (!pl -> btex.pixels)
+		return (ft_vector(0, 0, 1));
+	uv = ft_planar_map(op);
+	// printf("the op from the btex is:\n");
+	// ft_print_tuple(op);
+	// exit(42);
+	c = ft_uv_pattern_at(pl->btex, uv.x, uv.y);
+	return (ft_normalize(ft_vector(2 * c.r - 1, 2 * c.g - 1, 2 * c.b - 1)));
+}
+
+t_tuple	ft_get_cy_normal(t_obj *cy, t_tuple op)
 {
 	double	half_height;
 	double	d;
@@ -40,7 +75,7 @@ t_tuple	ft_get_cy_normal(t_objnode *cy, t_tuple op)
 	return (ft_vector(op.x, 0, op.z));
 }
 
-t_tuple	ft_get_cn_normal(t_objnode *cone, t_tuple op)
+t_tuple	ft_get_cn_normal(t_obj *cone, t_tuple op)
 {
 	double	half_height;
 	double	d;
@@ -57,7 +92,8 @@ t_tuple	ft_get_cn_normal(t_objnode *cone, t_tuple op)
 	return (ft_vector(op.x, y, op.z));
 }
 
-t_tuple	ft_obj_normal(t_objnode *o, t_tuple wp)
+
+t_tuple	ft_obj_normal(t_obj *o, t_tuple wp)
 {
 	t_tuple	op;
 
@@ -69,10 +105,10 @@ t_tuple	ft_obj_normal(t_objnode *o, t_tuple wp)
 	else if (o -> type == OT_CONE)
 		return (ft_get_cn_normal(o, op));
 	else
-		return (ft_sub_tuples(op, ft_point(0, 0, 0)));
+		return (ft_get_sp_normal(o, op));
 }
 
-t_tuple	ft_normal_at(t_objnode *o, t_tuple wp)
+t_tuple	ft_normal_at(t_obj *o, t_tuple wp)
 {
 	t_tuple	on;
 	t_tuple	wn;

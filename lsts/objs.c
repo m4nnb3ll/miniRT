@@ -6,25 +6,27 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:15:26 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/28 12:41:44 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/27 20:30:07 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_objnode	*ft_objnew(void)
+t_obj	*ft_objnew(enum e_obj_type ot)
 {
-	t_objnode	*new;
+	t_obj	*new;
 
-	new = ft_calloc(1, sizeof(t_objnode));
+	new = ft_calloc(1, sizeof(t_obj));
 	if (!new)
 		return (NULL);
+	new -> type = ot;
+	new -> material = ft_material();
 	return (new);
 }
 
-void	ft_objadd_back(t_objnode **objlst, t_objnode *n)
+void	ft_objadd_back(t_obj **objlst, t_obj *n)
 {
-	t_objnode	*tmp;
+	t_obj	*tmp;
 
 	if (!objlst || !n)
 		return ;

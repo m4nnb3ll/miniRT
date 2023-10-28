@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 11:33:32 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/25 12:51:48 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/28 12:57:03 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ t_png_img	ft_read_png_file(char *filename)
 
 	img = (t_png_img){0, 0, NULL};
 	if (!ft_png_read_file_check(filename, &fp, &png, &info))
-		return (img);
+		exit(53);
+		// return (img); // i ll see why i was doing this
 	png_init_io(png, fp);
 	png_read_info(png, info);
 	img.width = png_get_image_width(png, info);

@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:59:57 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/27 12:39:08 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/27 20:39:05 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <fcntl.h>
 # include <math.h>
 # include <png.h>
+# include <ctype.h>
 # include <libft.h>
 # include "minirt_types.h"
 # include "tuples.h"
@@ -29,6 +30,7 @@
 # include "light_shading.h"
 # include "world.h"
 # include "ft_png.h"
-# include "ft_print.h"
+# include "ft_parse.h"
+# include "ft_printers.h"
 
 #endif

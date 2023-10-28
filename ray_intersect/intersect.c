@@ -6,13 +6,13 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:08:09 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/28 17:38:20 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/27 20:43:22 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_xnode	*ft_intersect_sphere(t_objnode *o, t_ray r)
+t_xnode	*ft_intersect_sphere(t_obj *o, t_ray r)
 {
 	t_quadratics	q;
 	t_tuple			o_c;
@@ -34,7 +34,7 @@ t_xnode	*ft_intersect_sphere(t_objnode *o, t_ray r)
 	return (xs);
 }
 
-t_xnode	*ft_intersect_plane(t_objnode *o, t_ray r)
+t_xnode	*ft_intersect_plane(t_obj *o, t_ray r)
 {
 	double	t;
 
@@ -48,7 +48,7 @@ t_xnode	*ft_intersect_plane(t_objnode *o, t_ray r)
 	return (NULL);
 }
 
-t_xnode	*ft_intersect_cylinder(t_objnode *o, t_ray r)
+t_xnode	*ft_intersect_cylinder(t_obj *o, t_ray r)
 {
 	t_quadratics	q;
 	t_xnode			*xs;
@@ -77,7 +77,7 @@ t_xnode	*ft_intersect_cylinder(t_objnode *o, t_ray r)
 	return (ft_add_caps_cy(o, r, &xs));
 }
 
-t_xnode	*ft_intersect_cone(t_objnode *o, t_ray r)
+t_xnode	*ft_intersect_cone(t_obj *o, t_ray r)
 {
 	t_quadratics	q;
 	t_xnode			*xs;
@@ -103,33 +103,31 @@ t_xnode	*ft_intersect_cone(t_objnode *o, t_ray r)
 
 t_xnode	*ft_intersect_world(t_world *w, t_ray r)
 {
-	int			i;
+	t_obj		*tmp_o;
 	t_xnode		*xs;
 
-	char	*obj_types[] = {
-		"OT_SPHERE",
-		"OT_PLANE",
-		"OT_CYLINDER",
-		"OT_CONE"
-	};
-	(void)obj_types;
-
-
 	xs = NULL;
-	i = 0;
-	while (i < w -> num_objs)
+	tmp_o = w->obj_lst;
+	while (tmp_o)
 	{
-		if (w->objs[i].type == OT_PLANE)
-			ft_xadd_back(&xs, ft_intersect_plane(&w->objs[i++], r));
-		else if (w->objs[i].type == OT_CYLINDER)
-			ft_xadd_back(&xs, ft_intersect_cylinder(&w->objs[i++], r));
-		else if (w->objs[i].type == OT_CONE)
-			ft_xadd_back(&xs, ft_intersect_cone(&w->objs[i++], r));
+		if (tmp_o->type == OT_PLANE)
+			ft_xadd_back(&xs, ft_intersect_plane(tmp_o, r));
+		else if (tmp_o->type == OT_CYLINDER)
+			ft_xadd_back(&xs, ft_intersect_cylinder(tmp_o, r));
+		else if (tmp_o->type == OT_CONE)
+			ft_xadd_back(&xs, ft_intersect_cone(tmp_o, r));
 		else
 		{
-			// printf("The transparency is: %f\n", w->objs[i].material.transparency);
-			ft_xadd_back(&xs, ft_intersect_sphere(&w->objs[i++], r));
+			ft_xadd_back(&xs, ft_intersect_sphere(tmp_o, r));
+			// printf("The obj goes below\n");
+			// ft_print_obj(tmp_o);
+			// printf("The matric goes below\n");
+			// ft_print_matrix(tmp_o->transform_inverse);
+			// printf("The object's material is:\n");
+			// ft_print_material(tmp_o->material);
+			// exit(42);
 		}
+		tmp_o = tmp_o -> next;
 	}
-	return (ft_sort_xs(xs));
+	return (xs);
 }

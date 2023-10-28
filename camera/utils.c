@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 15:45:07 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 16:06:06 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/27 20:29:35 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,17 @@ uint32_t	ft_merge_colors(int r, int g, int b, int a)
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-void	ft_free_objs_and_btex(t_world *w)
+void	ft_free_objs_and_tex(t_world *w)
 {
-	int	i;
+	(void)w;
+	// int	i;
 
-	i = 0;
-	while (i < w->num_objs)
-	{
-		ft_free_btex(w->objs[i].btex);
-		free(w->objs[i].props);
-		i++;
-	}
-	free(w->objs);
+	// i = 0;
+	// while (i < w->num_objs)
+	// {
+	// 	ft_free_tex(w->objs[i].tex);
+	// 	free(w->objs[i].props);
+	// 	i++;
+	// }
+	// free(w->objs);
 }

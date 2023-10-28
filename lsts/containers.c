@@ -6,13 +6,13 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:15:26 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/24 15:48:04 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/27 20:27:53 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_contnode	*ft_contnew(t_objnode *o)
+t_contnode	*ft_contnew(t_obj *o)
 {
 	t_contnode	*new;
 
@@ -40,7 +40,7 @@ void	ft_contadd_back(t_contnode **contlst, t_contnode *n)
 	}
 }
 
-bool	ft_containers_contain(t_contnode *contlst, t_objnode *o)
+bool	ft_containers_contain(t_contnode *contlst, t_obj *o)
 {
 	while (contlst)
 	{
@@ -62,7 +62,7 @@ t_contnode	*ft_containers_last(t_contnode *contlst)
 	return (contlst);
 }
 
-void	ft_remove_container(t_contnode **head, t_objnode *o)
+void	ft_remove_container(t_contnode **head, t_obj *o)
 {
 	t_contnode	*prev;
 	t_contnode	*tmp;

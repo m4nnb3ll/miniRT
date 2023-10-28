@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:12:38 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/24 15:53:17 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/27 20:42:40 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,21 +90,21 @@ t_color	ft_lighting(t_world *w, t_light l, t_comps comps)
 // THERE IS A BUG BELOW TO CHECK LATER
 t_color	ft_shade_hit(t_world *w, t_comps comps, int remaining)
 {
-	int		i;
+	t_light *tmp_light;
 	t_color	reflect_color;
 	t_color	refract_color;
 	t_color	final_color;
 
 	final_color = g_black;
-	i = 0;
-	while (i < w->num_lights)
+	tmp_light = w->light_lst;
+	while (tmp_light)
 	{
 		reflect_color = ft_reflected_color(w, comps, remaining);
 		refract_color = ft_refracted_color(w, comps, remaining);
 		final_color = ft_add_colors(
-				ft_add_colors(final_color, ft_lighting(w, w->lights[i], comps)),
+				ft_add_colors(final_color, ft_lighting(w, *tmp_light, comps)),
 				ft_add_colors(reflect_color, refract_color));
-		i++;
+		tmp_light = tmp_light -> next;
 	}
 	return (final_color);
 }

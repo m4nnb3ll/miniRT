@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:46:27 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/28 21:29:56 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/27 20:42:10 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,34 +92,42 @@ typedef struct s_material
 	double	ri;// refractive index
 }	t_material;
 
-typedef struct s_btex
+// typedef struct s_btex
+// {
+// 	int		width;
+// 	int		height;
+// 	t_color	**pixels;
+// }	t_tex;
+
+typedef struct s_tex
 {
 	int		width;
 	int		height;
 	t_color	**pixels;
-}	t_btex;
+}	t_tex;
 
 // btex: bump map texture
 typedef struct s_plane {
 	t_tuple	normal;
 	t_tuple	pt;
-	t_btex	*btex;
+	t_tex	*btex;
 }	t_plane;
 
-typedef struct s_objnode
+typedef struct s_obj
 {
-	enum e_obj_type		type;
-	t_matrix			transform_inverse;
-	t_material			material;
-	void				*props;
-	bool				checkered;// false by default
-	t_btex				btex;
-	struct s_objnode		*next;
-}	t_objnode;
+	enum e_obj_type	type;
+	t_matrix		transform_inverse;
+	t_material		material;
+	bool			checkered;
+	t_tex			tex;
+	t_tex			btex;
+	void			*props;
+	struct s_obj	*next;
+}	t_obj;
 
 typedef struct s_xnode
 {
-	t_objnode			*o;
+	t_obj			*o;
 	double			x;
 	struct s_xnode	*next;
 }	t_xnode;
@@ -151,7 +159,7 @@ typedef struct s_phong
 
 typedef struct s_comps
 {
-	t_objnode		*o;
+	t_obj		*o;
 	double		x;
 	t_tuple		pt;
 	t_tuple		over_pt;
@@ -164,10 +172,23 @@ typedef struct s_comps
 	double		ns[2];
 }	t_comps;
 
+// typedef struct s_camera
+// {
+// 	t_tuple		pt;
+// 	t_tuple		forward_v;
+// 	double		fov;
+// 	int			screen_w;
+// 	int			screen_h;
+// 	double		psize;
+// 	double		half_c_w;
+// 	double		half_c_h;
+// 	t_matrix	view_transform_inverse;
+// }	t_camera;
+
 typedef struct s_camera
 {
-	t_tuple		pt;
-	t_tuple		forward_v;
+	t_tuple		from;
+	t_tuple		to;
 	double		fov;
 	int			screen_w;
 	int			screen_h;
@@ -175,7 +196,9 @@ typedef struct s_camera
 	double		half_c_w;
 	double		half_c_h;
 	t_matrix	view_transform_inverse;
+	bool		set;//to check later
 }	t_camera;
+
 
 /*---------DATACHECK-----------*/
 
@@ -188,8 +211,9 @@ typedef struct s_ambient
 typedef struct s_light
 {
 	t_tuple	position;
-	float	brightness;
+	float	brightness;// to get rid of later
 	t_color	color;
+	struct s_light	*next;
 }	t_light;
 
 /*
@@ -243,15 +267,22 @@ typedef struct s_data
 	int		mapsize;
 }	t_data;
 
-typedef struct s_world
+// typedef struct s_world
+// {
+// 	t_ambient	ambient;
+// 	t_camera	camera;
+// 	t_light		lights[2];
+// 	t_obj		*objs;
+// 	int			num_objs;
+// 	int			num_lights;
+// }	t_world;
+
+typedef struct s_world_tst
 {
-	t_ambient	ambient;
 	t_camera	camera;
-	t_light		lights[2];
-	t_objnode		*objs;
-	int			num_objs;
-	int			num_lights;
-}	t_world;
+	t_light		*light_lst;
+	t_obj		*obj_lst;
+}	t_world;//t_world_tst
 
 typedef struct s_png_img
 {
@@ -262,8 +293,20 @@ typedef struct s_png_img
 
 typedef struct s_contnode
 {
-	t_objnode			*o;
+	t_obj			*o;
 	struct s_contnode	*next;
 }	t_contnode;
+
+enum	e_el_type
+{
+	EL_TYPE_C,
+	EL_TYPE_L,
+	EL_TYPE_SP,
+	EL_TYPE_PL,
+	EL_TYPE_CY,
+	EL_TYPE_CN,
+	EL_TYPE_ERR
+};
+
 
 #endif

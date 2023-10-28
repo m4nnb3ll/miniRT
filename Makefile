@@ -11,20 +11,21 @@ HEADERS				:=	-Ilibft/include -Iinclude -I$(HOME)/libpng/include
 
 # Libraries
 LIBFT				:=	libft.a
-LIBPNG				:=	-lpng #-L ~/libpng/lib
+LIBPNG				:=	-lpng -L ~/libpng/lib
 LIBS				:=	$(LIBPNG) $(LIBFT) -ldl -lm -pthread
 
 # SRCS
 CAMERA				:=	${addprefix camera/, camera.c utils.c}
 CANVAS				:=	${addprefix canvas/, color.c utils.c}
-PARSING				:=	${addprefix checkmap/, allocate_data.c checkmap.c helpers.c my_strtod.c cam_amb.c\
-									light_data.c sph_data.c others.c plane_data.c cy_data.c cone_data.c}
+# PARSING				:=	${addprefix checkmap/, allocate_data.c checkmap.c helpers.c my_strtod.c cam_amb.c\
+# 									light_data.c sph_data.c others.c plane_data.c cy_data.c cone_data.c}
+PARSING				:=	${addprefix parsing/, ft_parse.c utils.c}
 LIGHT_SHADING		:=	${addprefix light_shading/, lighting.c normals.c utils.c}
-LSTS				:=	${addprefix lsts/, xs.c objs.c containers.c}
+LSTS				:=	${addprefix lsts/, xs.c objs.c containers.c light_lst.c}
 MATRICES			:=	${addprefix matrices/, matrix_ops.c matrix_transformations.c quaternions.c utils.c}
 RAY_INTERSECT		:=	${addprefix ray_intersect/, ray.c intersect.c caps.c utils.c}
 TUPLES				:=	${addprefix tuples/, tuple_ops.c tuples.c}
-PNG					:=	${addprefix png/, ft_png_read.c ft_png_write.c ft_png_utils.c ft_png_img_to_btex.c}
+PNG					:=	${addprefix png/, ft_png_read.c ft_png_write.c ft_png_utils.c ft_png_img_to_tex.c}
 PRINT				:=	${addprefix print/, ft_print.c}
 
 SRCS				:=	main.c \
