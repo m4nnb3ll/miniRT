@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:45:23 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/27 20:33:22 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/29 19:49:17 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void		ft_remove_container(t_contnode **head, t_obj *o);
 t_obj		*ft_objnew(enum e_obj_type ot);
 void		ft_objadd_back(t_obj **objlst, t_obj *n);
 t_light		*ft_lightnew(t_tuple position, t_color color);
-void		ft_lightadd_back(t_light **lightlst, t_light *n);
+void		ft_light(t_light **lightlst, t_light *n);
+void	ft_lightadd_back(t_light **lightlst, t_light *n);
+
 
 #endif

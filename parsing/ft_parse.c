@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:20 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/28 20:53:41 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/29 20:10:49 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,8 +188,10 @@ bool	ft_get_pl(char *s, t_world *w)
 			)
 		);
 	// test
+	pthread_mutex_lock(&g_mtx);
 	if (o->btex.height || o -> checkered)
 		o -> material.reflective = .3;
+	pthread_mutex_unlock(&g_mtx);
 	// test end
 	ft_objadd_back(&w->obj_lst, o);
 	return (true);

@@ -6,11 +6,13 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 16:09:43 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/28 18:51:31 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/29 20:06:29 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+pthread_mutex_t g_mtx = PTHREAD_MUTEX_INITIALIZER;
 
 // u & v [0-1.0]
 t_color	ft_uv_pattern_at(t_tex texture, double u, double v)
@@ -311,6 +313,70 @@ t_color	ft_refracted_color(t_world *w, t_comps comps, int remaining)
 // 	ft_print_color(color);
 // }
 
+t_light	*ft_cpy_lights(t_light *light_lst)
+{
+	t_light *tmp;
+	t_light	*to_return;
+
+	to_return = NULL;
+	tmp = light_lst;
+	while (tmp)
+	{
+		ft_lightadd_back(&to_return, ft_lightnew(tmp->position, tmp->color));
+		tmp = tmp -> next;
+	}
+	return (to_return);
+}
+
+t_obj	*ft_cpy_objs(t_obj *obj_lst)
+{
+	t_obj	*tmp;
+	t_obj	*to_return;
+	t_obj	*tmp_edit;
+
+	to_return = NULL;
+	tmp = obj_lst;
+	while (tmp)
+	{
+		tmp_edit = ft_objnew(tmp->type);
+		tmp_edit -> transform_inverse = tmp -> transform_inverse;
+		tmp_edit -> material = tmp -> material;
+		tmp_edit -> checkered = tmp -> checkered;
+		tmp_edit -> tex = tmp -> tex;
+		tmp_edit -> btex = tmp -> btex;
+		tmp_edit -> props = tmp -> props;
+		ft_objadd_back(&to_return, tmp_edit);
+		tmp = tmp -> next;
+	}
+	return (to_return);
+}
+
+
+t_world	ft_cpy_world(t_world world)
+{
+	t_world	w;
+
+	w.camera = world.camera;
+	w.light_lst = ft_cpy_lights(world.light_lst);
+	w.obj_lst = ft_cpy_objs(world.obj_lst);
+	return (w);
+}
+
+typedef struct	s_wrapper
+{
+	t_png_img	img;
+	t_world		w;
+	int			phase;
+}	t_wrapper;
+
+void	*ft_render_wrapper(void *args)
+{
+	t_wrapper *wrapper = args;
+	
+	ft_render(wrapper->img, wrapper->w, wrapper->w.camera, wrapper->phase);
+	return (NULL);
+}
+
 int	main(int argc, char **argv)
 {
 	t_world		w;
@@ -328,5 +394,20 @@ int	main(int argc, char **argv)
 	w = ft_parse_rt_file(argv[1]);
 	printf("The worldss light is at: ");
 	ft_print_tuple(w.light_lst->position);
-	ft_render(img, &w, w.camera);
+
+	/*threads go below*/
+
+	t_wrapper	wrappers[4] = {{img, w, 0}, {img, w, 1}, {img, w, 2}, {img, w, 3}};
+
+	pthread_t	threads[4];
+	for (int i=0; i < 4; i++)
+		if (pthread_create(&threads[i], NULL, ft_render_wrapper, &wrappers[i]) != 0) (perror("pthread_create"), exit(2));
+
+	for (int i=0; i < 4; i++)
+		pthread_join(threads[i], NULL);
+
+
+	ft_write_png_file("scene.png", img);
+
+	// ft_render(img, &w, w.camera);
 }

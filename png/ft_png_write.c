@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 11:34:44 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/25 11:35:01 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/29 15:11:10 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ bool	ft_write_png_file(char *filename, t_png_img png_img)
 	png_write_info(png, info);
 	png_write_image(png, png_img.row_pointers);
 	png_write_end(png, NULL);
-	for(int y = 0; y < png_img.height; y++)
-		free(png_img.row_pointers[y]);
-	free(png_img.row_pointers);
+	// for(int y = 0; y < png_img.height; y++)
+	// 	free(png_img.row_pointers[y]);
+	// free(png_img.row_pointers);
 	return (fclose(fp), png_destroy_write_struct(&png, &info), true);
 }

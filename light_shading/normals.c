@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:12:40 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/28 20:21:57 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/29 20:10:57 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,9 @@ t_tuple	ft_get_sp_normal(t_obj *sp, t_tuple op)
 		}});
 
 	// Transform texture coordinates into tangent space
+	pthread_mutex_lock(&g_mtx);
 	c = ft_uv_pattern_at(sp->btex, uv.x, uv.y);
+	pthread_mutex_unlock(&g_mtx);
 	uv = ft_normalize(ft_vector(2 * c.r - 1, 2 * c.g - 1, 2 * c.b - 1));
 	uv = ft_transform_tuple(tbn, uv);
 
@@ -56,7 +58,9 @@ t_tuple	ft_get_pl_normal(t_obj *pl, t_tuple op)
 	// printf("the op from the btex is:\n");
 	// ft_print_tuple(op);
 	// exit(42);
+	pthread_mutex_lock(&g_mtx);
 	c = ft_uv_pattern_at(pl->btex, uv.x, uv.y);
+	pthread_mutex_unlock(&g_mtx);
 	return (ft_normalize(ft_vector(2 * c.r - 1, 2 * c.g - 1, 2 * c.b - 1)));
 }
 

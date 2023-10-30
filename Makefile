@@ -6,7 +6,7 @@ RESET_COLOR			:=	\033[0m
 NAME				:=	miniRT
 CC					:=	cc
 # TRY TO TEST THE DEBUG FLAG
-CFLAGS				:=	-Wextra -Wall -Werror -O3 -g
+CFLAGS				:=	-Wextra -Wall -Werror -O3 -g -pthread
 HEADERS				:=	-Ilibft/include -Iinclude -I$(HOME)/libpng/include
 
 # Libraries
@@ -61,8 +61,8 @@ $(LIBFT)			:
 									@echo "$(GREEN)libft ✓$(RESET_COLOR)"
 
 $(NAME)				:		$(OBJS) $(LIBFT) 
-#@$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -fsanitize=address -o $(NAME)
-									@$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -o $(NAME)
+									@$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -fsanitize=address -o $(NAME)
+# @$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -o $(NAME)
 									@echo "$(GREEN)All Done ✓$(RESET_COLOR)"
 
 clean				:

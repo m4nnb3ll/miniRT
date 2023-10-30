@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:12:44 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/28 20:41:17 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/29 20:14:43 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,13 @@ t_color	ft_checkers(t_obj *o, t_tuple pt)
 t_color	ft_tex_color_pl(t_comps *c)
 {
 	t_tuple	uv;
+	t_color	color;
 
 	uv = ft_planar_map(ft_transform_tuple(c->o->transform_inverse, c->pt));
-	return (ft_uv_pattern_at(c->o->tex, uv.x, uv.y));
+	pthread_mutex_lock(&g_mtx);
+	color = ft_uv_pattern_at(c->o->tex, uv.x, uv.y);
+	pthread_mutex_unlock(&g_mtx);
+	return (color);
 	// 	t_tuple	uv;
 
 	// uv = ft_planar_map(ft_transform_tuple(c->o->transform_inverse, c->pt));
@@ -96,7 +100,9 @@ t_color	ft_tex_color_sp(t_comps *c)
 	t_tuple	uv;
 
 	uv = ft_spherical_map(ft_transform_tuple(c->o->transform_inverse, c->pt));
+	pthread_mutex_lock(&g_mtx);
 	t_color col = ft_uv_pattern_at(c->o->tex, uv.x, uv.y);
+	pthread_mutex_unlock(&g_mtx);
 	// ft_print_color(col);
 	// exit(42);
 	return (col);
@@ -105,9 +111,13 @@ t_color	ft_tex_color_sp(t_comps *c)
 t_color	ft_tex_color_cy(t_comps *c)
 {
 	t_tuple	uv;
+	t_color	color;
 
 	uv = ft_cylinderical_map(ft_transform_tuple(c->o->transform_inverse, c->pt));
-	return (ft_uv_pattern_at(c->o->tex, uv.x, uv.y));
+	pthread_mutex_lock(&g_mtx);
+	color = ft_uv_pattern_at(c->o->tex, uv.x, uv.y);
+	pthread_mutex_unlock(&g_mtx);
+	return (color);
 }
 
 
