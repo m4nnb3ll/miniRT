@@ -2,5 +2,5 @@
 C 0,0,-3 0,0,0 90
 l 0,0,-5 255,255,255
 # l 5,-5,5 255,255,255
-sp 0,0,0 3 255,255,0 0 moon.png moon_normal.png
+sp 0,0,0 3 255,255,0 0 earth.png earth_normal.png
 sp 3,0,0 1 255,255,0 0

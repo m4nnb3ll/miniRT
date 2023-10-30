@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 16:09:43 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/28 18:51:31 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/30 13:49:38 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,14 +311,36 @@ t_color	ft_refracted_color(t_world *w, t_comps comps, int remaining)
 // 	ft_print_color(color);
 // }
 
+typedef struct	s_chunk
+{
+	t_png_img	*img;
+	t_world		*w;
+	int			num;
+	pthread_t	thread;
+}	t_chunk;
+
+// pthread_mutex_t test = PTHREAD_MUTEX_INITIALIZER;
+
+void	*ft_render_wrapper(void *arg)
+{
+	t_chunk *chunk = arg;
+
+	ft_render(chunk->img, chunk->w, chunk->num);
+	return (NULL);
+}
+
+
 int	main(int argc, char **argv)
 {
 	t_world		w;
 	// t_window	window;
 	t_png_img	img;
+	int			cores;
+
 
 	if (argc != 2)
 		return (printf("Please provide a scene file!\n"), -42);
+	cores = sysconf(_SC_NPROCESSORS_ONLN);
 	// world_data(&w, argv[1]);
 	// w.camera = ft_camera(w.camera);
 	// window = ft_img_ptr();
@@ -326,7 +348,35 @@ int	main(int argc, char **argv)
 	if (!img.row_pointers)
 		return (printf("Error allocating the image\n"), -42);
 	w = ft_parse_rt_file(argv[1]);
-	printf("The worldss light is at: ");
-	ft_print_tuple(w.light_lst->position);
-	ft_render(img, &w, w.camera);
+	// printf("The worldss light is at: ");
+	// ft_print_tuple(w.light_lst->position);
+
+	/*
+	t_png_img	*img;
+	t_world		*w;
+	int			num;
+	*/
+
+	t_chunk	chunks[cores];
+	for (int i=0; i < cores; i++)
+	{
+		chunks[i].img = &img;
+		chunks[i].w = &w;
+		chunks[i].num = i;
+	}
+	
+	for (int i=0; i < cores; i++)
+	{
+		if (pthread_create(&chunks[i].thread, NULL, ft_render_wrapper, &chunks[i]) != 0)
+			(perror("pthread_create"), exit(2));
+		// wrapper.phase++;
+		// usleep(69);
+	}
+
+	for (int i=0; i < cores; i++)
+		pthread_join(chunks[i].thread, NULL);
+
+	ft_write_png_file("scene.png", img);
+
+	// ft_render(img, &w, w.camera);
 }

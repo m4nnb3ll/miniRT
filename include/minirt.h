@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:59:57 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/27 20:39:05 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/30 13:28:59 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,7 @@
 # include "ft_png.h"
 # include "ft_parse.h"
 # include "ft_printers.h"
+# include <pthread.h>
+#include <sys/sysctl.h>
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:12:33 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/28 20:30:22 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/30 13:53:48 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,8 @@ t_color	ft_color_div(t_color c, int n)
 	return ((t_color){c.r / n, c.g / n, c.b / n});
 }
 
-void	ft_render(t_png_img img, t_world *w, t_camera c)
+// void	ft_render(t_png_img img, t_world *w, t_camera c)
+void	ft_render(t_png_img *img, t_world *w, int phase)
 {
 	t_color	color/* , tmp_color */;
 	t_color	color_arr[5];
@@ -133,13 +134,18 @@ void	ft_render(t_png_img img, t_world *w, t_camera c)
 	ray_arr = ft_calloc(5, sizeof(t_ray));
 	// ft_bzero(&ray_arr, sizeof(t_ray) * 5);
 
-	i = 0;
-	while (i < img.height)
+	int cores = sysconf(_SC_NPROCESSORS_ONLN);
+
+	// i = 0;
+	i = phase * (img->height / cores);
+	int end = (phase + 1) == cores ? img->height : (phase + 1) * (img->height / cores);
+	// printf("----------------\nThe begining: %d\nThe end: %d\n----------------\n", i, end);`
+	while (i < /* img->height */ end)
 	{
 		j = 0;
-		while (j < img.width)
+		while (j < img->width)
 		{
-			/* r =  */ft_ray_for_pixel(j, i, c,/*test ->*/ ray_arr);
+			/* r =  */ft_ray_for_pixel(j, i, w->camera,/*test ->*/ ray_arr);
 			// r = ray_arr[0];
 			// printf("the ray from the loop is:\n");
 			// ft_print_ray(ray_arr[0]);
@@ -154,11 +160,11 @@ void	ft_render(t_png_img img, t_world *w, t_camera c)
 			color_arr[0] = ft_add_colors(color, color_arr[4]);
 			color = ft_color_div(color_arr[0], 5);
 			// color = ft_color_at(w, ray_arr[0], REFLECT_DEPTH);
-			ft_png_put_pixel(img, j, i, color);
+			ft_png_put_pixel(*img, j, i, color);
 			j++;
 		}
 		i++;
 	}
 	ft_free_objs_and_tex(w);
-	ft_write_png_file("scene.png", img);
+	// ft_write_png_file("scene.png", *img);
 }
