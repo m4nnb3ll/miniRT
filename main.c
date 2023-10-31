@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 16:09:43 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/30 13:49:38 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/31 15:53:03 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,12 +335,10 @@ int	main(int argc, char **argv)
 	t_world		w;
 	// t_window	window;
 	t_png_img	img;
-	int			cores;
 
 
 	if (argc != 2)
 		return (printf("Please provide a scene file!\n"), -42);
-	cores = sysconf(_SC_NPROCESSORS_ONLN);
 	// world_data(&w, argv[1]);
 	// w.camera = ft_camera(w.camera);
 	// window = ft_img_ptr();
@@ -357,15 +355,15 @@ int	main(int argc, char **argv)
 	int			num;
 	*/
 
-	t_chunk	chunks[cores];
-	for (int i=0; i < cores; i++)
+	t_chunk	chunks[w.cores_cnt];
+	for (int i=0; i < w.cores_cnt; i++)
 	{
 		chunks[i].img = &img;
 		chunks[i].w = &w;
 		chunks[i].num = i;
 	}
 	
-	for (int i=0; i < cores; i++)
+	for (int i=0; i < w.cores_cnt; i++)
 	{
 		if (pthread_create(&chunks[i].thread, NULL, ft_render_wrapper, &chunks[i]) != 0)
 			(perror("pthread_create"), exit(2));
@@ -373,7 +371,7 @@ int	main(int argc, char **argv)
 		// usleep(69);
 	}
 
-	for (int i=0; i < cores; i++)
+	for (int i=0; i < w.cores_cnt; i++)
 		pthread_join(chunks[i].thread, NULL);
 
 	ft_write_png_file("scene.png", img);

@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:46:27 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/27 20:42:10 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/10/31 15:52:36 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,6 +282,7 @@ typedef struct s_world_tst
 	t_camera	camera;
 	t_light		*light_lst;
 	t_obj		*obj_lst;
+	int			cores_cnt;
 }	t_world;//t_world_tst
 
 typedef struct s_png_img
