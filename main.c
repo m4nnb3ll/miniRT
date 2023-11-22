@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 16:09:43 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/31 15:53:03 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/11/22 22:54:26 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@ void	ft_get_ns(t_xnode *hit, t_xnode *xs, t_comps *comps)
 // 	printf("comps n1,n2 are: %f,%f\n", comps.ns[0], comps.ns[1]);
 // 	comps = ft_prepare_comps(r, xs->next->next, xs);
 // 	printf("comps n1,n2 are: %f,%f\n", comps.ns[0], comps.ns[1]);
-// 	// STOPPED BELOW
+// 
 // 	comps = ft_prepare_comps(r, xs->next->next->next, xs);
 // 	printf("comps n1,n2 are: %f,%f\n", comps.ns[0], comps.ns[1]);
 // 	comps = ft_prepare_comps(r, xs->next->next->next->next, xs);
@@ -368,12 +368,11 @@ int	main(int argc, char **argv)
 		if (pthread_create(&chunks[i].thread, NULL, ft_render_wrapper, &chunks[i]) != 0)
 			(perror("pthread_create"), exit(2));
 		// wrapper.phase++;
-		// usleep(69);
 	}
 
 	for (int i=0; i < w.cores_cnt; i++)
 		pthread_join(chunks[i].thread, NULL);
-
+	ft_free_objs_and_tex(&w);
 	ft_write_png_file("scene.png", img);
 
 	// ft_render(img, &w, w.camera);

@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:20 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/31 15:51:47 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/11/22 22:29:18 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ bool	ft_get_color(char **s, t_color *c)
 		return (false);
 	ft_free_char2(tuple_split);
 	ft_skip_token_space(s, 0);
+	// printf("finished color\n");
 	return (true);
 }
 
@@ -69,18 +70,20 @@ bool	ft_get_tuple(char **s, t_tuple *t, bool is_pt)
 	return (true);
 }
 
-bool	ft_get_double(char **s, double *fov)
+bool	ft_get_double(char **s, double *val)
 {
 	char	*start;
 
 	ft_skip_spaces(s); // skip any possible leading spaces
+	if (!ft_strlen(*s)) return (false);
 	ft_tmp_sp_truncate_str(*s, 0);
 	start = *s;
 	while (**s && (ft_isdigit(**s) || **s == '.'))
 		(*s)++;
 	if (**s) return (false);
-	*fov = atof(start);
+	*val = atof(start);
 	ft_tmp_sp_truncate_str(*s, 1);
+	// printf("I reach bottom and i return true\n");
 	return (true);
 }
 
@@ -90,7 +93,8 @@ bool	ft_get_camera(char *s, t_world *w)
 	ft_skip_token(&s); // skip type
 	if (!ft_get_tuple(&s, &w->camera.from, true)
 		|| !ft_get_tuple(&s, &w->camera.to, true)
-		|| !ft_get_double(&s, &w->camera.fov))
+		|| !ft_get_double(&s, &w->camera.fov)
+		|| w->camera.fov < 0 || w->camera.fov > 180)
 		return (false);
 	w->camera.set = true;
 	return (!*s);
@@ -122,13 +126,14 @@ bool	ft_get_optional_obj_params(char **s, t_obj *o)
 	ft_skip_token_space(s, 0);
 	if (!**s) return (true); // if there is no more, return
 	ft_tmp_sp_truncate_str(*s, 0);
-	if (ft_strcmp(*s, "0") != 0)
+	if (ft_strcmp(*s, ".") != 0)
 		o -> tex = ft_png_img_to_tex(ft_read_png_file(*s));
 	ft_tmp_sp_truncate_str(*s, 1);
 	ft_skip_token_space(s, 0);
 	if (!**s) return (true);
+	if (o->type != OT_SPHERE && o->type != OT_PLANE) return (false);
 	ft_tmp_sp_truncate_str(*s, 0);
-	if (ft_strcmp(*s, "0") != 0)
+	if (ft_strcmp(*s, ".") != 0)
 		o -> btex = ft_png_img_to_tex(ft_read_png_file(*s));
 	ft_tmp_sp_truncate_str(*s, 1);
 	ft_skip_token_space(s, 0);
@@ -143,9 +148,12 @@ bool	ft_get_sp(char *s, t_world *w)
 
 	ft_skip_token(&s); // skip type
 	o = ft_objnew(OT_SPHERE);
-	if (!ft_get_tuple(&s, &pt, true)
-		|| !ft_get_double(&s, &d)
+	if (!ft_get_tuple(&s, &pt, true)//position
+		|| !ft_get_double(&s, &d)//diameter
 		|| !ft_get_color(&s, &o->material.color)
+		|| !ft_get_double(&s, &o->material.reflective)//reflective
+		|| !ft_get_double(&s, &o->material.transparency)//transparency
+		|| !ft_get_double(&s, &o->material.ri)//refractive index
 		|| !ft_get_optional_obj_params(&s, o))
 		return (false);
 	// d / 2, because the default sphere is of radius 1.
@@ -155,15 +163,7 @@ bool	ft_get_sp(char *s, t_world *w)
 			ft_scale(d / 2, d / 2, d / 2)
 			)
 		);
-	/*glass test*/
-	// o->material.reflective = .1;
-	if (!o->material.color.r && !o->material.color.g && !o->material.color.b)
-	{
-		o->material.transparency = .8;
-		o->material.ri = GLASS;
-	}
-
-	/*glass test end*/
+	if (!o->material.ri) o->material.ri = GLASS;
 	ft_objadd_back(&w->obj_lst, o);
 	return (true);
 }
@@ -179,6 +179,9 @@ bool	ft_get_pl(char *s, t_world *w)
 	if (!ft_get_tuple(&s, &pt, true)
 		|| !ft_get_tuple(&s, &normal, false)
 		|| !ft_get_color(&s, &o->material.color)
+		|| !ft_get_double(&s, &o->material.reflective)//reflective
+		|| !ft_get_double(&s, &o->material.transparency)//transparency
+		|| !ft_get_double(&s, &o->material.ri)//refractive index
 		|| !ft_get_optional_obj_params(&s, o))
 		return (false);
 	o -> transform_inverse = ft_inverse(
@@ -187,10 +190,7 @@ bool	ft_get_pl(char *s, t_world *w)
 			ft_get_rotation_matrix(ft_vector(0, 0, 1), normal)
 			)
 		);
-	// test
-	if (o->btex.height || o -> checkered)
-		o -> material.reflective = .3;
-	// test end
+	if (!o->material.ri) o->material.ri = GLASS;
 	ft_objadd_back(&w->obj_lst, o);
 	return (true);
 }
@@ -210,6 +210,9 @@ bool	ft_get_cycone(char *s, t_world *w, enum e_el_type el_type)
 		|| !ft_get_double(&s, &d)
 		|| !ft_get_double(&s, &h)
 		|| !ft_get_color(&s, &o->material.color)
+		|| !ft_get_double(&s, &o->material.reflective)//reflective
+		|| !ft_get_double(&s, &o->material.transparency)//transparency
+		|| !ft_get_double(&s, &o->material.ri)//refractive index
 		|| !ft_get_optional_obj_params(&s, o))
 		return (false);
 	// to be tested later
@@ -222,6 +225,7 @@ bool	ft_get_cycone(char *s, t_world *w, enum e_el_type el_type)
 				)
 			)
 		);
+	if (!o->material.ri) o->material.ri = GLASS;
 	ft_objadd_back(&w->obj_lst, o);
 	return (true);
 }
@@ -273,6 +277,13 @@ char	*str_types[] = {
 		};
 */
 
+int	ft_print_parse_err(char *str)
+{
+	printf("ERROR IN FILE FORMAT: %s`%s`%s\n", RED, str, RESET_COLOR);
+	printf("Please read %s`scenes/sample.rt`%s for further detail.\n", YELLOW, RESET_COLOR);
+	return (1);
+}
+
 t_world	ft_parse_rt_file(char *filename)
 {
 	int			fd;
@@ -287,13 +298,13 @@ t_world	ft_parse_rt_file(char *filename)
 	while (line)
 	{
 		if (*line != '#' &&  !ft_extract_el(line, &world))
-			(printf("ERROR IN FILE FORMAT: `%s`\n", line), exit(-42));
+			exit(ft_print_parse_err(line));
 		free(line);
 		line = ft_nullify_nl(get_next_line(fd));
 	}
 	if (!world.camera.set || !world.light_lst)
 		exit(printf("%sCamera or Light is missing!!!%s\n", RED, RESET_COLOR));
 	world.camera = ft_camera(world.camera);
-	world.cores_cnt = sysconf(_SC_NPROCESSORS_ONLN);
+	world.cores_cnt = sysconf(_SC_NPROCESSORS_ONLN) * 3; // i ll put to test
 	return (world);
 }

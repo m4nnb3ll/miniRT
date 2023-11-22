@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:12:33 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/31 15:52:02 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/11/22 22:30:08 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,12 @@ t_matrix	ft_view_transform_inverse(t_tuple from, t_tuple to)
 				ft_translate(-from.x, -from.y, -from.z))));
 }
 
-t_camera	ft_camera(t_camera raw_camera)
+t_camera	ft_camera(t_camera c)
 {
-	t_camera	c;
 	double		half_view;
 	double		aspect;
 
-	c = raw_camera;
+	c.fov /= 180;
 	half_view = tan(c.fov / 4) * 2;
 	c.screen_w = SCREEN_WIDTH;
 	c.screen_h = SCREEN_HEIGHT;
@@ -82,31 +81,42 @@ t_ray	ft_ray_for_pixel(int x, int y, int phase, t_camera c)
 	return (r);
 }
 
-void	ft_render(t_png_img *img, t_world *w, int phase)
+t_color	ft_anti_aliased_color(t_world *w, int j, int i)
 {
 	t_color	color;
-	int		i, j;
-	
-	i = phase * (img->height / w->cores_cnt);
+	t_ray	r;
 
-	int end = (phase + 1) == w->cores_cnt ? img->height : (phase + 1) * (img->height / w->cores_cnt);
+	color = g_black;
+	for (int k = 0; k < 5; k++)
+	{
+		r = ft_ray_for_pixel(j, i, k, w->camera);
+		color = ft_add_colors(color, ft_color_at(w, r, REFLECT_DEPTH));
+	}
+	return ((t_color){color.r / 5, color.g / 5, color.b / 5});
+}
+
+void	ft_render(t_png_img *img, t_world *w, int thread_i)
+{
+	int		i;
+	int		j;
+	int		end;
+	int		chunk_size;
 	
-	while (i < /* img->height */ end)
+	chunk_size = img->height / w->cores_cnt;
+	i = thread_i * (chunk_size);
+	if ((thread_i + 1) == w->cores_cnt)
+		end = img->height;
+	else
+		end = (thread_i + 1) * (chunk_size);
+	while (i < end)
 	{
 		j = 0;
 		while (j < img->width)
 		{
-			color = g_black;
-			for (int k = 0; k < 5; k++)
-				color = ft_add_colors(
-					color,
-					ft_color_at(w, ft_ray_for_pixel(j, i, k, w->camera), REFLECT_DEPTH)
-					);
-				// I will see to make put pixel take a pointer to the img
-			ft_png_put_pixel(*img, j, i, (t_color){color.r / 5, color.g / 5, color.b / 5});
+			// I will see to make put pixel take a pointer to the img
+			ft_png_put_pixel(*img, j, i, ft_anti_aliased_color(w, j, i));
 			j++;
 		}
 		i++;
 	}
-	ft_free_objs_and_tex(w);;
 }

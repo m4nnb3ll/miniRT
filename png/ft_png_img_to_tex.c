@@ -22,6 +22,7 @@ void	ft_free_tex(t_tex tex)
 	while (i < tex.height)
 		free(tex.pixels[i++]);
 	free(tex.pixels);
+	tex.pixels = NULL;
 }
 
 t_tex	ft_png_img_to_tex(t_png_img img)

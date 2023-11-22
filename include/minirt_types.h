@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:46:27 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/31 15:52:36 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/11/22 21:20:37 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ typedef struct s_obj
 	bool			checkered;
 	t_tex			tex;
 	t_tex			btex;
-	void			*props;
 	struct s_obj	*next;
 }	t_obj;
 

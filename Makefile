@@ -50,7 +50,8 @@ $(OBJS_DIR)/%.o		:	%.c
 									$(CFLAGS) \
 									$(HEADERS) \
 									-c $< -o $@ \
-									&& printf "$(YELLOW)Compiling:$(RESET_COLOR) $(notdir $<)\n"
+									&& tput el \
+									&& printf "$(YELLOW)Compiling:$(RESET_COLOR) $(notdir $<)\r"
 
 all					:		$(NAME)
 
@@ -60,10 +61,11 @@ $(LIBFT)			:
 									@make fclean -C libft/
 									@echo "$(GREEN)libft ✓$(RESET_COLOR)"
 
+# FSANITIZE := -fsanitize=address -g
+
 $(NAME)				:		$(OBJS) $(LIBFT) 
-#@$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -fsanitize=address -o $(NAME)
-									@$(CC) $(OBJS) $(FRAMEWORKS) $(LIBS) -o $(NAME)
-									@echo "$(GREEN)All Done ✓$(RESET_COLOR)"
+									@$(CC) $(FSANITIZE) $(OBJS) $(FRAMEWORKS) $(LIBS) -o $(NAME)
+									@echo "\n$(GREEN)All Done ✓$(RESET_COLOR)"
 
 clean				:
 									@rm -f $(OBJS)
