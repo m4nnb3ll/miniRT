@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:15:26 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/27 20:27:53 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/12/03 17:06:56 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,24 @@ t_contnode	*ft_containers_last(t_contnode *contlst)
 	return (contlst);
 }
 
+void	ft_remove_container_loop(t_contnode	*prev, t_contnode *tmp, t_obj *o)
+{
+	while (tmp)
+	{
+		if (tmp->o == o)
+		{
+			prev -> next = tmp->next;
+			free(tmp);
+			tmp = prev -> next;
+		}
+		else
+		{
+			prev = tmp;
+			tmp = tmp -> next;
+		}
+	}
+}
+
 void	ft_remove_container(t_contnode **head, t_obj *o)
 {
 	t_contnode	*prev;
@@ -78,18 +96,5 @@ void	ft_remove_container(t_contnode **head, t_obj *o)
 		return ;
 	}
 	tmp = *head;
-	while (tmp)
-	{
-		if (tmp->o == o)
-		{
-			prev -> next = tmp->next;
-			free(tmp);
-			tmp = prev -> next;
-		}
-		else
-		{
-			prev = tmp;
-			tmp = tmp -> next;
-		}
-	}
+	ft_remove_container_loop(prev, tmp, o);
 }

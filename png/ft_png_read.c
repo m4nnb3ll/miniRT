@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 11:33:32 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/28 12:57:03 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/12/04 17:59:40 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ bool	ft_png_read_file_check(
 {
 	*fp = fopen(filename, "rb");
 	if (!*fp)
-		return (dprintf(2, "Error opening the file for reading\n"), false);
+		return (dprintf(2,
+				"Error opening the file for reading: %s\n", filename), false);
 	*png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (!*png)
 		return (fclose(*fp),
@@ -62,8 +63,7 @@ t_png_img	ft_read_png_file(char *filename)
 
 	img = (t_png_img){0, 0, NULL};
 	if (!ft_png_read_file_check(filename, &fp, &png, &info))
-		exit(53);
-		// return (img); // i ll see why i was doing this
+		exit(42);
 	png_init_io(png, fp);
 	png_read_info(png, info);
 	img.width = png_get_image_width(png, info);
@@ -76,6 +76,5 @@ t_png_img	ft_read_png_file(char *filename)
 	png_read_image(png, img.row_pointers);
 	fclose(fp);
 	png_destroy_read_struct(&png, &info, NULL);
-	printf("Finished reading the png file\n");
 	return (img);
 }

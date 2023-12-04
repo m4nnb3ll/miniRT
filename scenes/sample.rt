@@ -4,6 +4,8 @@
 # reflectiveness(rflct):[0 - 1]
 # transparency(trnsp):	[0 - 1]
 # refraction index(ri):	pass 0 for the default(glass)
+# to indicate no file for texture pass '.' in the place of the filename
+#	- ex: "sp 0,0,0 1 0,0,0 0 0 0 0 . normal_texture.png"
 
 
 
@@ -12,10 +14,10 @@ C <from_position> <to_position> <fov_degrees>
 # Light
 l <position> <color(presents also brightness)>
 # Sphere
-sp <position> <diameter> <color> <rflct> <trnsp> <ri> [checkered] [checkered texture] [checkered texture b_texture]
+sp <position> <diameter> <color> <rflct> <trnsp> <ri> [checkered] [checkered texture] [checkered texture normal_texture]
 # Plane
-pl <position> <dir_vector> <color> <rflct> <trnsp> <ri> [checkered] [checkered texture] [checkered texture b_texture]
+pl <position> <dir_vector> <color> <rflct> <trnsp> <ri> [checkered] [checkered texture] [checkered texture normal_texture]
 # Cylinder
-cy <position> <axis_vector> <diameter> <height> <color> <rflct> <trnsp> <ri> [checkered] [checkered texture] [checkered texture b_texture]
+cy <position> <axis_vector> <diameter> <height> <color> <rflct> <trnsp> <ri> [checkered] [checkered texture] [checkered texture normal_texture]
 # Cone
-cn <position> <axis_vector> <diameter> <height> <color> <rflct> <trnsp> <ri> [checkered] [checkered texture] [checkered texture b_texture]
+cn <position> <axis_vector> <diameter> <height> <color> <rflct> <trnsp> <ri> [checkered] [checkered texture] [checkered texture normal_texture]

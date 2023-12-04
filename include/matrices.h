@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:45:47 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/20 15:58:00 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/12/04 10:57:57 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@ t_matrix	ft_transpose(t_matrix m);
 t_matrix	ft_inverse(t_matrix original);
 t_matrix	ft_translate(double x, double y, double z);
 t_matrix	ft_scale(double x, double y, double z);
-t_matrix	ft_rotate_x(double rad);
-t_matrix	ft_rotate_y(double rad);
-t_matrix	ft_rotate_z(double rad);
 t_tuple		ft_get_quat(t_tuple rot_axe, double radian);
 t_matrix	ft_quat_to_matrix(t_tuple q);
 t_matrix	ft_get_rotation_matrix(t_tuple v1, t_tuple v2);

@@ -5,7 +5,6 @@ RESET_COLOR			:=	\033[0m
 
 NAME				:=	miniRT
 CC					:=	cc
-# TRY TO TEST THE DEBUG FLAG
 CFLAGS				:=	-Wextra -Wall -Werror -O3 -g
 HEADERS				:=	-Ilibft/include -Iinclude -I$(HOME)/libpng/include
 
@@ -17,16 +16,14 @@ LIBS				:=	$(LIBPNG) $(LIBFT) -ldl -lm -pthread
 # SRCS
 CAMERA				:=	${addprefix camera/, camera.c utils.c}
 CANVAS				:=	${addprefix canvas/, color.c utils.c}
-# PARSING				:=	${addprefix checkmap/, allocate_data.c checkmap.c helpers.c my_strtod.c cam_amb.c\
-# 									light_data.c sph_data.c others.c plane_data.c cy_data.c cone_data.c}
-PARSING				:=	${addprefix parsing/, ft_parse.c utils.c}
-LIGHT_SHADING		:=	${addprefix light_shading/, lighting.c normals.c utils.c}
+PARSING				:=	${addprefix parsing/, ft_parse.c obj_getters.c utils_0.c utils_1.c utils_2.c}
+LIGHT_SHADING		:=	${addprefix light_shading/, lighting.c normals.c normals_helpers.c\
+									helpers.c texture_helpers.c reflect.c refract.c}
 LSTS				:=	${addprefix lsts/, xs.c objs.c containers.c light_lst.c}
 MATRICES			:=	${addprefix matrices/, matrix_ops.c matrix_transformations.c quaternions.c utils.c}
 RAY_INTERSECT		:=	${addprefix ray_intersect/, ray.c intersect.c caps.c utils.c}
 TUPLES				:=	${addprefix tuples/, tuple_ops.c tuples.c}
 PNG					:=	${addprefix png/, ft_png_read.c ft_png_write.c ft_png_utils.c ft_png_img_to_tex.c}
-PRINT				:=	${addprefix print/, ft_print.c}
 
 SRCS				:=	main.c \
 								$(CAMERA) \
@@ -37,8 +34,7 @@ SRCS				:=	main.c \
 								$(MATRICES) \
 								$(RAY_INTERSECT) \
 								$(TUPLES) \
-								$(PNG) \
-								$(PRINT)
+								$(PNG)
 
 
 OBJS_DIR			:=	Makefile_objects
@@ -59,11 +55,11 @@ $(LIBFT)			:
 									@make -C libft/
 									@cp libft/$(LIBFT) .
 									@make fclean -C libft/
-									@echo "$(GREEN)libft ✓$(RESET_COLOR)"
+									@tput el && echo "$(GREEN)libft ✓$(RESET_COLOR)"
 
 # FSANITIZE := -fsanitize=address -g
 
-$(NAME)				:		$(OBJS) $(LIBFT) 
+$(NAME)				:		$(LIBFT) $(OBJS)
 									@$(CC) $(FSANITIZE) $(OBJS) $(FRAMEWORKS) $(LIBS) -o $(NAME)
 									@echo "\n$(GREEN)All Done ✓$(RESET_COLOR)"
 

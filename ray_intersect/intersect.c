@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:08:09 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/27 20:43:22 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/12/03 19:55:37 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ t_xnode	*ft_intersect_plane(t_obj *o, t_ray r)
 {
 	double	t;
 
-	// printf("I get inside intersect plane\n");
 	r = ft_transform_ray(o -> transform_inverse, r);
 	if (fabs(r.direction.z) < EPSILON)
 		return (NULL);
@@ -117,16 +116,7 @@ t_xnode	*ft_intersect_world(t_world *w, t_ray r)
 		else if (tmp_o->type == OT_CONE)
 			ft_xadd_back(&xs, ft_intersect_cone(tmp_o, r));
 		else
-		{
 			ft_xadd_back(&xs, ft_intersect_sphere(tmp_o, r));
-			// printf("The obj goes below\n");
-			// ft_print_obj(tmp_o);
-			// printf("The matric goes below\n");
-			// ft_print_matrix(tmp_o->transform_inverse);
-			// printf("The object's material is:\n");
-			// ft_print_material(tmp_o->material);
-			// exit(42);
-		}
 		tmp_o = tmp_o -> next;
 	}
 	return (xs);

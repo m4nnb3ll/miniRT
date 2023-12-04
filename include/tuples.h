@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:57:37 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/20 13:57:39 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/12/04 12:34:29 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "minirt_types.h"
 
-void	ft_print_tuple(t_tuple a);
 t_tuple	ft_point(double x, double y, double z);
 t_tuple	ft_vector(double x, double y, double z);
 t_tuple	ft_add_tuples(t_tuple a, t_tuple b);

@@ -1,0 +1,5 @@
+C -1,1.5,4 0,.5,0 180
+l -5,1,4 255,255,255
+sp 0,.5,0 2 0,0,0 0 0 0 0 textures/earth.png textures/earth_normal.png
+sp -2,1,-5 .3 125,125,125 0 0 0 0 textures/moon.png textures/moon_normal.png
+pl 0,0,-15 0,0,1 0,0,0 0 0 0 0 textures/stars.png

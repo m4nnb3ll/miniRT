@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:12:38 by abelayad          #+#    #+#             */
-/*   Updated: 2023/10/27 20:42:40 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/12/03 16:54:30 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ bool	ft_is_shadowed(t_world *w, t_light l, t_tuple over_pt)
 	world_xs = ft_intersect_world(w, ft_ray(over_pt, lv));
 	hit = ft_hit(world_xs);
 	if (hit && (hit->x - distance < EPSILON))
-		return (ft_free_xs(&world_xs),/* free(hit), */ true);
-	return (ft_free_xs(&world_xs),/* free(hit), */ false);
+		return (ft_free_xs(&world_xs), true);
+	return (ft_free_xs(&world_xs), false);
 }
 
 /*
@@ -61,10 +61,6 @@ t_color	ft_lighting(t_world *w, t_light l, t_comps comps)
 {
 	t_phong		ph;
 	t_material	m;
-
-// I will try to initialize vars here
-	ft_bzero(&ph, sizeof(t_phong));
-	ft_bzero(&m, sizeof(t_material));
 
 	m = comps.o -> material;
 	ph.e_color = ft_multi_colors(ft_get_obj_color(&comps), l.color);
@@ -87,10 +83,9 @@ t_color	ft_lighting(t_world *w, t_light l, t_comps comps)
 	return (ft_add_colors(ph.s_color, ft_add_colors(ph.a_color, ph.d_color)));
 }
 
-// THERE IS A BUG BELOW TO CHECK LATER
 t_color	ft_shade_hit(t_world *w, t_comps comps, int remaining)
 {
-	t_light *tmp_light;
+	t_light	*tmp_light;
 	t_color	reflect_color;
 	t_color	refract_color;
 	t_color	final_color;
@@ -119,7 +114,7 @@ t_color	ft_color_at(t_world *w, t_ray r, int remaining)
 	hit = NULL;
 	world_xs = NULL;
 	ft_bzero(&comps, sizeof(t_comps));
-	world_xs = ft_intersect_world(w, r);
+	world_xs = ft_sort_xs(ft_intersect_world(w, r));
 	hit = ft_hit(world_xs);
 	if (hit)
 	{
@@ -127,6 +122,5 @@ t_color	ft_color_at(t_world *w, t_ray r, int remaining)
 		color = ft_shade_hit(w, comps, remaining);
 		return (ft_free_xs(&world_xs), color);
 	}
-	// printf("I return black from here 3\n");
 	return (ft_free_xs(&world_xs), g_black);
 }

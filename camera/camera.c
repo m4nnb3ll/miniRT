@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:12:33 by abelayad          #+#    #+#             */
-/*   Updated: 2023/11/22 22:30:08 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/12/02 16:40:43 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,8 @@ t_matrix	ft_view_transform_inverse(t_tuple from, t_tuple to)
 	{0, 0, 0, 1}
 	}
 	};
-	return (ft_inverse(
-			ft_multi_matrices(orientation,
-				ft_translate(-from.x, -from.y, -from.z))));
+	return (ft_inverse(ft_multi_matrices(
+				orientation, ft_translate(-from.x, -from.y, -from.z))));
 }
 
 t_camera	ft_camera(t_camera c)
@@ -72,7 +71,7 @@ t_ray	ft_ray_for_pixel(int x, int y, int phase, t_camera c)
 	t_ray	r;
 	double	*hit_coords;
 
-	hit_coords = (double[5 * 2]){.5, .5, .1, .1, .9, .1, .1, .9, .9, .9};
+	hit_coords = (double [5 * 2]){.5, .5, .1, .1, .9, .1, .1, .9, .9, .9};
 	world_x = c.half_c_w - (x + hit_coords[2 * phase]) * c.psize;
 	world_y = c.half_c_h - (y + hit_coords[2 * phase + 1]) * c.psize;
 	r = ft_ray(ft_point(0, 0, 0), ft_vector(world_x, world_y, -1));
@@ -85,12 +84,15 @@ t_color	ft_anti_aliased_color(t_world *w, int j, int i)
 {
 	t_color	color;
 	t_ray	r;
+	int		k;
 
 	color = g_black;
-	for (int k = 0; k < 5; k++)
+	k = 0;
+	while (k < 5)
 	{
 		r = ft_ray_for_pixel(j, i, k, w->camera);
 		color = ft_add_colors(color, ft_color_at(w, r, REFLECT_DEPTH));
+		k++;
 	}
 	return ((t_color){color.r / 5, color.g / 5, color.b / 5});
 }
@@ -101,7 +103,7 @@ void	ft_render(t_png_img *img, t_world *w, int thread_i)
 	int		j;
 	int		end;
 	int		chunk_size;
-	
+
 	chunk_size = img->height / w->cores_cnt;
 	i = thread_i * (chunk_size);
 	if ((thread_i + 1) == w->cores_cnt)
@@ -113,8 +115,7 @@ void	ft_render(t_png_img *img, t_world *w, int thread_i)
 		j = 0;
 		while (j < img->width)
 		{
-			// I will see to make put pixel take a pointer to the img
-			ft_png_put_pixel(*img, j, i, ft_anti_aliased_color(w, j, i));
+			ft_png_put_pixel(img, j, i, ft_anti_aliased_color(w, j, i));
 			j++;
 		}
 		i++;
