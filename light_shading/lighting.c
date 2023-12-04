@@ -6,13 +6,13 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:12:38 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 15:42:42 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/12/03 16:54:30 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_comps	ft_prepare_comps(t_ray r, t_xnode *hit)
+t_comps	ft_prepare_comps(t_ray r, t_xnode *hit, t_xnode *xs)
 {
 	t_comps	comps;
 
@@ -28,6 +28,9 @@ t_comps	ft_prepare_comps(t_ray r, t_xnode *hit)
 		comps.nv = ft_negv(comps.nv);
 	}
 	comps.over_pt = ft_add_tuples(comps.pt, ft_sclv(comps.nv, EPSILON));
+	comps.under_pt = ft_sub_tuples(comps.pt, ft_sclv(comps.nv, EPSILON));
+	comps.rv = ft_reflectv(r.direction, comps.nv);
+	ft_get_ns(hit, xs, &comps);
 	return (comps);
 }
 
@@ -43,10 +46,9 @@ bool	ft_is_shadowed(t_world *w, t_light l, t_tuple over_pt)
 	lv = ft_normalize(lv);
 	world_xs = ft_intersect_world(w, ft_ray(over_pt, lv));
 	hit = ft_hit(world_xs);
-	ft_free_xs(&world_xs);
 	if (hit && (hit->x - distance < EPSILON))
-		return (free(hit), true);
-	return (free(hit), false);
+		return (ft_free_xs(&world_xs), true);
+	return (ft_free_xs(&world_xs), false);
 }
 
 /*
@@ -61,10 +63,8 @@ t_color	ft_lighting(t_world *w, t_light l, t_comps comps)
 	t_material	m;
 
 	m = comps.o -> material;
-	l.color = ft_color_scl(l.color, l.brightness);
 	ph.e_color = ft_multi_colors(ft_get_obj_color(&comps), l.color);
-	ph.a_color = ft_multi_colors(
-			ph.e_color, ft_color_scl(w->ambient.color, w->ambient.ratio));
+	ph.a_color = ft_color_scl(ph.e_color, m.ambient);
 	if (ft_is_shadowed(w, l, comps.over_pt))
 		return (ph.a_color);
 	ph.lv = ft_normalize(ft_sub_tuples(l.position, comps.pt));
@@ -83,35 +83,44 @@ t_color	ft_lighting(t_world *w, t_light l, t_comps comps)
 	return (ft_add_colors(ph.s_color, ft_add_colors(ph.a_color, ph.d_color)));
 }
 
-t_color	ft_shade_hit(t_world *w, t_comps comps)
+t_color	ft_shade_hit(t_world *w, t_comps comps, int remaining)
 {
-	int		i;
+	t_light	*tmp_light;
+	t_color	reflect_color;
+	t_color	refract_color;
 	t_color	final_color;
 
 	final_color = g_black;
-	i = 0;
-	while (i < w->num_lights)
+	tmp_light = w->light_lst;
+	while (tmp_light)
 	{
+		reflect_color = ft_reflected_color(w, comps, remaining);
+		refract_color = ft_refracted_color(w, comps, remaining);
 		final_color = ft_add_colors(
-				final_color, ft_lighting(w, w->lights[i], comps));
-		i++;
+				ft_add_colors(final_color, ft_lighting(w, *tmp_light, comps)),
+				ft_add_colors(reflect_color, refract_color));
+		tmp_light = tmp_light -> next;
 	}
 	return (final_color);
 }
 
-t_color	ft_color_at(t_world *w, t_ray r)
+t_color	ft_color_at(t_world *w, t_ray r, int remaining)
 {
 	t_xnode	*hit;
 	t_comps	comps;
 	t_xnode	*world_xs;
+	t_color	color;
 
-	world_xs = ft_intersect_world(w, r);
+	hit = NULL;
+	world_xs = NULL;
+	ft_bzero(&comps, sizeof(t_comps));
+	world_xs = ft_sort_xs(ft_intersect_world(w, r));
 	hit = ft_hit(world_xs);
-	ft_free_xs(&world_xs);
 	if (hit)
 	{
-		comps = ft_prepare_comps(r, hit);
-		return (free(hit), ft_shade_hit(w, comps));
+		comps = ft_prepare_comps(r, hit, world_xs);
+		color = ft_shade_hit(w, comps, remaining);
+		return (ft_free_xs(&world_xs), color);
 	}
-	return (free(hit), g_black);
+	return (ft_free_xs(&world_xs), g_black);
 }

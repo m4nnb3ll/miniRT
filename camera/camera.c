@@ -6,19 +6,21 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:12:33 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 16:04:49 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/12/02 16:40:43 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_matrix	ft_view_transform_inverse(t_tuple from, t_tuple forward)
+t_matrix	ft_view_transform_inverse(t_tuple from, t_tuple to)
 {
+	t_tuple		forward;
 	t_tuple		up;
 	t_tuple		left;
 	double		fdu;
 	t_matrix	orientation;
 
+	forward = ft_normalize(ft_sub_tuples(to, from));
 	up = ft_vector(0, 1, 0);
 	fdu = ft_dot(forward, up);
 	if (fdu == 1 || fdu == -1)
@@ -33,18 +35,16 @@ t_matrix	ft_view_transform_inverse(t_tuple from, t_tuple forward)
 	{0, 0, 0, 1}
 	}
 	};
-	return (ft_inverse(
-			ft_multi_matrices(orientation,
-				ft_translate(-from.x, -from.y, -from.z))));
+	return (ft_inverse(ft_multi_matrices(
+				orientation, ft_translate(-from.x, -from.y, -from.z))));
 }
 
-t_camera	ft_camera(t_camera raw_camera)
+t_camera	ft_camera(t_camera c)
 {
-	t_camera	c;
 	double		half_view;
 	double		aspect;
 
-	c = raw_camera;
+	c.fov /= 180;
 	half_view = tan(c.fov / 4) * 2;
 	c.screen_w = SCREEN_WIDTH;
 	c.screen_h = SCREEN_HEIGHT;
@@ -60,48 +60,64 @@ t_camera	ft_camera(t_camera raw_camera)
 		c.half_c_w = c.half_c_h * aspect;
 	}
 	c.psize = c.half_c_w * 2 / SCREEN_WIDTH;
-	c.view_transform_inverse = ft_view_transform_inverse(c.pt, c.forward_v);
+	c.view_transform_inverse = ft_view_transform_inverse(c.from, c.to);
 	return (c);
 }
 
-t_ray	ft_ray_for_pixel(int x, int y, t_camera c)
+t_ray	ft_ray_for_pixel(int x, int y, int phase, t_camera c)
 {
 	double	world_x;
 	double	world_y;
 	t_ray	r;
+	double	*hit_coords;
 
-	world_x = c.half_c_w - (x + .5) * c.psize;
-	world_y = c.half_c_h - (y + .5) * c.psize;
+	hit_coords = (double [5 * 2]){.5, .5, .1, .1, .9, .1, .1, .9, .9, .9};
+	world_x = c.half_c_w - (x + hit_coords[2 * phase]) * c.psize;
+	world_y = c.half_c_h - (y + hit_coords[2 * phase + 1]) * c.psize;
 	r = ft_ray(ft_point(0, 0, 0), ft_vector(world_x, world_y, -1));
 	r = ft_transform_ray(c.view_transform_inverse, r);
 	r.direction = ft_normalize(r.direction);
 	return (r);
 }
 
-void	ft_render(t_window window, t_world *w, t_camera c)
+t_color	ft_anti_aliased_color(t_world *w, int j, int i)
 {
-	t_color		color;
-	t_ray		r;
-	uint32_t	i;
-	uint32_t	j;
+	t_color	color;
+	t_ray	r;
+	int		k;
 
-	i = 0;
-	while (i < window.img->height)
+	color = g_black;
+	k = 0;
+	while (k < 5)
+	{
+		r = ft_ray_for_pixel(j, i, k, w->camera);
+		color = ft_add_colors(color, ft_color_at(w, r, REFLECT_DEPTH));
+		k++;
+	}
+	return ((t_color){color.r / 5, color.g / 5, color.b / 5});
+}
+
+void	ft_render(t_png_img *img, t_world *w, int thread_i)
+{
+	int		i;
+	int		j;
+	int		end;
+	int		chunk_size;
+
+	chunk_size = img->height / w->cores_cnt;
+	i = thread_i * (chunk_size);
+	if ((thread_i + 1) == w->cores_cnt)
+		end = img->height;
+	else
+		end = (thread_i + 1) * (chunk_size);
+	while (i < end)
 	{
 		j = 0;
-		while (j < window.img->width)
+		while (j < img->width)
 		{
-			r = ft_ray_for_pixel(j, i, c);
-			color = ft_color_at(w, r);
-			mlx_put_pixel(window.img, j, i,
-				ft_merge_colors(ft_255channel(color.r), ft_255channel(color.g),
-					ft_255channel(color.b), 0xFF));
+			ft_png_put_pixel(img, j, i, ft_anti_aliased_color(w, j, i));
 			j++;
 		}
 		i++;
 	}
-	ft_free_objs_and_btex(w);
-	mlx_image_to_window(window.mlx, window.img, 0, 0);
-	mlx_loop(window.mlx);
-	mlx_terminate(window.mlx);
 }

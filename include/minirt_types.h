@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:46:27 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 17:27:11 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/12/04 11:19:23 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,20 @@
 # define MINIRT_TYPES_H
 
 # define EPSILON		0.00001
-# define SCREEN_WIDTH	512
-# define SCREEN_HEIGHT	512
-# define PPM_MAGIC_NUM	"P3"
-# define PPM_MAX_COLOR	255
+# define SCREEN_WIDTH	1920
+# define SCREEN_HEIGHT	1080
 # define PI				3.14159265358979
 # define RED			"\033[0;31m"
 # define GREEN			"\033[0;32m"
 # define YELLOW			"\033[0;33m"
 # define RESET_COLOR	"\033[0m"
-# define ENDIANESS		1
-
-# include "MLX42.h"
+# define REFLECT_DEPTH	3
+// Material refract indices
+# define VACUUM		1
+# define AIR		1.00029
+# define WATER		1.333
+# define GLASS		1.52
+# define DIAMOND	2.417
 
 typedef struct s_tuple
 {
@@ -49,10 +51,6 @@ extern const t_color	g_red;
 extern const t_color	g_green;
 extern const t_color	g_blue;
 
-typedef struct s_canvas {
-	t_color	pixel_grid[SCREEN_WIDTH][SCREEN_HEIGHT];
-}	t_canvas;
-
 typedef struct s_matrix
 {
 	int			size;
@@ -75,6 +73,11 @@ enum e_obj_type
 	OT_CONE
 };
 
+/*
+	double	reflective; // [0.0-1.0]
+	double	transparency; // [0.0-1.0]
+	double	ri;// refractive index
+*/
 typedef struct s_material
 {
 	t_color	color;
@@ -82,33 +85,34 @@ typedef struct s_material
 	double	diffuse;
 	double	specular;
 	double	shininess;
+	double	reflective;
+	double	transparency;
+	double	ri;
 }	t_material;
 
-typedef struct s_btex
+typedef struct s_tex
 {
-	t_color	**pixels;
-	char	**read;
-	char	**leaks;
 	int		width;
 	int		height;
-}	t_btex;
+	t_color	**pixels;
+}	t_tex;
 
 // btex: bump map texture
 typedef struct s_plane {
 	t_tuple	normal;
 	t_tuple	pt;
-	t_btex	*btex;
+	t_tex	*btex;
 }	t_plane;
 
 typedef struct s_obj
 {
-	enum e_obj_type		type;
-	t_matrix			transform_inverse;
-	t_material			material;
-	void				*props;
-	bool				checkered;
-	t_btex				*btex;
-	struct s_obj		*next;
+	enum e_obj_type	type;
+	t_matrix		transform_inverse;
+	t_material		material;
+	bool			checkered;
+	t_tex			tex;
+	t_tex			btex;
+	struct s_obj	*next;
 }	t_obj;
 
 typedef struct s_xnode
@@ -129,7 +133,6 @@ typedef struct s_quadratics
 
 // ldn: light_dot_normal
 // rde: reflect_dot_eye
-
 typedef struct s_phong
 {
 	t_color	e_color;
@@ -149,16 +152,18 @@ typedef struct s_comps
 	double		x;
 	t_tuple		pt;
 	t_tuple		over_pt;
+	t_tuple		under_pt;
 	t_tuple		ev;
 	t_tuple		nv;
+	t_tuple		rv;
 	bool		inside;
-	bool		is_shadowed;
+	double		ns[2];
 }	t_comps;
 
 typedef struct s_camera
 {
-	t_tuple		pt;
-	t_tuple		forward_v;
+	t_tuple		from;
+	t_tuple		to;
 	double		fov;
 	int			screen_w;
 	int			screen_h;
@@ -166,88 +171,54 @@ typedef struct s_camera
 	double		half_c_w;
 	double		half_c_h;
 	t_matrix	view_transform_inverse;
+	bool		set;
 }	t_camera;
-
-/*---------DATACHECK-----------*/
-
-typedef struct s_ambient
-{
-	double	ratio;
-	t_color	color;
-}	t_ambient;
 
 typedef struct s_light
 {
-	t_tuple	position;
-	float	brightness;
-	t_color	color;
+	t_tuple			position;
+	t_color			color;
+	struct s_light	*next;
 }	t_light;
-
-/*
-	pt: position
-	d: diameter
-*/
-typedef struct s_sphere
-{
-	t_tuple	pt;
-	float	d;
-}	t_sphere;
-
-/*
-	d: diameter
-	h: height
-*/
-typedef struct s_cylinder
-{
-	t_tuple	center;
-	t_tuple	axis;
-	double	d;
-	double	h;
-}	t_cylinder;
-
-typedef struct s_cone
-{
-	t_tuple	center;
-	t_tuple	axis;
-	double	d;
-	double	h;
-}	t_cone;
-
-typedef struct s_find
-{
-	char	**split;
-}	t_find;
-
-// ls: small l
-typedef struct s_count
-{
-	int	a;
-	int	c;
-	int	l;
-	int	ls;
-}	t_count;
-
-typedef struct s_data
-{
-	t_find	*find;
-	char	**map;
-	int		mapsize;
-}	t_data;
-
-typedef struct s_window
-{
-	mlx_t		*mlx;
-	mlx_image_t	*img;
-}	t_window;
 
 typedef struct s_world
 {
-	t_ambient	ambient;
 	t_camera	camera;
-	t_light		lights[2];
-	t_obj		*objs;
-	int			num_objs;
-	int			num_lights;
+	t_light		*light_lst;
+	t_obj		*obj_lst;
+	int			cores_cnt;
 }	t_world;
+
+typedef struct s_png_img
+{
+	int			width;
+	int			height;
+	png_bytep	*row_pointers;
+}	t_png_img;
+
+typedef struct s_contnode
+{
+	t_obj				*o;
+	struct s_contnode	*next;
+}	t_contnode;
+
+enum	e_el_type
+{
+	EL_TYPE_C,
+	EL_TYPE_L,
+	EL_TYPE_SP,
+	EL_TYPE_PL,
+	EL_TYPE_CY,
+	EL_TYPE_CN,
+	EL_TYPE_ERR
+};
+
+typedef struct s_tbn
+{
+	t_tuple		normal;
+	t_tuple		tang;
+	t_tuple		binorm;
+	t_matrix	matrix;
+}	t_tbn;
 
 #endif

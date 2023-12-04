@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:08:09 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 16:08:48 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/12/03 19:55:37 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,21 +102,22 @@ t_xnode	*ft_intersect_cone(t_obj *o, t_ray r)
 
 t_xnode	*ft_intersect_world(t_world *w, t_ray r)
 {
-	int			i;
+	t_obj		*tmp_o;
 	t_xnode		*xs;
 
 	xs = NULL;
-	i = 0;
-	while (i < w -> num_objs)
+	tmp_o = w->obj_lst;
+	while (tmp_o)
 	{
-		if (w->objs[i].type == OT_PLANE)
-			ft_xadd_back(&xs, ft_intersect_plane(&w->objs[i++], r));
-		else if (w->objs[i].type == OT_CYLINDER)
-			ft_xadd_back(&xs, ft_intersect_cylinder(&w->objs[i++], r));
-		else if (w->objs[i].type == OT_CONE)
-			ft_xadd_back(&xs, ft_intersect_cone(&w->objs[i++], r));
+		if (tmp_o->type == OT_PLANE)
+			ft_xadd_back(&xs, ft_intersect_plane(tmp_o, r));
+		else if (tmp_o->type == OT_CYLINDER)
+			ft_xadd_back(&xs, ft_intersect_cylinder(tmp_o, r));
+		else if (tmp_o->type == OT_CONE)
+			ft_xadd_back(&xs, ft_intersect_cone(tmp_o, r));
 		else
-			ft_xadd_back(&xs, ft_intersect_sphere(&w->objs[i++], r));
+			ft_xadd_back(&xs, ft_intersect_sphere(tmp_o, r));
+		tmp_o = tmp_o -> next;
 	}
 	return (xs);
 }

@@ -6,29 +6,37 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 15:45:07 by abelayad          #+#    #+#             */
-/*   Updated: 2023/09/21 16:06:06 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/12/03 22:23:30 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-uint32_t	ft_merge_colors(int r, int g, int b, int a)
+void	ft_free_lights(t_light *light_lst)
 {
-	if (ENDIANESS == 0)
-		return (a << 24 | b << 16 | g << 8 | r);
-	return (r << 24 | g << 16 | b << 8 | a);
+	t_light	*to_free;
+
+	while (light_lst)
+	{
+		to_free = light_lst;
+		light_lst = light_lst->next;
+		free(to_free);
+	}
 }
 
-void	ft_free_objs_and_btex(t_world *w)
+void	free_world(t_world *w)
 {
-	int	i;
+	t_obj	*tmp_o;
+	t_obj	*obj_to_free;
 
-	i = 0;
-	while (i < w->num_objs)
+	tmp_o = w->obj_lst;
+	while (tmp_o)
 	{
-		ft_free_btex(w->objs[i].btex);
-		free(w->objs[i].props);
-		i++;
+		ft_free_tex(tmp_o->tex);
+		ft_free_tex(tmp_o->btex);
+		obj_to_free = tmp_o;
+		tmp_o = tmp_o -> next;
+		free(obj_to_free);
 	}
-	free(w->objs);
+	ft_free_lights(w->light_lst);
 }
