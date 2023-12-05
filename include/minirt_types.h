@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:46:27 by abelayad          #+#    #+#             */
-/*   Updated: 2023/12/04 11:19:23 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/12/05 12:43:06 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define GREEN			"\033[0;32m"
 # define YELLOW			"\033[0;33m"
 # define RESET_COLOR	"\033[0m"
-# define REFLECT_DEPTH	3
+# define REFLECT_DEPTH	5
 // Material refract indices
 # define VACUUM		1
 # define AIR		1.00029
