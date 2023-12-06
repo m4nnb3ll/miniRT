@@ -1,0 +1,30 @@
+C 0,7,14 0,2,0 180
+l 8,8,4 150,150,150
+l -8,8,4 150,150,150
+sp 0,5,0 1 0,0,0 .1 .5 0 0
+sp 5,2,0 2 0,0,0 .1 .5 0 0
+sp -6,3,0 3 0,0,0 .1 .5 0 0
+sp -2,5,-5 2 0,0,0 .2 .7 0 0
+sp 0,1,0 2 255,255,0 0 .3 0
+# boulder 1
+sp 8,0,-8 3 0,0,0 .05 0 0 0 textures/marble_light.png
+cy 8,5,-8 0,1,0 1 10 255,255,0 .05 0 0 0 textures/marble_light.png
+# boulder 2
+sp -8,0,-8 3 0,0,0 .05 0 0 0 textures/marble_light.png
+cy -8,5,-8 0,1,0 1 10 255,255,0 .05 0 0 0 textures/marble_light.png
+# boulder 3
+sp 8,0,8 3 0,0,0 .05 0 0 0 textures/marble_light.png
+cy 8,5,8 0,1,0 1 10 255,255,0 .05 0 0 0 textures/marble_light.png
+# boulder 4
+sp -8,0,8 3 0,0,0 .05 0 0 0 textures/marble_light.png
+cy -8,5,8 0,1,0 1 10 255,255,0 .05 0 0 0 textures/marble_light.png
+# x
+pl 10,0,0 -1,0,0 255,0,0 0 0 0
+pl -10,0,0 1,0,0 0,255,0 0 0 0
+# y
+pl 0,10,0 0,-1,0 255,0,0 0 0 0
+pl 0,0,0 0,1,0 255,255,255 .1 0 0 1
+# z
+pl 0,0,15 0,0,-1 0,0,255 0 0 0
+pl 0,0,-10 0,0,1 0,0,255 0 0 0
+
