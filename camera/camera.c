@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:12:33 by abelayad          #+#    #+#             */
-/*   Updated: 2023/12/02 16:40:43 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/12/08 10:25:06 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,10 @@ void	ft_render(t_png_img *img, t_world *w, int thread_i)
 			ft_png_put_pixel(img, j, i, ft_anti_aliased_color(w, j, i));
 			j++;
 		}
+		pthread_mutex_lock(&w->progress_mtx);
+		w->lines_progress++;
+		pthread_mutex_unlock(&w->progress_mtx);
+		ft_print_progress(w);
 		i++;
 	}
 }

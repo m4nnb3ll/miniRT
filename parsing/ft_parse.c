@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:20 by abelayad          #+#    #+#             */
-/*   Updated: 2023/12/04 16:57:52 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/12/08 10:19:25 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,6 @@ t_world	ft_parse_rt_file(char *filename)
 		exit(printf("%sCamera or Light is missing!!!%s\n", RED, RESET_COLOR));
 	world.camera = ft_camera(world.camera);
 	world.cores_cnt = sysconf(_SC_NPROCESSORS_ONLN) * 3;
+	pthread_mutex_init(&world.progress_mtx, NULL);
 	return (world);
 }

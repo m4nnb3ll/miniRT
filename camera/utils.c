@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 15:45:07 by abelayad          #+#    #+#             */
-/*   Updated: 2023/12/03 22:23:30 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/12/08 10:34:45 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,29 @@ void	free_world(t_world *w)
 		free(obj_to_free);
 	}
 	ft_free_lights(w->light_lst);
+}
+
+void	ft_print_progress(t_world *w)
+{
+	int		i;
+	int		step;
+	double	progress;
+
+	step = SCREEN_HEIGHT / 10;
+	pthread_mutex_lock(&w->progress_mtx);
+	if (!step || !(w->lines_progress % step))
+	{
+		progress = (w->lines_progress / (double)SCREEN_HEIGHT) * 20;
+		printf("\rrendering: %s[", WHITE);
+		i = -1;
+		while (++i < (int)progress)
+			printf("=");
+		printf(">] %s%%%3d%s",
+			GREEN, (int)round(progress / 20 * 100), RESET_COLOR);
+		if (w->lines_progress > SCREEN_HEIGHT - step)
+			printf("\n%sCompleted!%s\n", GREEN, RESET_COLOR);
+		else
+			fflush(stdout);
+	}
+	pthread_mutex_unlock(&w->progress_mtx);
 }

@@ -6,7 +6,7 @@
 /*   By: abelayad <abelayad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:46:27 by abelayad          #+#    #+#             */
-/*   Updated: 2023/12/05 12:43:06 by abelayad         ###   ########.fr       */
+/*   Updated: 2023/12/08 10:20:22 by abelayad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define RED			"\033[0;31m"
 # define GREEN			"\033[0;32m"
 # define YELLOW			"\033[0;33m"
+# define WHITE			"\033[0;37m"
 # define RESET_COLOR	"\033[0m"
 # define REFLECT_DEPTH	5
 // Material refract indices
@@ -183,10 +184,12 @@ typedef struct s_light
 
 typedef struct s_world
 {
-	t_camera	camera;
-	t_light		*light_lst;
-	t_obj		*obj_lst;
-	int			cores_cnt;
+	t_camera		camera;
+	t_light			*light_lst;
+	t_obj			*obj_lst;
+	int				cores_cnt;
+	int				lines_progress;
+	pthread_mutex_t	progress_mtx;
 }	t_world;
 
 typedef struct s_png_img

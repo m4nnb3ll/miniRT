@@ -1,13 +1,15 @@
+# THIS FILE TRIES TO GIVE AN EXAMPLE OF HOW TO WRITE A SCENE ".rt" FILE
+
 # Elements in capital letter can only be present once.
 # Boolean values are represented by 0 and 1.
-# Pass 0 as the name of the texture to skip it
-# reflectiveness(rflct):[0 - 1]
-# transparency(trnsp):	[0 - 1]
-# refraction index(ri):	pass 0 for the default(glass)
-# to indicate no file for texture pass '.' in the place of the filename
+# positions and vectors are represend by 3 coordinates(x,y,z), ex: 0,3,1
+# color is represented as (r,g,b), ex: 42,186,188
+# reflectiveness(rflct): decimal number in the range of [0 - 1]
+# transparency(trnsp): decimal number in the range of [0 - 1]
+# refraction index(ri):	pass 0 for the default(Glass)
+# checkered for checkers pattern: 1 for presence, 0 for absence
+# Absent texture file is represented by '.'
 #	- ex: "sp 0,0,0 1 0,0,0 0 0 0 0 . normal_texture.png"
-
-
 
 # Camera
 C <from_position> <to_position> <fov_degrees>
