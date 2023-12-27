@@ -12,7 +12,8 @@
 ***
 ***
 
-# Check the "README.rt" file in "scenes/" to get an idea of how to write one.
+# You can create image by passing a scene file ".rt" to the program "./miniRT"
+## Check the "README.rt" file in "scenes/" to get an idea of how to write one.
 
 ### dependencies
  - libpng
